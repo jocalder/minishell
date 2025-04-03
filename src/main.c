@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/02 19:42:10 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/04/03 18:32:57 by vgoyzuet         ###   ########.fr       */
+/*   Created: 2025/04/03 18:20:56 by vgoyzuet          #+#    #+#             */
+/*   Updated: 2025/04/03 18:39:08 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
+#include <sys/time.h>
 
-# include "libft.h"
-# include <stdio.h>
-# include <signal.h>
-# include <sys/types.h>
-# include <sys/time.h>
+int	main(void)
+{
+	struct sigaction	sa;
 
-# define USAGE	"Usage: ./minishell"
-
-void	mini_signal_handler(int signum, siginfo_t *info, void *unused);
-
-#endif
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = mini_signal_handler;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	while (1)
+		sleep(1);
+}

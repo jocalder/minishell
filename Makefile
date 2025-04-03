@@ -6,7 +6,7 @@
 #    By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/02 19:31:36 by vgoyzuet          #+#    #+#              #
-#    Updated: 2025/04/02 19:33:02 by vgoyzuet         ###   ########.fr        #
+#    Updated: 2025/04/03 18:32:37 by vgoyzuet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ CFLAGS += -I inc
 
 LIBFT = libft/libft.a
 
-SRCS = 	src/main.c	\
+SRCS = 	src/main.c					\
+		src/mini_signal_handler.c	\
 
 OBJS = $(SRCS:%.c=objs/%.o)
 
