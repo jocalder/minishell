@@ -7,20 +7,23 @@ NAME = minishell
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+CFLAGS += -I /opt/homebrew/opt/readline/include
 CFLAGS += -I libft
 CFLAGS += -I inc
 
+LDFLAGS = -L/opt/homebrew/opt/readline/lib -lreadline
+
 LIBFT = libft/libft.a
 
-SRCS = 	src/main.c					\
-		src/mini_signal_handler.c	\
+SRCS = 	src/main.c				\
+		src/sigint_handler.c	\
 
 OBJS = $(SRCS:%.c=objs/%.o)
 
 all: $(LIBFT) $(NAME)
 
 $(NAME): objs $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(LDFLAGS)
 	@echo "$(GREEN)minishell ready$(WHITE)"
 
 $(LIBFT):
