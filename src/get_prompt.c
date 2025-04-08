@@ -37,8 +37,7 @@ static char *replace_home(char *path)
             return (new_path);
         }
     }
-    ft_strdup(path);
-    return (path);
+    return (ft_strdup(path));
 }
 
 static void join_prompt(char *ptr, char *user, char *display_cwd)
