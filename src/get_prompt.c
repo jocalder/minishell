@@ -33,7 +33,7 @@ static char *replace_home(char *path)
             if (!new_path)
                 return (path);
             new_path[0] = '~';
-            strcpy(new_path + 1, path + ft_strlen(home));
+            ft_strcpy(new_path + 1, path + ft_strlen(home));
             return (new_path);
         }
     }
@@ -85,5 +85,5 @@ char    *display_prompt(void)
         return (free(display_cwd), NULL);
     ptr = prompt;
     join_prompt(ptr, user, display_cwd);
-    return prompt;
+    return (prompt);
 }
