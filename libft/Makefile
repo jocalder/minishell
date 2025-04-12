@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 22:28:58 by vgoyzuet          #+#    #+#              #
-#    Updated: 2025/04/08 13:00:42 by marvin           ###   ########.fr        #
+#    Updated: 2025/04/09 17:06:19 by vgoyzuet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,7 @@ SRCS	=	ft_isalpha.c			\
 			get_next_line.c			\
 			ft_free_utils.c			\
 			ft_abs.c				\
+			ft_malloc.c				\
 	
 OBJS = $(SRCS:%.c=objs/%.o)
 
