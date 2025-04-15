@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/18 22:28:58 by vgoyzuet          #+#    #+#              #
-#    Updated: 2025/04/02 20:48:05 by vgoyzuet         ###   ########.fr        #
+#    Updated: 2025/04/08 13:00:42 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRCS	=	ft_isalpha.c			\
 			ft_memchr.c				\
 			ft_memcmp.c				\
 			ft_strlcpy.c			\
+			ft_strcpy.c				\
 			ft_strlcat.c			\
 			ft_strnstr.c			\
 			ft_atoi.c				\

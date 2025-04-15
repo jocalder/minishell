@@ -2,12 +2,6 @@
 
 int	g_status;
 
-/*	
-	This function handles the CTRL+C signal (SIGINT).
-	It sets g_status to 130, which is the standard exit code for an interrupted command.
-	It then prints a newline, clears the current input line, and resets the prompt using readline functions.
-*/
-
 void	sigint_handler(int signum)
 {
 	if (signum == SIGINT)
