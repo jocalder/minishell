@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:52:57 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/04/15 17:17:23 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:41:39 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ void	ft_free(t_list **lst, void *buffer)
 			}
 			if (buffer)
 				free(buffer);
-			free(cur);
-			return ;
+			return (free(cur));
 		}
 		prev = cur;
 		cur = cur->next;
@@ -64,7 +63,7 @@ void	*ft_malloc(t_list **lst, size_t num, size_t size)
 {
 	void	*buffer;
 	t_list	*node;
-	
+
 	buffer = ft_calloc(num, size);
 	if (!buffer)
 		return (NULL);
