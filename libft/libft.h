@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:48:23 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/04/09 15:25:34 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:58:11 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,10 @@ char	*get_next_line(int fd);
 /*free*/
 void	free_array(char **arr);
 void	ft_exit_free(int EXIT, char *message, char **arr);
+
+/*ft_malloc*/
+void	*ft_malloc(t_list **lst, size_t num, size_t size);
+void	ft_free(t_list **lst, void *buffer);
+void	ft_clean(t_list	**lst);
 
 #endif
