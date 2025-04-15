@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 21:11:00 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/04/15 17:22:20 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:40:56 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strjoin(t_list **lst, char const *s1, char const *s2)
 
 	if (!s2)
 		return (NULL);
-	s = ft_malloc(((lst, ft_strlen((char *)s1) + ft_strlen((char *)s2)) + 1),
+	s = ft_malloc(lst, ((ft_strlen((char *)s1) + ft_strlen((char *)s2)) + 1),
 			sizeof(char *));
 	if (!s)
 		return (NULL);

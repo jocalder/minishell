@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:52:57 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/04/15 17:41:39 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/04/15 21:31:46 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,7 @@ void	ft_free(t_list **lst, void *buffer)
 			if (prev)
 				prev->next = cur->next;
 			else
-			{
 				*lst = cur->next;
-				lst = &(*lst);
-			}
 			if (buffer)
 				free(buffer);
 			return (free(cur));

@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 21:45:27 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/04/15 17:25:02 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:41:47 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	**ft_split(t_list **lst, char const *s, char c)
 		{
 			strs[i] = ft_substr(lst, s, 0, wordlen(s, c));
 			if (!strs[i++])
-				return (free_strs(strs));
+				return (free_strs(lst, strs));
 			s += wordlen(s, c);
 		}
 		else
