@@ -22,7 +22,7 @@
 enum	e_error
 {
 	CTRC	= 130,
-}
+};
 
 extern int g_status;
 
