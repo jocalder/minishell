@@ -1,26 +1,41 @@
 #include "minishell.h"
 
+void	init_data(t_mini *data)
+{
+	g_status = 0;
+	data->input = NULL;
+	data->prompt = NULL;
+	data->alloc = NULL;
+	data->prompt = NULL;
+	data->info = ft_malloc(&data->alloc, 1, sizeof(t_prompt));
+	if (!data->info)
+		perror(FAIL_ALLOC);
+	data->info->user = NULL;
+	data->info->display = NULL;
+	data->info->ptr = NULL;
+	data->info->len = 0;
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	char	*input;
-	char	*prompt;
+	t_mini	data;
 
 	(void)argv, (void)envp;
 	if (argc > 1)
 		perror(USAGE);
-	g_status = 0;
+	init_data(&data);
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		prompt = get_prompt();
-		input = readline(prompt);
-		free(prompt);
-		if (!input)
+		set_prompt(&data);
+		data.input = readline(data.prompt);
+		free(data.prompt);
+		if (!data.input)
 			return (1);
-		if (*input)
-			add_history(input);
-		free(input);
+		if (*data.input)
+			add_history(data.input);
+		free(data.input);
 	}
 	rl_clear_history();
 	exit (g_status);
