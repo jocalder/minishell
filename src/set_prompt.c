@@ -29,7 +29,8 @@ static char	*replace_home(t_list **alloc, char *path)
 		new_path = path_empty(path, home);
 		if (path[ft_strlen(home)] == '/')
 		{
-			new_path = ft_calloc((ft_strlen(path) - ft_strlen(home) + 2), sizeof(char));
+			new_path = ft_calloc((ft_strlen(path) - ft_strlen(home) + 2),
+					sizeof(char));
 			if (!new_path)
 				return (path);
 			new_path[0] = '~';

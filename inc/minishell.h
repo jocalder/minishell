@@ -41,7 +41,7 @@ enum	e_error
 	CTRC	= 130,
 };
 
-extern int g_status;
+extern int	g_status;
 
 void	sigint_handler(int signum);
 void	set_prompt(t_mini *data);
