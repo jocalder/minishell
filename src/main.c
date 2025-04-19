@@ -35,7 +35,7 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		if (*data.input)
 			add_history(data.input);
-		execute_builtins(data.args, envp);
+		execute_builtins(&data, envp);
 		free(data.input);
 	}
 	rl_clear_history();
