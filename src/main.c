@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	init_data(t_mini *data)
+static void	init_data(t_mini *data)
 {
 	g_status = 0;
 	data->input = NULL;
