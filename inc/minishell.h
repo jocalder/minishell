@@ -32,6 +32,7 @@ typedef struct minishell
 {
 	char		*input;
 	char		*prompt;
+	char		*args;
 	t_list		*alloc;
 	t_prompt	*info;
 }	t_mini;

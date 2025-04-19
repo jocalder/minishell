@@ -20,7 +20,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_mini	data;
 
-	(void)argv, (void)envp;
+	(void)argv;
 	if (argc > 1)
 		perror(USAGE);
 	init_data(&data);
@@ -35,6 +35,7 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		if (*data.input)
 			add_history(data.input);
+		execute_builtins(data.args, envp);
 		free(data.input);
 	}
 	rl_clear_history();
