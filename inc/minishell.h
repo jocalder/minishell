@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include <signal.h>
 # include <string.h>
+# include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>
@@ -18,6 +19,9 @@
 
 # define USAGE		"Usage: ./minishell"
 # define FAIL_WRITE	"Function write failure"
+# define RED		"\033[0;34m"
+# define BLUE		"\033[0;31m"
+# define WHITE		"\033[0m"
 
 enum	e_error
 {
@@ -27,6 +31,7 @@ enum	e_error
 extern int g_status;
 
 void	sigint_handler(int signum);
+char    *display_prompt(void);
 char	*get_prompt(void);
 
 #endif
