@@ -17,16 +17,33 @@
 # define WHITE		"\033[0m"
 
 # define USAGE		"Usage: ./minishell"
+# define FAIL_ALLOC	"Memory allocation failure"
 # define FAIL_WRITE	"Function write failure"
+
+typedef struct prompt
+{
+	char	*user;
+	char	*display;
+	char	*ptr;
+	int		len;
+}	t_prompt;
+
+typedef struct minishell
+{
+	char		*input;
+	char		*prompt;
+	t_list		*alloc;
+	t_prompt	*info;
+}	t_mini;
 
 enum	e_error
 {
 	CTRC	= 130,
 };
 
-extern int g_status;
+extern int	g_status;
 
 void	sigint_handler(int signum);
-char	*get_prompt(void);
+void	set_prompt(t_mini *data);
 
 #endif

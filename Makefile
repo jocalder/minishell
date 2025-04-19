@@ -17,7 +17,7 @@ LIBFT = libft/libft.a
 
 SRCS = 	src/main.c				\
 		src/sigint_handler.c	\
-		src/get_prompt.c		\
+		src/set_prompt.c		\
 
 OBJS = $(SRCS:%.c=objs/%.o)
 
