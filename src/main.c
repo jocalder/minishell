@@ -5,6 +5,7 @@ static void	init_data(t_mini *data)
 	g_status = 0;
 	data->input = NULL;
 	data->prompt = NULL;
+	data->args = NULL;
 	data->alloc = NULL;
 	data->prompt = NULL;
 	data->info = ft_malloc(&data->alloc, 1, sizeof(t_prompt));
@@ -20,7 +21,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_mini	data;
 
-	(void)argv, (void)envp;
+	(void)argv;
 	if (argc > 1)
 		perror(USAGE);
 	init_data(&data);
@@ -35,6 +36,8 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		if (*data.input)
 			add_history(data.input);
+		data.args = ft_split(&data.alloc, data.input, ' ');
+		execute_builtins(&data, envp);
 		free(data.input);
 	}
 	rl_clear_history();
