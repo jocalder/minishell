@@ -35,8 +35,8 @@ static char	*replace_home(t_list **alloc, char *path)
 				return (path);
 			new_path[0] = '~';
 			ft_strcpy(new_path + 1, path + ft_strlen(home));
-			return (new_path);
 		}
+		return (new_path);
 	}
 	return (ft_strdup(alloc, path));
 }
@@ -65,10 +65,11 @@ static void	join_prompt(char *ptr, char *user, char *display)
 
 void	set_prompt(t_mini *data)
 {
-	char	cwd[1024];
+	char	*cwd;
 
 	data->info->user = getenv("USER");
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
 		return ;
 	data->info->display = replace_home(&data->alloc, cwd);
 	data->info->len = ft_strlen(RED) + ft_strlen(data->info->user)
