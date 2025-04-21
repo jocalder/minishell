@@ -58,7 +58,7 @@ void	execute_builtins(t_mini *data, char **envp)
 	//	ft_export();
 	//else if (ft_strncmp(data->args[0], "unset", 6) == 0)
 	//	ft_unset();
-	else if (ft_strncmp(data->args[1], "env", 4) == 0)
+	else if (ft_strncmp(data->args[0], "env", 4) == 0)
 		ft_env(envp);
 	//else if (ft_strncmp(data->args[0], "exit", 5) == 0)
 	//	ft_exit();
