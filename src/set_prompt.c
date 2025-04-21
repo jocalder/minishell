@@ -72,6 +72,7 @@ void	set_prompt(t_mini *data)
 	if (!cwd)
 		return ;
 	data->info->display = replace_home(&data->alloc, cwd);
+	free(cwd);
 	data->info->len = ft_strlen(RED) + ft_strlen(data->info->user)
 		+ ft_strlen("@minishell") + ft_strlen(WHITE) + ft_strlen(":")
 		+ ft_strlen(BLUE) + ft_strlen(data->info->display) + ft_strlen(WHITE)

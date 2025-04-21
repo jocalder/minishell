@@ -41,5 +41,6 @@ int	main(int argc, char **argv, char **envp)
 		free(data.input);
 	}
 	rl_clear_history();
+	ft_clean(&data.alloc);
 	exit (g_status);
 }
