@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 21:45:27 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/04/15 20:41:47 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/04/21 20:24:20 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,18 @@ static int	count_words(char const *s, char c)
 	return (count);
 }
 
-static	void	*free_strs(t_list **lst, char **strs)
+static	void	*free_strs(char **strs)
 {
 	int	i;
 
 	i = 0;
 	while (strs[i])
-		ft_free(lst, strs[i++]);
-	ft_free(lst, strs);
+		free(strs[i++]);
+	free(strs);
 	return (NULL);
 }
 
-char	**ft_split(t_list **lst, char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**strs;
 	int		i;
@@ -63,7 +63,7 @@ char	**ft_split(t_list **lst, char const *s, char c)
 	if (!s)
 		return (NULL);
 	count = count_words(s, c);
-	strs = ft_malloc(lst, count + 1, sizeof(char *));
+	strs = ft_calloc(count + 1, sizeof(char *));
 	if (!strs)
 		return (NULL);
 	strs[count] = NULL;
@@ -72,9 +72,9 @@ char	**ft_split(t_list **lst, char const *s, char c)
 	{
 		if (*s != c)
 		{
-			strs[i] = ft_substr(lst, s, 0, wordlen(s, c));
+			strs[i] = ft_substr(s, 0, wordlen(s, c));
 			if (!strs[i++])
-				return (free_strs(lst, strs));
+				return (free_strs(strs));
 			s += wordlen(s, c);
 		}
 		else
