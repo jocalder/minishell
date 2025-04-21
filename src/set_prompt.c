@@ -16,14 +16,14 @@ static char	*path_empty(char *path, char *home)
 	return (new_path);
 }
 
-static char	*replace_home(t_list **alloc, char *path)
+static char	*replace_home(char *path)
 {
 	char	*home;
 	char	*new_path;
 
 	home = getenv("HOME");
 	if (!home)
-		return (ft_strdup(alloc, path));
+		return (ft_strdup(path));
 	if (home && ft_strncmp(path, home, ft_strlen(home)) == 0)
 	{
 		new_path = path_empty(path, home);
@@ -38,7 +38,7 @@ static char	*replace_home(t_list **alloc, char *path)
 		}
 		return (new_path);
 	}
-	return (ft_strdup(alloc, path));
+	return (ft_strdup(path));
 }
 
 static void	join_prompt(char *ptr, char *user, char *display)
@@ -71,13 +71,13 @@ void	set_prompt(t_mini *data)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return ;
-	data->info->display = replace_home(&data->alloc, cwd);
+	data->info->display = replace_home(cwd);
 	free(cwd);
 	data->info->len = ft_strlen(RED) + ft_strlen(data->info->user)
 		+ ft_strlen("@minishell") + ft_strlen(WHITE) + ft_strlen(":")
 		+ ft_strlen(BLUE) + ft_strlen(data->info->display) + ft_strlen(WHITE)
 		+ ft_strlen("$ ") + 1;
-	data->prompt = ft_malloc(&data->alloc, data->info->len, sizeof(char *));
+	data->prompt = ft_calloc(data->info->len, sizeof(char *));
 	if (!data->prompt)
 		return (free(data->info->display));
 	data->info->ptr = data->prompt;

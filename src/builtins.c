@@ -18,7 +18,6 @@ static void	ft_cd(t_mini *data)
 		if (chdir(data->args[1]) != 0)
 			perror("error route");//change for a similar error message
 	}
-
 }
 static void	ft_pwd(void)
 {
