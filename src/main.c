@@ -6,9 +6,8 @@ static void	init_data(t_mini *data)
 	data->input = NULL;
 	data->prompt = NULL;
 	data->args = NULL;
-	data->alloc = NULL;
 	data->prompt = NULL;
-	data->info = ft_malloc(&data->alloc, 1, sizeof(t_prompt));
+	data->info = ft_calloc(1, sizeof(t_prompt));
 	if (!data->info)
 		perror(FAIL_ALLOC);
 	data->info->user = NULL;
@@ -36,11 +35,10 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		if (*data.input)
 			add_history(data.input);
-		data.args = ft_split(&data.alloc, data.input, ' ');
+		data.args = ft_split(data.input, ' ');
 		execute_builtins(&data, envp);
 		free(data.input);
 	}
 	rl_clear_history();
-	ft_clean(&data.alloc);
 	exit (g_status);
 }

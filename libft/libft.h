@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:48:23 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/04/15 20:46:44 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/04/21 20:26:20 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ char	*ft_strcpy(char *s2, char *s1);
 char	*ft_strnstr(const char *big, const char *little, size_t len);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t num, size_t size);
-char	*ft_strdup(t_list **lst, const char *s);
-char	*ft_substr(t_list **lst, char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(t_list **lst, char const *s1, char const *s2);
-char	*ft_strtrim(t_list **lst, char const *s1, char const *set);
-char	**ft_split(t_list **lst, char const *s, char c);
-char	*ft_itoa(t_list **lst, int n);
-char	*ft_strmapi(t_list **lst, char const *s, char (*f)(unsigned int, char));
+char	*ft_strdup(const char *s);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strtrim(char const *s1, char const *set);
+char	**ft_split(char const *s, char c);
+char	*ft_itoa(int n);
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 void	ft_putcharfd(char c, int fd);
 void	ft_putstrfd(char *str, int fd);
@@ -102,15 +102,10 @@ int		ft_putunsnbr_fd(unsigned int unsnbr, int fd);
 int		ft_puthex_fd(unsigned long long num, char format, int fd);
 
 /*get_next_line*/
-char	*get_next_line(t_list **lst, int fd);
+char	*get_next_line(int fd);
 
 /*free*/
 void	free_array(char **arr);
 void	ft_exit_free(int EXIT, char *message, char **arr);
-
-/*ft_malloc*/
-void	*ft_malloc(t_list **lst, size_t num, size_t size);
-void	ft_free(t_list **lst, void *buffer);
-void	ft_clean(t_list	**lst);
 
 #endif
