@@ -11,5 +11,5 @@ Token como identificador de la entrada para posteriormente tratarlo segun su com
                                   /   \
                                ls -l grep "file"
 Divide la entrada en tokens separados por pipes, por ejemplo:
-- **Tokenizado**: ["ls -l", "grep txt", "wc -l"].
+- **Tokenizado**: ["ls -l", "grep file", "wc -l"].
 Una vez tokenizado se debería guardar cada bloque en un char ** .. para poder pasarselo a **execve**.

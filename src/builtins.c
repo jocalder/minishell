@@ -13,20 +13,21 @@ static void	ft_cd(t_mini *data)
 		if (chdir(home) != 0)
 			perror("error home");//change for a similar error message
 	}
-	else 
+	else
 	{
 		if (chdir(data->args[1]) != 0)
 			perror("error route");//change for a similar error message
 	}
 }
+
 static void	ft_pwd(void)
 {
 	char	cwd[1024];
 
 	if (!getcwd(cwd, sizeof(cwd)))
 		printf("Mensaje de error que no se cual es");
-    else
-	    printf("%s\n", cwd);
+	else
+		printf("%s\n", cwd);
 }
 
 static void	ft_env(char **envp)
@@ -61,6 +62,6 @@ void	execute_builtins(t_mini *data, char **envp)
 		ft_env(envp);
 	//else if (ft_strncmp(data->args[0], "exit", 5) == 0)
 	//	ft_exit();
-    else
+	else
 		return ;
 }
