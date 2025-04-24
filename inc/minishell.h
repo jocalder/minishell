@@ -69,7 +69,7 @@ typedef struct minishell
 {
 	char		**args;
 	t_input		*input;
-	t_prompt	*promt;
+	t_prompt	*prompt;
 }	t_mini;
 
 enum	e_status
@@ -80,7 +80,7 @@ enum	e_status
 extern int	g_status;
 
 void	sigint_handler(int signum);
-void	set_prompt(t_mini *data);
+void	set_prompt(t_mini *info);
 void	execute_builtins(t_mini *data, char **envp);
 
 #endif

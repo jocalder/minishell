@@ -63,23 +63,23 @@ static void	join_prompt(char *ptr, char *user, char *display)
 	free(display);
 }
 
-void	set_prompt(t_mini *data)
+void	set_prompt(t_mini *info)
 {
 	char	*cwd;
 
-	data->info->user = getenv("USER");
+	info->prompt->user = getenv("USER");
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return ;
-	data->info->display = replace_home(cwd);
+	info->prompt->display = replace_home(cwd);
 	free(cwd);
-	data->info->len = ft_strlen(RED) + ft_strlen(data->info->user)
+	info->prompt->len = ft_strlen(RED) + ft_strlen(info->prompt->user)
 		+ ft_strlen("@minishell") + ft_strlen(WHITE) + ft_strlen(":")
-		+ ft_strlen(BLUE) + ft_strlen(data->info->display) + ft_strlen(WHITE)
+		+ ft_strlen(BLUE) + ft_strlen(info->prompt->display) + ft_strlen(WHITE)
 		+ ft_strlen("$ ") + 1;
-	data->prompt = ft_calloc(data->info->len, sizeof(char *));
-	if (!data->prompt)
-		return (free(data->info->display));
-	data->info->ptr = data->prompt;
-	join_prompt(data->info->ptr, data->info->user, data->info->display);
+	info->prompt->prompt = ft_calloc(info->prompt->len, sizeof(char));
+	if (!info->prompt->prompt)
+		return (free(info->prompt->display));
+	info->prompt->ptr = info->prompt->prompt;
+	join_prompt(info->prompt->ptr, info->prompt->user, info->prompt->display);
 }
