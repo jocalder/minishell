@@ -19,6 +19,9 @@
 # define USAGE		"Usage: ./minishell"
 # define FAIL_ALLOC	"Memory allocation failure"
 # define FAIL_WRITE	"Function write failure"
+# define OPEN_PIPE	"There is opened pipe"
+# define OPEN_QUOTE	"There is opened quote"
+# define NO_VALID	"Nope";
 
 typedef struct s_redir
 {
@@ -34,7 +37,7 @@ typedef struct s_redir
 
 typedef struct s_arr
 {
-	char 			*str;
+	char			*str;
 	bool			s_quote;
 	bool			d_quote;
 	bool			check_close;
@@ -52,7 +55,7 @@ typedef struct s_cmd
 typedef struct s_input
 {
 	char	*input;
-	t_cmd	*cmd;
+	t_cmd	**cmd;
 	int		pipes;
 }	t_input;
 
@@ -67,11 +70,9 @@ typedef struct prompt
 
 typedef struct minishell
 {
-	char		**args;
 	t_prompt	*prompt;
 	t_input		*input;
 }	t_mini;
-
 
 enum	e_status
 {
@@ -82,6 +83,7 @@ extern int	g_status;
 
 void	sigint_handler(int signum);
 void	set_prompt(t_prompt *promt);
+void	set_input(t_mini *data, char *prompt);
 void	execute_builtins(t_mini *data, char **envp);
 
 #endif

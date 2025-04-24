@@ -32,15 +32,9 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		set_prompt((&data)->prompt);
-		(&data)->input->input = readline((&data)->prompt->prompt);
-		free((&data)->prompt->prompt);
-		if (!(&data)->input->input)
-			return (1);
-		if ((&data)->input->input)
-			add_history((&data)->input->input);
-		(&data)->args = ft_split((&data)->input->input, ' ');
-		execute_builtins(&data, envp);
-		free((&data)->input->input);
+		set_input(&data, (&data)->prompt->prompt);
+		execute_builtins(&data, envp); //before need execute others
+		free((&data)->input->input); //or free_all
 	}
 	rl_clear_history();
 	exit (g_status);

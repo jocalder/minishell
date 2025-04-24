@@ -65,6 +65,8 @@ static void	join_prompt(char *ptr, char *user, char *display)
 
 void	set_prompt(t_prompt *prompt)
 {
+	if (!prompt)
+		return ;
 	prompt->user = getenv("USER");
 	prompt->cwd = getcwd(NULL, 0);
 	if (!prompt->cwd)

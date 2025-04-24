@@ -18,6 +18,7 @@ LIBFT = libft/libft.a
 SRCS = 	src/main.c				\
 		src/sigint_handler.c	\
 		src/set_prompt.c		\
+		src/set_input.c			\
 		src/builtins.c			\
 
 OBJS = $(SRCS:%.c=objs/%.o)
