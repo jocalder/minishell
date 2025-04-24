@@ -59,18 +59,19 @@ typedef struct s_input
 typedef struct prompt
 {
 	char	*prompt;
+	char	*cwd;
 	char	*user;
 	char	*display;
-	char	*ptr;
 	int		len;
 }	t_prompt;
 
 typedef struct minishell
 {
 	char		**args;
-	t_input		*input;
 	t_prompt	*prompt;
+	t_input		*input;
 }	t_mini;
+
 
 enum	e_status
 {
@@ -80,7 +81,7 @@ enum	e_status
 extern int	g_status;
 
 void	sigint_handler(int signum);
-void	set_prompt(t_mini *info);
+void	set_prompt(t_prompt *promt);
 void	execute_builtins(t_mini *data, char **envp);
 
 #endif
