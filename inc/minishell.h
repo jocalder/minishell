@@ -20,8 +20,45 @@
 # define FAIL_ALLOC	"Memory allocation failure"
 # define FAIL_WRITE	"Function write failure"
 
+typedef struct s_redir
+{
+	bool		redir_input;
+	bool		heredoc;
+	bool		redir_output;
+	bool		append;
+	int			fd[2];
+	char		*eof;
+	char		*file;
+	char		*path;
+}	t_redir;
+
+typedef struct s_arr
+{
+	char 			*str;
+	bool			s_quote;
+	bool			d_quote;
+	bool			check_close;
+	struct s_arr	*next;
+}	t_arr;
+
+typedef struct s_cmd
+{
+	char			*cmd;
+	t_arr			*arr;
+	t_redir			*type;
+	struct s_cmd	*next;
+}	t_cmd;
+
+typedef struct s_input
+{
+	char	*input;
+	t_cmd	*cmd;
+	int		pipes;
+}	t_input;
+
 typedef struct prompt
 {
+	char	*prompt;
 	char	*user;
 	char	*display;
 	char	*ptr;
@@ -30,13 +67,12 @@ typedef struct prompt
 
 typedef struct minishell
 {
-	char		*input;
-	char		*prompt;
 	char		**args;
-	t_prompt	*info;
+	t_input		*input;
+	t_prompt	*promt;
 }	t_mini;
 
-enum	e_error
+enum	e_status
 {
 	CTRC	= 130,
 };
