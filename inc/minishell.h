@@ -28,6 +28,7 @@
 
 # define ERROR	-1
 # define OK		0
+# define END	1
 
 typedef enum	e_flag
 {
@@ -55,13 +56,13 @@ typedef struct s_token
 	t_token_type	type;
 	t_flag			flag;
 	int				fd[2];
-	struct s_arr	*next;
+	struct s_token	*next;
 }	t_token;
 
 typedef struct s_cmd
 {
 	char			*value;
-	t_token			*token;
+	t_token			**token;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -83,6 +84,7 @@ typedef struct prompt
 
 typedef struct minishell
 {
+	char		**args; //delete
 	t_prompt	*prompt;
 	t_input		*input;
 }	t_mini;
@@ -102,12 +104,9 @@ int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
 void	execute_builtins(t_mini *data, char **envp);
 
-/*aux*/
-int		exit_status(int status, t_mini *data, int flag);
-
 /*free_utils*/
-void	free_all(t_mini *data);
-void	free_prompt(t_prompt *prompt);
-void	free_input(t_input *input);
+void	free_all(t_mini *data, bool check);
+void	free_prompt(t_prompt *prompt, bool check);
+void	free_input(t_input *input, bool check);
 
 #endif

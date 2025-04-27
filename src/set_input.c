@@ -142,20 +142,18 @@ int	set_input(t_mini *data)
 	if (!data)	
 		return (ERROR);
 	data->input->value = readline(data->prompt->value);
-	free_prompt(data->prompt);
 	if (!data->input->value)
-	{
-		printf("exit\n");
-		exit_status(1, data, INPUT);
-	}
-	if (*(data->input->value))
+		return (END);
+	if (data->input->value && *(data->input->value))
 		add_history(data->input->value);
-	/*
+	/*branch
 	count_pipes(data->input->input, &(data->input->pipes));
 	data->input->cmd = split_input(data);
 	if (!data->input->cmd)
 		perror(FAIL_ALLOC);
 	*/
-	free(data->input->value);
+	/*old_branch*/
+	data->args = ft_split(data->input->value, ' ');
+	/*end*/
 	return (OK);
 }

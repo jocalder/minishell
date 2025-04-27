@@ -46,7 +46,6 @@ static void	ft_env(char **envp)
 
 void	execute_builtins(t_mini *data, char **envp)
 {
-	return ;
 	if (!data->args || !data->args[0])
 		return ;
 	//if (ft_strncmp(data->args[0], "echo", 5) == 0)

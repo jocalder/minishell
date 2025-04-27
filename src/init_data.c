@@ -23,11 +23,14 @@ static void	init_prompt(t_prompt *prompt)
 int	init_data(t_mini *data)
 {
 	g_status = 0;
+	data->args = NULL; //delete
 	data->prompt = NULL;
 	data->input = NULL;
 	data->prompt = ft_calloc(1, sizeof(t_prompt));
+	if (!data->prompt)
+		return (ERROR);
 	data->input = ft_calloc(1, sizeof(t_input));
-	if (!data->prompt || !data->input)
+	if (!data->input)
 		return (ERROR);
 	init_prompt(data->prompt);
 	init_input(data->input);
