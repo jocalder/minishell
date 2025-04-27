@@ -1,16 +1,17 @@
 #include "minishell.h"
 
+/*
 static int	is_open_quote(int c)
 {
 	if (c == '\'' || c == '\"')
-		return (1)
+		return (1);
 	return (0);
 }
 
 static int	is_close_quote(int quote, int c)
 {
 	if (c != quote)
-		return (0)
+		return (0);
 	return (1);
 }
 
@@ -134,26 +135,27 @@ static t_cmd	**split_input(t_mini *data)
 	}
 	return (cmd);
 }
+*/
 
-void	set_input(t_mini *data, char *prompt)
+int	set_input(t_mini *data)
 {
-	if (!data || !prompt)	
-		return ;
-	data->input->input = readline(prompt);
-	free(prompt);
-	if (!data->input->input)
-		return (1);
-	if (data->input->input)
-		add_history(data->input->input);
-	count_pipes(data->input->input, &(data->input->pipes)); //INT MAX -> Alloc error
-	if (data->input->pipes == -1)
-		perror(OPEN_QUOTE);
-	if (data->input->pipes == -2)
-		perror(OPEN_PIPE);
-	if (data->input->pipes == -3)
-		perror(NO_VALID);
+	if (!data)	
+		return (ERROR);
+	data->input->value = readline(data->prompt->value);
+	free_prompt(data->prompt);
+	if (!data->input->value)
+	{
+		printf("exit\n");
+		exit_status(1, data, INPUT);
+	}
+	if (*(data->input->value))
+		add_history(data->input->value);
+	/*
+	count_pipes(data->input->input, &(data->input->pipes));
 	data->input->cmd = split_input(data);
 	if (!data->input->cmd)
 		perror(FAIL_ALLOC);
-	//
+	*/
+	free(data->input->value);
+	return (OK);
 }

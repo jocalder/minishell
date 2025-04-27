@@ -23,45 +23,58 @@
 # define OPEN_QUOTE	"There is opened quote"
 # define NO_VALID	"Nope";
 
-typedef struct s_redir
-{
-	bool		redir_input;
-	bool		heredoc;
-	bool		redir_output;
-	bool		append;
-	int			fd[2];
-	char		*eof;
-	char		*file;
-	char		*path;
-}	t_redir;
+# define PROMPT	1
+# define INPUT	2
 
-typedef struct s_arr
+# define ERROR	-1
+# define OK		0
+
+typedef enum	e_flag
 {
-	char			*str;
-	bool			s_quote;
-	bool			d_quote;
-	bool			check_close;
+	OPEN,
+	CLOSE,	
+}	t_flag;
+
+typedef enum	e_token_type
+{
+	CMD,
+	OPC,
+	S_QUOTE,
+	D_QUOTE,
+	REDIR_IN,
+	REDIR_OUT,
+	APPEND,
+	HEREDOC,
+	FILE_PATH,
+	ENDOFFILE,
+}	t_token_type;
+
+typedef struct s_token
+{
+	char			*value;
+	t_token_type	type;
+	t_flag			flag;
+	int				fd[2];
 	struct s_arr	*next;
-}	t_arr;
+}	t_token;
 
 typedef struct s_cmd
 {
-	char			*cmd;
-	t_arr			*arr;
-	t_redir			*type;
+	char			*value;
+	t_token			*token;
 	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_input
 {
-	char	*input;
+	char	*value;
 	t_cmd	**cmd;
 	int		pipes;
 }	t_input;
 
 typedef struct prompt
 {
-	char	*prompt;
+	char	*value;
 	char	*cwd;
 	char	*user;
 	char	*display;
@@ -76,14 +89,25 @@ typedef struct minishell
 
 enum	e_status
 {
-	CTRC	= 130,
+	E_USAGE = 127,
+	E_CTRC	= 130,
 };
 
 extern int	g_status;
 
-void	sigint_handler(int signum);
-void	set_prompt(t_prompt *promt);
-void	set_input(t_mini *data, char *prompt);
+/*main*/
+int		init_data(t_mini *data);
+void	wait_signal(void);
+int		set_prompt(t_prompt *promt);
+int		set_input(t_mini *data);
 void	execute_builtins(t_mini *data, char **envp);
+
+/*aux*/
+int		exit_status(int status, t_mini *data, int flag);
+
+/*free_utils*/
+void	free_all(t_mini *data);
+void	free_prompt(t_prompt *prompt);
+void	free_input(t_input *input);
 
 #endif
