@@ -5,7 +5,7 @@ CLEAR	=	\r\033[K
 
 NAME = minishell
 
-CC = gcc -g3 -fsanitize=address
+CC = cc #-g3 -fsanitize=address
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -I /opt/homebrew/opt/readline/include
 CFLAGS += -I libft
@@ -22,6 +22,7 @@ SRCS = 	src/main.c				\
 		src/set_input.c			\
 		src/builtins.c			\
 		src/free_utils.c		\
+		src/delete.c			\
 
 OBJS = $(SRCS:%.c=objs/%.o)
 

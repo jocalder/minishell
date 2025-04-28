@@ -23,9 +23,6 @@
 # define OPEN_QUOTE	"There is opened quote"
 # define NO_VALID	"Nope";
 
-# define PROMPT	1
-# define INPUT	2
-
 # define ERROR	-1
 # define OK		0
 # define END	1
@@ -108,5 +105,11 @@ void	execute_builtins(t_mini *data, char **envp);
 void	free_all(t_mini *data, bool check);
 void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
+
+/*utils*/
+int	is_spacetab(int c);
+
+/*delete*/
+void	printf_input(t_input *input);
 
 #endif
