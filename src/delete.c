@@ -64,10 +64,50 @@ static void input_one(t_input *input)
 
 static void	input_two(t_input *input)
 {
-	input->value = ft_strdup("echo new line >> output");
+	t_cmd	*cur;
+
+	cur = NULL;
+	input->value = ft_strdup("echo \"$USER\" >> output");
 	if (!input->value)
 		return ((void)printf("Alloc error\n"));
-	return ;
+	input->pipes = 0;
+	input->cmd = ft_calloc(1, sizeof(t_cmd));
+	if (!input->cmd)
+		return ((void)printf("Alloc error\n"));
+	cur = input->cmd;
+	cur->value = ft_strdup("echo \"$USER\" >> output");
+	if (!cur->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token = ft_calloc(1, sizeof(t_token));
+	if (!cur->token)
+		return ((void)printf("Alloc error\n"));
+	cur->token->value = ft_strdup("echo");
+	if (!cur->token->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->type = CMD;
+	cur->token->next = ft_calloc(1, sizeof(t_token));
+	if (!cur->token->next)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->value = ft_strdup("$USER");
+	if (!cur->token->next->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->type = VAR;
+	cur->token->next->next = ft_calloc(1, sizeof(t_token));
+	if (!cur->token->next->next)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->value = ft_strdup(">>");
+	if (!cur->token->next->next->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->type = APPEND;
+	cur->token->next->next->next = ft_calloc(1, sizeof(t_token));
+	if (!cur->token->next->next->next)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->next->value = ft_strdup("output");
+	if (!cur->token->next->next->next->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->next->type = FILE_PATH;
+	cur->token->next->next->next->next = NULL;
+	cur->next = NULL;
 }
 
 static void	input_three(t_input *input)
@@ -78,20 +118,26 @@ static void	input_three(t_input *input)
 	return ;
 }
 
-void	invented_input(t_input *input, int choose)
+void	invented_input(t_input *input)
 {
-	if (!input)
+	int choise;
+
+	if (!input || !input->value)
 		return ;
-	if (choose < 1 || choose > 3)
-		return ((void)printf("Wrong choice when try invented input\n"));
-	free(input->value);
-	if (choose == 1)
-		input_one(input);
-	else if (choose == 2)
-		input_two(input);
+	choise = ft_atoi(input->value);
+	if (choise >= 1 && choise <= 3)
+	{
+		printf("Choise: %d\n", choise);
+		free(input->value);
+		if (choise == 1)
+			input_one(input);
+		else if (choise == 2)
+			input_two(input);
+		else
+			input_three(input);
+	}
 	else
-		input_three(input);
-	return ;
+		return ((void)printf("Wrong choice when try invented input\n"));
 }
 
 // void	printf_input(t_input *input)

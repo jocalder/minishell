@@ -116,6 +116,6 @@ int		is_spacetab(int c);
 
 /*delete*/
 void	printf_input(t_input *input);
-void	invented_input(t_input *input, int choose);
+void	invented_input(t_input *input);
 
 #endif
