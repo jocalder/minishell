@@ -42,6 +42,7 @@
   git pull origin main
   git branch -d nombre-de-la-rama
   git push origin --delete nombre-de-la-rama
+  git remote prune origin
   ```
 
 ## 3. 🔄 Mantener el repositorio y ramas sincronizadas
