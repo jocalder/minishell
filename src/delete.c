@@ -8,15 +8,19 @@ void	printf_input(t_input *input)
 	t_token	*cur_token;
 
 	if (!input || !input->value)
-		printf("nill");
+		return ((void)printf("nill"));
 	printf("Input: %s\n", input->value);
-	printf("Quantity pipes: %d", input->pipes);
+	printf("Quantity pipes: %d\n", input->pipes);
 	i = 0;
-	cur_cmd = (*input).cmd;
+	if (!input->cmd || !*(input->cmd))
+		return ((void)printf("There not CMD\n"));
+	cur_cmd = *(input->cmd);
 	while (cur_cmd)
 	{
 		printf("CMD[%d]: %s\n", i, cur_cmd->value);
-		cur_token = (*cur_cmd).token;
+		if (!cur_cmd->token || !*(cur_cmd->token))
+			return ((void)printf("There not more Tokens\n"));
+		cur_token = *(cur_cmd->token);
 		j = 0;
 		while (cur_token)
 		{

@@ -81,7 +81,7 @@ typedef struct prompt
 
 typedef struct minishell
 {
-	char		**args; //delete
+	//char		**args; //delete
 	t_prompt	*prompt;
 	t_input		*input;
 }	t_mini;
