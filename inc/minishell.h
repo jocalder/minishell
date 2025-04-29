@@ -29,6 +29,7 @@
 
 typedef enum	e_flag
 {
+	NONE,
 	OPEN,
 	CLOSE,	
 }	t_flag;
@@ -60,14 +61,14 @@ typedef struct s_token
 typedef struct s_cmd
 {
 	char			*value;
-	t_token			**token;
+	t_token			*token;
 	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_input
 {
 	char	*value;
-	t_cmd	**cmd;
+	t_cmd	*cmd;
 	int		pipes;
 }	t_input;
 
@@ -111,9 +112,10 @@ void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
 
 /*utils*/
-int	is_spacetab(int c);
+int		is_spacetab(int c);
 
 /*delete*/
 void	printf_input(t_input *input);
+void	invented_input(t_input *input, int choose);
 
 #endif

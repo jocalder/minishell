@@ -39,7 +39,9 @@ int	set_input(t_mini *data)
 	// if (!data->input->cmd)
 	// 	return (ERROR);
 	/*old_branch*/
-	data->args = ft_split(data->input->value, ' ');
+	//data->args = ft_split(data->input->value, ' ');
+	/*invented_input*/ /*choose a number of case (1 ~ 3)*/
+	invented_input(data->input, 1);
 	printf_input(data->input);
 	return (OK);
 }
