@@ -43,8 +43,9 @@ typedef enum	e_token_type
 	REDIR_OUT,
 	APPEND,
 	HEREDOC,
-	FILE_PATH,
 	ENDOFFILE,
+	FILE_PATH,
+	VAR,
 }	t_token_type;
 
 typedef struct s_token
@@ -100,6 +101,9 @@ void	wait_signal(void);
 int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
 void	execute_builtins(t_mini *data, char **envp);
+
+/*split_input_utils*/
+int		check_errors(char *input);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
