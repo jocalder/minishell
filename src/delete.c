@@ -140,41 +140,6 @@ void	invented_input(t_input *input)
 		return ((void)printf("Wrong choice when try invented input\n"));
 }
 
-// void	printf_input(t_input *input)
-// {
-// 	int		i;
-// 	int		j;
-// 	t_cmd	*cur_cmd;
-// 	t_token	*cur_token;
-
-// 	if (!input || !input->value)
-// 		return ((void)printf("nill"));
-// 	printf("Input: %s\n", input->value);
-// 	printf("Quantity pipes: %d\n", input->pipes);
-// 	i = 0;
-// 	if (!input->cmd)
-// 		return ((void)printf("There not CMD\n"));
-// 	cur_cmd = input->cmd;
-// 	while (cur_cmd)
-// 	{
-// 		printf("CMD[%d]: %s\n", i, cur_cmd->value);
-// 		if (!cur_cmd->token)
-// 			return ((void)printf("There not more Tokens\n"));
-// 		cur_token = cur_cmd->token;
-// 		j = 0;
-// 		while (cur_token)
-// 		{
-// 			printf("Token[%d]\n", j);
-// 			printf("Value: %s\n", cur_token->value);
-// 			printf("Type: %d\n", cur_token->type);
-// 			j++;
-// 			cur_token = cur_token->next;
-// 		}
-// 		i++;
-// 		cur_cmd = cur_cmd->next;
-// 	}
-// }
-
 static char	*token_type_str(int type)
 {
 	if (type == 0)
