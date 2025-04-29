@@ -19,68 +19,101 @@
 # define USAGE		"Usage: ./minishell"
 # define FAIL_ALLOC	"Memory allocation failure"
 # define FAIL_WRITE	"Function write failure"
+# define OPEN_PIPE	"There is opened pipe"
+# define OPEN_QUOTE	"There is opened quote"
+# define NO_VALID	"Nope";
 
-typedef struct s_redir
-{
-	bool		redir_input;
-	bool		heredoc;
-	bool		redir_output;
-	bool		append;
-	int			fd[2];
-	char		*eof;
-	char		*file;
-	char		*path;
-}	t_redir;
+# define ERROR	-1
+# define OK		0
+# define END	1
 
-typedef struct s_arr
+typedef enum	e_flag
 {
-	char 			*str;
-	bool			s_quote;
-	bool			d_quote;
-	bool			check_close;
-	struct s_arr	*next;
-}	t_arr;
+	OPEN,
+	CLOSE,	
+}	t_flag;
+
+typedef enum	e_token_type
+{
+	CMD,
+	OPC,
+	S_QUOTE,
+	D_QUOTE,
+	REDIR_IN,
+	REDIR_OUT,
+	APPEND,
+	HEREDOC,
+	ENDOFFILE,
+	FILE_PATH,
+	VAR,
+}	t_token_type;
+
+typedef struct s_token
+{
+	char			*value;
+	t_token_type	type;
+	t_flag			flag;
+	int				fd[2];
+	struct s_token	*next;
+}	t_token;
 
 typedef struct s_cmd
 {
-	char			*cmd;
-	t_arr			*arr;
-	t_redir			*type;
+	char			*value;
+	t_token			**token;
 	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_input
 {
-	char	*input;
-	t_cmd	*cmd;
+	char	*value;
+	t_cmd	**cmd;
 	int		pipes;
 }	t_input;
 
 typedef struct prompt
 {
-	char	*prompt;
+	char	*value;
+	char	*cwd;
 	char	*user;
 	char	*display;
-	char	*ptr;
 	int		len;
 }	t_prompt;
 
 typedef struct minishell
 {
-	char		**args;
-	t_input		*input;
+	//char		**args; //delete
 	t_prompt	*prompt;
+	t_input		*input;
 }	t_mini;
 
 enum	e_status
 {
-	CTRC	= 130,
+	E_USAGE = 127,
+	E_CTRC	= 130,
 };
 
 extern int	g_status;
 
-void	sigint_handler(int signum);
-void	set_prompt(t_mini *info);
+/*main*/
+int		init_data(t_mini *data);
+void	wait_signal(void);
+int		set_prompt(t_prompt *promt);
+int		set_input(t_mini *data);
 void	execute_builtins(t_mini *data, char **envp);
+
+/*split_input_utils*/
+int		check_errors(char *input);
+
+/*free_utils*/
+void	free_all(t_mini *data, bool check);
+void	free_prompt(t_prompt *prompt, bool check);
+void	free_input(t_input *input, bool check);
+
+/*utils*/
+int	is_spacetab(int c);
+
+/*delete*/
+void	printf_input(t_input *input);
 
 #endif

@@ -1,49 +1,51 @@
 #include "minishell.h"
 
-static void	init_data(t_mini *data)
+int	g_status;
+
+static void	exit_status(int status, t_mini *data)
 {
-	g_status = 0;
-	data->args = NULL;
-	data->prompt = NULL;
-	data->prompt = ft_calloc(1, sizeof(t_prompt));
-	if (!data->prompt)
-		perror(FAIL_ALLOC);
-	data->prompt->prompt = NULL;
-	data->prompt->user = NULL;
-	data->prompt->display = NULL;
-	data->prompt->ptr = NULL;
-	data->prompt->len = 0;
-	data->input = NULL;
-	data->input = ft_calloc(1, sizeof(t_input));
-	if (!data->input)
-		perror(FAIL_ALLOC);
-	data->input->cmd = NULL;
-	data->input->pipes = 0;
+	if (status == ERROR)
+		g_status = 1;
+	else if (status == END)
+		g_status = 0;
+	free_all(data, true);
+	rl_clear_history();
+	exit (g_status);
+}
+
+static void	check_state(int state, t_mini *data)
+{
+	if (state == OK)
+		return ;
+	else if (state == ERROR)
+		exit_status(ERROR, data);
+	else if (state == END)
+	{
+		printf("exit\n");
+		exit_status(END, data);
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	data;
+	int		state;
 
-	(void)argv;
 	if (argc > 1)
-		perror(USAGE);
-	init_data(&data);
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
-	while (1)
+		return (perror(USAGE), E_USAGE);
+	if (init_data(&data) == ERROR)
+		return (perror("Error"), 1);
+	wait_signal();
+	while (argv)
 	{
-		set_prompt(&data);
-		data.input->input = readline(data.prompt->prompt);
-		free(data.prompt->prompt);
-		if (!data.input->input)
-			return (1);
-		if (data.input->input)
-			add_history(data.input->input);
-		data.args = ft_split(data.input->input, ' ');
-		execute_builtins(&data, envp);
-		free(data.input->input);
+		if (set_prompt((&data)->prompt) == ERROR)
+			exit_status(ERROR, &data);
+		state = set_input(&data);
+		check_state(state, &data);
+		execute_builtins(&data, envp); //before need execute others
+		free_all(&data, false);
 	}
+	free_all(&data, true);
 	rl_clear_history();
 	exit (g_status);
 }
