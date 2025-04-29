@@ -2,7 +2,6 @@
 
 int	g_status;
 
-/*Necesario flag? o deberia liberar todo*/
 static void	exit_status(int status, t_mini *data)
 {
 	if (status == ERROR)
