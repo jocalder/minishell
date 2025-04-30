@@ -51,7 +51,7 @@ typedef enum	e_token_type
 
 typedef struct s_token
 {
-	char			*value;
+	char			**value;
 	t_token_type	type;
 	t_flag			flag;
 	int				fd[2];
@@ -60,7 +60,10 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	char			*value;
+	char			**args;
+	int				pipes;
+	bool			is_input;
+	bool			is_output;
 	t_token			*token;
 	struct s_cmd	*next;
 }	t_cmd;
@@ -69,7 +72,6 @@ typedef struct s_input
 {
 	char	*value;
 	t_cmd	*cmd;
-	int		pipes;
 }	t_input;
 
 typedef struct prompt
@@ -83,7 +85,7 @@ typedef struct prompt
 
 typedef struct minishell
 {
-	//char		**args; //delete
+	char		**args;
 	t_prompt	*prompt;
 	t_input		*input;
 }	t_mini;
