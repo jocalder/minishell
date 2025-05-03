@@ -46,7 +46,6 @@ typedef enum	e_token_type
 	HEREDOC,
 	ENDOFFILE,
 	FILE_PATH,
-	VAR,
 }	t_token_type;
 
 typedef struct s_token
