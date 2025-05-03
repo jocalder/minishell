@@ -4,10 +4,12 @@ int	g_status;
 
 static void	exit_status(int status, t_mini *data)
 {
-	if (status == ERROR)
-		g_status = 1;
-	else if (status == END)
+	if (status == END)
 		g_status = 0;
+	else if (status == ERROR)
+		g_status = 1;
+	else
+		g_status = status;
 	free_all(data, true);
 	rl_clear_history();
 	exit (g_status);
@@ -17,13 +19,13 @@ static void	check_state(int state, t_mini *data)
 {
 	if (state == OK)
 		return ;
-	else if (state == ERROR)
-		exit_status(ERROR, data);
 	else if (state == END)
 	{
 		printf("exit\n");
 		exit_status(END, data);
 	}
+	else
+		exit_status(state, data);
 }
 
 int	main(int argc, char **argv, char **envp)

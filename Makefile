@@ -20,7 +20,9 @@ SRCS = 	src/main.c				\
 		src/wait_signal.c		\
 		src/set_prompt.c		\
 		src/set_input.c			\
+		src/split_input_utils.c	\
 		src/free_utils.c		\
+		src/utils.c				\
 		src/delete.c			\
 
 OBJS = $(SRCS:%.c=objs/%.o)

@@ -1,34 +1,55 @@
 #include "minishell.h"
 
-static bool	redir_error(char *input)
-{
-	char	*tmp;
-
-	tmp = input;
-	while (*tmp)
-	{
-		if (*tmp == '<' || *tmp == '>')
-		{
-			tmp++;
-			while (*tmp && is_spacetab(*tmp))
-				tmp++;
-			if (!*tmp || *tmp == '|')
-				return (true);
+// bool	redir_error(char *input)
+// {
+// 	while (*input)
+// 	{
+// 		if (*input == '<' || *input == '>')
+// 		{
+// 			input++;
+// 			while (*input && is_spacetab(*input))
+// 				input++;
+// 			if (!*input|| *input == '|')
+// 				return (true);
 			
-		}
-		tmp++;
-	}
-	return (false);
-}
+// 		}
+// 		input++;
+// 	}
+// 	return (false);
+// }
 
-int	check_errors(char *input)
+// int	check_input(char *input)
+// {
+// 	if (has_opened_quote(input)
+// 		|| has_opened_pipe(input)
+// 		|| has_inspected_char(input)
+// 		|| has_logic_ops(input)
+// 		|| has_wildcard(input)
+// 		|| redir_error(input))
+// 		return (ERROR);
+// 	return (OK);
+// }
+
+void	append_cmd(t_input *input, t_cmd *new, char *value)
 {
-	if (has_opened_quote(input)
-		|| has_opened_pipe(input)
-		|| has_inspected_char(input)
-		|| has_logic_ops(input)
-		|| has_wildcard(input)
-		|| redir_error(input))
-		return (ERROR);
-	return (OK);
+	t_cmd	*cur;
+
+	cur = NULL;	
+	if (!input->cmd)
+	{
+		input->cmd = new;
+		input->cmd->value = value;
+		input->cmd->token = NULL;
+		input->cmd->next = NULL;
+	}
+	else
+	{
+		cur = input->cmd;
+		while (cur)
+			cur = cur->next;
+		cur = new;
+		cur->value = value;
+		cur->token = NULL;
+		cur->next = NULL;
+	}
 }

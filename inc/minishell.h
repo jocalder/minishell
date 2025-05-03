@@ -91,6 +91,7 @@ enum	e_status
 {
 	E_USAGE = 127,
 	E_CTRC	= 130,
+	E_UNSTK	= 258
 };
 
 extern int	g_status;
@@ -103,7 +104,16 @@ int		set_input(t_mini *data);
 void	execute_builtins(t_mini *data, char **envp);
 
 /*split_input_utils*/
-int		check_errors(char *input);
+int		check_input(char *input);
+void	append_cmd(t_input *input, t_cmd *new, char *value);
+
+/*check_input_utils*/
+bool	redir_error(char *input);
+bool	has_opened_quote(char *input);
+bool	has_opened_pipe(char *input);
+bool	has_inspected_char(char *input);
+bool	has_logic_ops(char *input);
+bool	has_wildcard(char *input);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
@@ -112,6 +122,8 @@ void	free_input(t_input *input, bool check);
 
 /*utils*/
 int		is_spacetab(int c);
+int		is_quote(int c);
+int		is_redir(int c);
 
 /*delete*/
 void	printf_input(t_input *input);
