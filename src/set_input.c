@@ -47,7 +47,6 @@ static int	split_input(t_input *input)
 				return (free(str), E_UNSTK);
 			}
 			input->pipes++;
-			continue ;
 		}
 		len = 0;
 		cur = NULL;
@@ -64,7 +63,7 @@ static int	split_input(t_input *input)
 			{
 				while (start[len] && is_spacetab(start[len]))
 					len++;
-				if (is_quote(start[len]))
+				if (start[len] && is_quote(start[len]))
 				{
 					quote = start[len];
 					while (start[len] && start[len] != quote)
@@ -73,7 +72,7 @@ static int	split_input(t_input *input)
 						return (free(str), ERROR);
 					continue ;
 				}
-				if (is_redir(start[len]))
+				if (start[len] && is_redir(start[len]))
 				{
 					while (start[len] && !is_spacetab(start[len]))
 						len++;
@@ -84,12 +83,13 @@ static int	split_input(t_input *input)
 				if (start[len] == '|')
 					break ;
 			}
-			append_cmd(input, cur, ft_substr(start, 0, len));
-			/*split_cmd*/
-			// state = split_cmd(cur);
-			// if (state != OK)
-			// 	return (free(str), state);
+			len++;
 		}
+		append_cmd(input, cur, ft_substr(start, 0, len));
+		/*split_cmd*/
+		// state = split_cmd(cur);
+		// if (state != OK)
+		// 	return (free(str), state);
 		start += len;
 	}
 	return (free(str), OK);
@@ -113,7 +113,7 @@ int	set_input(t_mini *data)
 	if (state != OK)
 		return (state);
 	/*invented_input*/ /*choose a number of case (1 ~ 4)*/
-	invented_input(data->input);
+	//invented_input(data->input);
 	printf_input(data->input);
 	return (OK);
 }

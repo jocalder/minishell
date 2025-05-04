@@ -60,6 +60,7 @@ void	free_input(t_input *input, bool check)
 {
 	if (!input)
 		return ;
+	input->pipes = 0;
 	if (input->value)
 		free(input->value);
 	if (input->cmd)
