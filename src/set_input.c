@@ -32,6 +32,7 @@ static int	split_input(t_input *input)
 						write(2, "zsh: parse error near `||'", 26);
 					return (free(str), E_UNSTK);
 				}
+				//mesagge error 
 				return (free(str), ERROR);
 			}
 			while (*start && is_spacetab(*start))
@@ -65,24 +66,28 @@ static int	split_input(t_input *input)
 					len++;
 				if (start[len] && is_quote(start[len]))
 				{
-					quote = start[len];
+					quote = start[len++];
 					while (start[len] && start[len] != quote)
 						len++;
 					if (!start[len])
 						return (free(str), ERROR);
+					len++;
 					continue ;
 				}
-				if (start[len] && is_redir(start[len]))
-				{
-					while (start[len] && !is_spacetab(start[len]))
-						len++;
-					if (!start[len])
-						return (free(str), ERROR);
-					continue ;
-				}
+				// if (start[len] && is_redir(start[len]))
+				// {
+				// 	while (start[len] && !is_spacetab(start[len]))
+				// 		len++;
+				// 	if (!start[len])
+				// 		return (free(str), ERROR);
+				// 	continue ;
+				// }
 				if (start[len] == '|')
 					break ;
+				len++;
 			}
+			if (start[len] == '|' || start[len] == '\0')
+				break ;
 			len++;
 		}
 		append_cmd(input, cur, ft_substr(start, 0, len));

@@ -45,11 +45,11 @@ void	append_cmd(t_input *input, t_cmd *new, char *value)
 	else
 	{
 		cur = input->cmd;
-		while (cur)
+		while (cur->next)
 			cur = cur->next;
-		cur = new;
-		cur->value = value;
-		cur->token = NULL;
-		cur->next = NULL;
+		cur->next = new;
+		cur->next->value = value;
+		cur->next->token = NULL;
+		cur->next->next = NULL;
 	}
 }
