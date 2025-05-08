@@ -23,7 +23,7 @@ void    handle_fds(t_mini *data, char *envp)
 		}
 		pid = fork();
 		if (pid == 0)
-			ft_child_proccess(pipe_fd, prev_fd, );
+			ft_child_proccess(pipe_fd, prev_fd, cmd, envp);
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmd->next)
@@ -32,4 +32,13 @@ void    handle_fds(t_mini *data, char *envp)
 		cmd = cmd->next;
 	}
 	//function wait to handle the father proccess;
+}
+void	ft_child_proccess(int *pipe_fd, int *prev_fd, t_cmd *cmd, char **envp)
+{
+	int	infile;
+
+	infile = 0;
+	if (INFILE)
+		infile = open(token->value, O_RDONLY)
+	
 }

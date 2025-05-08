@@ -44,6 +44,7 @@ typedef enum	e_token_type
 	REDIR_OUT,
 	APPEND,
 	HEREDOC,
+	INFILE
 	ENDOFFILE,
 	FILE_PATH,
 }	t_token_type;
