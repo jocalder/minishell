@@ -20,3 +20,18 @@ int	is_redir(int c)
 		return (1);
 	return (0);
 }
+
+int	count_cmd(t_cmd *cmd)
+{
+	int	count;
+
+	count = 0;
+	if (!cmd)
+		return (count);
+	while (cmd)
+	{
+		count++;
+		cmd = cmd->next;
+	}
+	return (count);
+}

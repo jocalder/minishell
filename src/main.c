@@ -31,7 +31,6 @@ static void	check_state(int state, t_mini *data)
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	data;
-	int		state;
 
 	(void)envp;
 	if (argc > 1)
@@ -43,8 +42,11 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (set_prompt((&data)->prompt) == ERROR)
 			exit_status(ERROR, &data);
-		state = set_input(&data);
-		check_state(state, &data);
+		g_status = set_input(&data);
+		check_state(g_status, &data);
+		/*test*/
+		if (g_status == OK)
+			printf_input(data.input);
 		//execute_builtins(&data, envp); //before need execute others
 		free_all(&data, false);
 	}

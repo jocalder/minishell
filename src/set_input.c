@@ -2,109 +2,35 @@
 
 static int	split_input(t_input *input)
 {
-	char	*str;
-	char	*start;
-	t_cmd	*cur;
-	size_t	len;
-	//int		state;
-	int		quote;
+	char			*start;
+	t_cmd			*new;
+	size_t			len;
+	unsigned char	quote;
 
 	if (!input || !input->value)
 		return (ERROR);
-	str = ft_strdup(input->value);
-	if (!str)
-		return (ERROR);
-	start = str;
+	start = input->value;
 	while (*start)
 	{
-		while (*start && is_spacetab(*start))
-			start++;
-		if (*start == '|')
+		if (validate_pipe(input, &start) != OK)
+			return (g_status);
+		reset_var(&new, &len, &quote);
+		while (start[len] && start[len] != '|')
 		{
-			start++;
-			if (*start == '|' || !input->cmd)
-			{
-				if (*(start + 1) == '|')
-				{
-					if (*(start + 2) != '|')
-						write(2, "zsh: parse error near `|'", 25);
-					else
-						write(2, "zsh: parse error near `||'", 26);
-					return (free(str), E_UNSTK);
-				}
-				//mesagge error 
-				return (free(str), ERROR);
-			}
-			while (*start && is_spacetab(*start))
-				start++;
-			if (!*start)
-				return (free(str), ERROR);
-			else if (*start == '|')
-			{
-				if (*(start + 1) != '|')
-					write(2, "zsh: parse error near `|'", 25);
-				else
-					write(2, "zsh: parse error near `||'", 26);
-				return (free(str), E_UNSTK);
-			}
-			input->pipes++;
-		}
-		len = 0;
-		cur = NULL;
-		//state = 0;
-		quote = 0;
-		while (start[len])
-		{
-			cur = ft_calloc(1, sizeof(t_cmd));
-			if (!cur)
-				return (free(str), ERROR);
-			while (start[len] && !is_spacetab(start[len]))
-				len++;
-			//if !is_cmd => printf command no found exit ERROR 127
-			while (start[len])
-			{
-				while (start[len] && is_spacetab(start[len]))
-					len++;
-				if (start[len] && is_quote(start[len]))
-				{
-					quote = start[len++];
-					while (start[len] && start[len] != quote)
-						len++;
-					if (!start[len])
-						return (free(str), ERROR);
-					len++;
-					continue ;
-				}
-				// if (start[len] && is_redir(start[len]))
-				// {
-				// 	while (start[len] && !is_spacetab(start[len]))
-				// 		len++;
-				// 	if (!start[len])
-				// 		return (free(str), ERROR);
-				// 	continue ;
-				// }
-				if (start[len] == '|')
-					break ;
-				len++;
-			}
-			if (start[len] == '|' || start[len] == '\0')
-				break ;
+			if (new_cmd(&new, start, &len, &quote) != OK)
+				return (g_status);
 			len++;
 		}
-		append_cmd(input, cur, ft_substr(start, 0, len));
-		/*split_cmd*/
-		// state = split_cmd(cur);
-		// if (state != OK)
-		// 	return (free(str), state);
+		append_cmd(input, new, ft_substr(start, 0, len));
+		// if (split_cmd(new) != OK)
+		// 	return (g_status);
 		start += len;
 	}
-	return (free(str), OK);
+	return (OK);
 }
 
 int	set_input(t_mini *data)
 {
-	int	state;
-
 	if (!data)	
 		return (ERROR);
 	data->input->value = readline(data->prompt->value);
@@ -115,11 +41,5 @@ int	set_input(t_mini *data)
 	/*new_branch*/
 	if (!*(data->input->value))
 		return (OK);
-	state = split_input(data->input);
-	if (state != OK)
-		return (state);
-	/*invented_input*/ /*choose a number of case (1 ~ 4)*/
-	//invented_input(data->input);
-	printf_input(data->input);
-	return (OK);
+	return (split_input(data->input));
 }

@@ -12,16 +12,19 @@
 # include <sys/ioctl.h>
 
 /*colors*/
-# define RED		"\033[0;34m"
-# define BLUE		"\033[0;31m"
-# define WHITE		"\033[0m"
+# define RED			"\033[0;34m"
+# define BLUE			"\033[0;31m"
+# define WHITE			"\033[0m"
 
-# define USAGE		"Usage: ./minishell"
-# define FAIL_ALLOC	"Memory allocation failure"
-# define FAIL_WRITE	"Function write failure"
-# define OPEN_PIPE	"There is opened pipe"
-# define OPEN_QUOTE	"There is opened quote"
-# define NO_VALID	"Nope";
+# define USAGE			"Usage: ./minishell"
+# define FAIL_ALLOC		"Memory allocation failure"
+# define FAIL_WRITE		"Function write failure"
+# define OPEN_PIPE		"There is opened pipe"
+# define OPEN_QUOTE		"There is opened quote"
+# define NO_VALID		"Nope"
+
+# define PARSE_ERROR1	"minishell: parse error near `|'"
+# define PARSE_ERROR2	"minishell: parse error near `||'"
 
 # define ERROR	-1
 # define OK		0
@@ -104,8 +107,10 @@ int		set_input(t_mini *data);
 void	execute_builtins(t_mini *data, char **envp);
 
 /*split_input_utils*/
-int		check_input(char *input);
+int		validate_pipe(t_input *input, char **str);
+int		new_cmd(t_cmd **new, char *start, size_t *len, unsigned char *quote);
 void	append_cmd(t_input *input, t_cmd *new, char *value);
+void	reset_var(t_cmd **new, size_t *len, unsigned char *quote);
 
 /*check_input_utils*/
 bool	redir_error(char *input);
@@ -124,6 +129,7 @@ void	free_input(t_input *input, bool check);
 int		is_spacetab(int c);
 int		is_quote(int c);
 int		is_redir(int c);
+int		count_cmd(t_cmd *cmd);
 
 /*delete*/
 void	printf_input(t_input *input);
