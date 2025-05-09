@@ -141,3 +141,34 @@ echo hola > archivo.txt | cat archivo.txt
 ```
 
 ---
+
+
+### Casos avanzados de Input invalidos
+
+```bash
+| ls
+ls |
+< archivo.txt ls
+> out.txt echo hola
+echo hola >
+cat << 
+ls || grep foo
+echo hola && ls
+echo 'hola
+echo "hola
+```
+
+---
+
+### Casos de Inputs raros, pero validos
+
+```bash
+ls|wc
+ls   |   wc -l
+ls | | wc   # doble pipe
+cd / | ls -a
+grep '' archivo.txt
+echo "\\\\\\\\\\"
+````
+
+---

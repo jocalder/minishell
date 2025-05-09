@@ -18,7 +18,7 @@ static void	exit_status(int status, t_mini *data)
 static void	check_state(int state, t_mini *data)
 {
 	if (state == OK)
-		return ;
+		g_status = 0;
 	else if (state == END)
 	{
 		printf("exit\n");

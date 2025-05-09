@@ -60,6 +60,7 @@ static int	split_input(t_input *input)
 				return (free(str), ERROR);
 			while (start[len] && !is_spacetab(start[len]))
 				len++;
+			//if !is_cmd => printf command no found exit ERROR 127
 			while (start[len])
 			{
 				while (start[len] && is_spacetab(start[len]))
