@@ -19,7 +19,6 @@ static int	split_input(t_input *input)
 		{
 			if (new_cmd(&new, start, &len, &quote) != OK)
 				return (g_status);
-			len++;
 		}
 		append_cmd(input, new, ft_substr(start, 0, len));
 		// if (split_cmd(new) != OK)

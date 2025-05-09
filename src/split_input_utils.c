@@ -76,7 +76,6 @@ int	new_cmd(t_cmd **new, char *start, size_t *len, unsigned char *quote)
 	}
 	while (start[*len] && start[*len] != '|')
 	{
-		printf("hi%zu\n", *len);
 		while (start[*len] && is_spacetab(start[*len]))
 			(*len)++;
 		if (start[*len] && is_quote(start[*len]))
@@ -89,11 +88,8 @@ int	new_cmd(t_cmd **new, char *start, size_t *len, unsigned char *quote)
 				g_status = ERROR;
 				return (g_status);
 			}
-			(*len)++;
 		}
-		else
-			(*len)++;
-		printf("bye\n");
+		(*len)++;
 	}
 	return (OK);
 }
