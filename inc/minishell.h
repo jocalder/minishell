@@ -108,9 +108,9 @@ void	execute_builtins(t_mini *data, char **envp);
 
 /*split_input_utils*/
 int		validate_pipe(t_input *input, char **str);
-int		new_cmd(t_cmd **new, char *start, size_t *len, unsigned char *quote);
+int		new_cmd(t_cmd **new, char *start, size_t *len);
 void	append_cmd(t_input *input, t_cmd *new, char *value);
-void	reset_var(t_cmd **new, size_t *len, unsigned char *quote);
+void	reset_var(t_cmd **new, size_t *len);
 
 /*check_input_utils*/
 bool	redir_error(char *input);

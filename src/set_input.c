@@ -5,7 +5,6 @@ static int	split_input(t_input *input)
 	char			*start;
 	t_cmd			*new;
 	size_t			len;
-	unsigned char	quote;
 
 	if (!input || !input->value)
 		return (ERROR);
@@ -14,10 +13,10 @@ static int	split_input(t_input *input)
 	{
 		if (validate_pipe(input, &start) != OK)
 			return (g_status);
-		reset_var(&new, &len, &quote);
+		reset_var(&new, &len);
 		while (start[len] && start[len] != '|')
 		{
-			if (new_cmd(&new, start, &len, &quote) != OK)
+			if (new_cmd(&new, start, &len) != OK)
 				return (g_status);
 		}
 		append_cmd(input, new, ft_substr(start, 0, len));

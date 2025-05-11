@@ -30,11 +30,10 @@
 // 	return (OK);
 // }
 
-void	reset_var(t_cmd **new, size_t *len, unsigned char *quote)
+void	reset_var(t_cmd **new, size_t *len)
 {
 	*new = NULL;
 	*len = 0;
-	*quote = 0;
 }
 
 int	validate_pipe(t_input *input, char **str)
@@ -66,23 +65,29 @@ int	validate_pipe(t_input *input, char **str)
 	return (update_status(ERROR));
 }
 
-int	new_cmd(t_cmd **new, char *start, size_t *len, unsigned char *quote)
+int	new_cmd(t_cmd **new, char *start, size_t *len)
 {
+	unsigned char	quote;
+	
 	*new = ft_calloc(1, sizeof(t_cmd));
 	if (!*new)
 		return (update_status(ERROR));
-	while (start[*len] && start[*len] != '|')
+	while (start[*len])
 	{
 		while (start[*len] && is_spacetab(start[*len]))
 			(*len)++;
 		if (start[*len] && is_quote(start[*len]))
 		{
-			*quote = (unsigned char)start[*len];
-			while (start[*len] && start[*len] != *quote)
+			quote = (unsigned char)start[*len];
+			(*len)++;
+			while (start[*len] && start[*len] != quote)
 				(*len)++;
 			if (!start[*len])
 				return (update_status(ERROR));
+			(*len)++;
 		}
+		if (start[*len] == '|' || !start[*len])
+			break ;
 		(*len)++;
 	}
 	return (OK);
