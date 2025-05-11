@@ -14,13 +14,6 @@ int	is_quote(int c)
 	return (0);
 }
 
-int	is_redir(int c)
-{
-	if (c == '<' || c == '>')
-		return (1);
-	return (0);
-}
-
 int	count_cmd(t_cmd *cmd)
 {
 	int	count;

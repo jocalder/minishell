@@ -113,12 +113,12 @@ void	append_cmd(t_input *input, t_cmd *new, char *value);
 void	reset_var(t_cmd **new, size_t *len);
 
 /*check_input_utils*/
-bool	redir_error(char *input);
-bool	has_opened_quote(char *input);
-bool	has_opened_pipe(char *input);
-bool	has_inspected_char(char *input);
-bool	has_logic_ops(char *input);
-bool	has_wildcard(char *input);
+// bool	redir_error(char *input);
+// bool	has_opened_quote(char *input);
+// bool	has_opened_pipe(char *input);
+// bool	has_inspected_char(char *input);
+// bool	has_logic_ops(char *input);
+// bool	has_wildcard(char *input);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
@@ -128,7 +128,6 @@ void	free_input(t_input *input, bool check);
 /*utils*/
 int		is_spacetab(int c);
 int		is_quote(int c);
-int		is_redir(int c);
 int		count_cmd(t_cmd *cmd);
 int		update_status(int new_status);
 
