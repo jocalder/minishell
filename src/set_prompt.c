@@ -65,23 +65,23 @@ static void	join_prompt(char *prompt, char *user, char *display)
 int	set_prompt(t_prompt *prompt)
 {
 	if (!prompt)
-		return (ERROR);
+		return (update_status(ERROR));
 	prompt->user = getenv("USER");
 	if (!prompt->user)
-		return (ERROR);
+		return (update_status(ERROR));
 	prompt->cwd = getcwd(NULL, 0);
 	if (!prompt->cwd)
-		return (ERROR);
+		return (update_status(ERROR));
 	prompt->display = replace_home(prompt->cwd);
 	if (!prompt->display)
-		return (free(prompt->cwd), ERROR);
+		return (free(prompt->cwd), update_status(ERROR));
 	prompt->len = ft_strlen(RED) + ft_strlen(prompt->user)
 		+ ft_strlen("@minishell") + ft_strlen(WHITE) + ft_strlen(":")
 		+ ft_strlen(BLUE) + ft_strlen(prompt->display) + ft_strlen(WHITE)
 		+ ft_strlen("$ ") + 1;
 	prompt->value = ft_calloc(prompt->len, sizeof(char));
 	if (!prompt->value)
-		return (free(prompt->display), ERROR);
+		return (free(prompt->display), update_status(ERROR));
 	join_prompt(prompt->value, prompt->user, prompt->display);
 	return (OK);
 }

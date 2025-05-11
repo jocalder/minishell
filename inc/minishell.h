@@ -130,6 +130,7 @@ int		is_spacetab(int c);
 int		is_quote(int c);
 int		is_redir(int c);
 int		count_cmd(t_cmd *cmd);
+int		update_status(int new_status);
 
 /*delete*/
 void	printf_input(t_input *input);

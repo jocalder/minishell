@@ -31,14 +31,14 @@ static int	split_input(t_input *input)
 int	set_input(t_mini *data)
 {
 	if (!data)	
-		return (ERROR);
+		return (update_status(ERROR));
 	data->input->value = readline(data->prompt->value);
 	if (!data->input->value)
-		return (END);
+		return (update_status(END));
 	if (data->input->value && *(data->input->value))
 		add_history(data->input->value);
 	/*new_branch*/
 	if (!*(data->input->value))
-		return (OK);
+		return (update_status(OK));
 	return (split_input(data->input));
 }

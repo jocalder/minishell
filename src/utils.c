@@ -35,3 +35,9 @@ int	count_cmd(t_cmd *cmd)
 	}
 	return (count);
 }
+
+int	update_status(int new_status)
+{
+	g_status = new_status;
+	return (g_status);
+}

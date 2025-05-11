@@ -45,35 +45,32 @@ int	validate_pipe(t_input *input, char **str)
 		return (OK);
 	input->pipes++;
 	if (count_cmd(input->cmd) < input->pipes)
-		return ((void)write(STDERR_FILENO, PARSE_ERROR1, 31), E_UNSTK);
+		return (perror(PARSE_ERROR1), update_status(E_UNSTK));
 	(*str)++;
 	if (**str != '|')
 	{
 		while (**str && is_spacetab(**str))
 			(*str)++;
 		if (**str == '\0')
-			return (ERROR);
+			return (update_status(ERROR));
 		if (**str != '|')
 			return (OK);
 		else if (*(*str + 1) != '|')
-			return ((void)write(STDERR_FILENO, PARSE_ERROR1, 31), E_UNSTK);
-		return ((void)write(STDERR_FILENO, PARSE_ERROR2, 32), E_UNSTK);
+			return (perror(PARSE_ERROR1), update_status(E_UNSTK));
+		return (perror(PARSE_ERROR2), update_status(E_UNSTK));
 	}
 	else if (*(*str + 1) == '|' && *(*str + 2) != '|')
-		return ((void)write(STDERR_FILENO, PARSE_ERROR1, 31), E_UNSTK);
+		return (perror(PARSE_ERROR1), update_status(E_UNSTK));
 	else if (*(*str + 1) == '|' && *(*str + 2) == '|')
-		return ((void)write(STDERR_FILENO, PARSE_ERROR2, 32), E_UNSTK);
-	return (ERROR);
+		return (perror(PARSE_ERROR2), update_status(E_UNSTK));
+	return (update_status(ERROR));
 }
 
 int	new_cmd(t_cmd **new, char *start, size_t *len, unsigned char *quote)
 {
 	*new = ft_calloc(1, sizeof(t_cmd));
 	if (!*new)
-	{
-		g_status = ERROR;
-		return (g_status);
-	}
+		return (update_status(ERROR));
 	while (start[*len] && start[*len] != '|')
 	{
 		while (start[*len] && is_spacetab(start[*len]))
@@ -84,10 +81,7 @@ int	new_cmd(t_cmd **new, char *start, size_t *len, unsigned char *quote)
 			while (start[*len] && start[*len] != *quote)
 				(*len)++;
 			if (!start[*len])
-			{
-				g_status = ERROR;
-				return (g_status);
-			}
+				return (update_status(ERROR));
 		}
 		(*len)++;
 	}
@@ -98,7 +92,7 @@ void	append_cmd(t_input *input, t_cmd *new, char *value)
 {
 	t_cmd	*cur;
 
-	cur = NULL;	
+	cur = NULL;
 	if (!input->cmd)
 	{
 		input->cmd = new;
