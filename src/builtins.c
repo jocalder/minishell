@@ -44,24 +44,42 @@ static void	ft_env(char **envp)
 	}
 }
 
-void	execute_builtins(t_mini *data, char **envp)
+bool	is_builtins(char *value)
 {
-	if (!data->args || !data->args[0])
-		return ;
-	//if (ft_strncmp(data->args[0], "echo", 5) == 0)
-		//here we should do a function to hanlde the built-in ft_echo(args) or my_echo(args);
-	else if (ft_strncmp(data->args[0], "cd", 3) == 0)
-		ft_cd(data);
-	else if (ft_strncmp(data->args[0], "pwd", 4) == 0)
-		ft_pwd();
-	//else if (ft_strncmp(data->args[0], "export", 7) == 0)
-	//	ft_export();
-	//else if (ft_strncmp(data->args[0], "unset", 6) == 0)
-	//	ft_unset();
-	else if (ft_strncmp(data->args[0], "env", 4) == 0)
-		ft_env(envp);
-	//else if (ft_strncmp(data->args[0], "exit", 5) == 0)
-	//	ft_exit();
+	if (!value)
+		return (false);
+	if (ft_strncmp(value, "echo", 5) == 0
+		|| ft_strncmp(value, "cd" 3) == 0
+		|| ft_strncmp(value, "pwd", 4) == 0
+		|| ft_strncmp(value, "export", 7) == 0
+		|| ft_strncmp(value, "unset", 6) == 0
+		|| ft_strncmp(value, "env", 4) == 0
+		|| ft_strncmp(value, "exit", 5) == 0)
+		return (true);
+	return (false);
+}
+
+int	check_builtins(t_mini *data, t_cmd *cmd, char **envp)
+{
+	char	*builtin;
+
+	if (!data)
+		return (update_status(ERROR));
+	builtin = cmd->token->value;
+	if (!is_builtins(builtin))
+		return (OK);
+	else if (ft_strncmp(builtin, "echo", 5) == 0)
+		return (update_status(ft_echo(cmd)));
+	else if (ft_strncmp(builtin, "cd", 3) == 0)
+		return (update_status(ft_cd(cmd)));
+	else if (ft_strncmp(builtin, "pwd", 4) == 0)
+		return (update_status(ft_pwd(cmd)));
+	else if (ft_strncmp(builtin, "export", 7) == 0)
+		return (update_status(ft_export(cmd, envp)));
+	else if (ft_strncmp(builtin, "unset", 6) == 0)
+		return (update_status(ft_unset(cmd, envp)));
+	else if (ft_strncmp(builtin, "env", 4) == 0)
+		return (update_status(ft_env(cmd, envp)));
 	else
-		return ;
+		return (update_status(ft_exit(cmd)));
 }

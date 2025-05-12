@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 			exit_status(g_status, &data);
 		/*test*/
 		printf_input(data.input);
-		//execute_builtins(&data, envp); //before need execute others
+		/*end_test*/
 		free_all(&data, false);
 	}
 	exit_status(g_status, &data);

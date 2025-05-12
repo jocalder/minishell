@@ -1,22 +1,5 @@
 #include "minishell.h"
 
-// static int	split_cmd(t_cmd *cmd)
-// {
-// 	char	*start;
-// 	char	*end;
-// 	t_token	*token;
-
-// 	token = NULL;
-// 	start = cmd->value;
-// 	while (*start)
-// 	{
-// 		while (*start && is_spacetab(*start))
-// 			start++;
-// 		//
-// 	}
-// 	return (OK);
-// }
-
 static int	split_input(t_input *input)
 {
 	char			*start;
@@ -36,9 +19,9 @@ static int	split_input(t_input *input)
 			if (new_cmd(&new, start, &len) != OK)
 				return (g_status);
 		}
-		// if (split_cmd(new) != OK)
-		// 	return (g_status);
 		append_cmd(input, new, ft_substr(start, 0, len));
+		// if (split_cmd(&new, new->value) != OK)
+		// 	return (g_status);
 		start += len;
 	}
 	return (OK);
@@ -53,8 +36,7 @@ int	set_input(t_mini *data)
 		return (update_status(END));
 	if (data->input->value && *(data->input->value))
 		add_history(data->input->value);
-	/*new_branch*/
 	if (!*(data->input->value))
-		return (update_status(OK));
+		return (OK);
 	return (split_input(data->input));
 }

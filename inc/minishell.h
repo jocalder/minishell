@@ -26,6 +26,8 @@
 # define PARSE_ERROR1	"minishell: parse error near `|'"
 # define PARSE_ERROR2	"minishell: parse error near `||'"
 
+# define CMD_NO_FOUND	"Command not found"
+
 # define ERROR	-1
 # define OK		0
 # define END	1
@@ -40,7 +42,8 @@ typedef enum	e_flag
 typedef enum	e_token_type
 {
 	CMD,
-	OPC,
+	BUILTIN,
+	ARG,
 	S_QUOTE,
 	D_QUOTE,
 	REDIR_IN,
@@ -85,7 +88,6 @@ typedef struct prompt
 
 typedef struct minishell
 {
-	//char		**args; //delete
 	t_prompt	*prompt;
 	t_input		*input;
 }	t_mini;
@@ -109,6 +111,7 @@ void	execute_builtins(t_mini *data, char **envp);
 /*split_input_utils*/
 int		validate_pipe(t_input *input, char **str);
 int		new_cmd(t_cmd **new, char *start, size_t *len);
+int		split_cmd(t_cmd **cmd, char *start);
 void	append_cmd(t_input *input, t_cmd *new, char *value);
 void	reset_var(t_cmd **new, size_t *len);
 

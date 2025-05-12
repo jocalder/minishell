@@ -29,6 +29,21 @@ int	count_cmd(t_cmd *cmd)
 	return (count);
 }
 
+int	count_token(t_token *token)
+{
+	int	count;
+
+	count = 0;
+	if (!token)
+		return (count);
+	while (token)
+	{
+		count++;
+		token = token->next;
+	}
+	return (count);
+}
+
 int	update_status(int new_status)
 {
 	g_status = new_status;
