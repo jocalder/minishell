@@ -44,13 +44,13 @@ static void	ft_env(char **envp)
 	}
 }
 
-void	execute_builtins(t_mini *data, char **envp)
+void	check_builtins(t_mini *data, char **envp)
 {
 	if (!data->args || !data->args[0])
 		return ;
 	//if (ft_strncmp(data->args[0], "echo", 5) == 0)
 		//here we should do a function to hanlde the built-in ft_echo(args) or my_echo(args);
-	else if (ft_strncmp(data->args[0], "cd", 3) == 0)
+	else if (token->value, "cd", 3) == 0)
 		ft_cd(data);
 	else if (ft_strncmp(data->args[0], "pwd", 4) == 0)
 		ft_pwd();

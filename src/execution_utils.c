@@ -26,7 +26,7 @@ static int	count_args(t_token *token)
 	}
 	return (count);
 }
-char	*find_command_path(char	*command, char **envp)//changes with the structures
+char	*find_command_path(char	*command, char **envp, t_cmd *cmd)//changes with the structures
 {
 	char	**directories;
 	char	*full_path;
@@ -34,6 +34,11 @@ char	*find_command_path(char	*command, char **envp)//changes with the structures
 	int		i;
 
 	i = 0;
+	if (cmd->token->type == CMD)
+	{
+		if (access(cmd->token->value, X_OK) == 0)
+			return (cmd->token->value);
+	}
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	directories = ft_split(envp[i + 5], ':');
@@ -52,10 +57,10 @@ char	*find_command_path(char	*command, char **envp)//changes with the structures
 	return (NULL);
 }
 
-char	*build_full_command(t_token *token)
+char	**build_full_command(t_token *token)
 {
 	int		count;
-	char	*args;
+	char	**args;
 	int		i;
 
 	i = 0;
@@ -72,6 +77,21 @@ char	*build_full_command(t_token *token)
 	}
 	args[i] = NULL;
 	return (args);
+}
 
+void	execute_command(t_cmd *cmd, char **envp)
+{
+	char	**command;
+	char	*path;
+	
+	command = build_full_command(cmd->token);
+	path = find_command_path(command[0], envp, cmd);
+	if (!path)
+		//message error, status de error
+	if (execve(path, command, envp) != 0)
+	{
+		//actualizar el status de error
+		//y mensaje de error etc...
+	}
 }
 

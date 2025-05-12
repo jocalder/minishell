@@ -38,13 +38,10 @@ typedef enum	e_token_type
 {
 	CMD,
 	OPC,
-	S_QUOTE,
-	D_QUOTE,
 	REDIR_IN,
 	REDIR_OUT,
 	APPEND,
 	HEREDOC,
-	INFILE
 	ENDOFFILE,
 	FILE_PATH,
 }	t_token_type;

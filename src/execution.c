@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void    handle_fds(t_mini *data, char *envp)
+void    handle_execution(t_mini *data, char *envp)
 {
     t_cmd	*cmd;
 	int		pipe_fd[2];
@@ -33,12 +33,8 @@ void    handle_fds(t_mini *data, char *envp)
 	}
 	//function wait to handle the father proccess;
 }
+
 void	ft_child_proccess(int *pipe_fd, int *prev_fd, t_cmd *cmd, char **envp)
 {
-	int	infile;
-
-	infile = 0;
-	if (INFILE)
-		infile = open(token->value, O_RDONLY)
-	
+		//
 }
