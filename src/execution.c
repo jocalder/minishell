@@ -1,5 +1,19 @@
 #include "minishell.h"
 
+static void	close_all_fds(int pipe_fd, int prev_fd[2], int fd_in, int fd_out)
+{
+	if (pipe_fd != -1)
+		close(pipe_fd);
+	else if (prev_fd[0] != -1)
+		close(prev_fd[0]);
+	else if (prev_fd[1] != -1)
+		close(prev_fd[1])
+	else if (fd_in != -1)
+		close(fd_in);
+	else if (fd_out != -1)
+		close(fd_out);
+}
+
 void    handle_execution(t_mini *data, char *envp)
 {
     t_cmd	*cmd;
@@ -39,8 +53,8 @@ void	ft_child_proccess(int *pipe_fd, int *prev_fd, t_cmd *cmd, char **envp)
 		int		fd_in;
 		int		fd_out;
 
-		fd_in = //function to handle the redir_in that return (-1) if doesn´t exist the redir;
-		fd_out = //function to handle the redir_out that return (-1) if doesn´t exist the redir;
+		fd_in = redir_in(cmd->token);
+		fd_out = redir_out(cmd->token);
 
 		if (fd_in != -1)
 			dup2(fd_in, 0);
@@ -52,4 +66,61 @@ void	ft_child_proccess(int *pipe_fd, int *prev_fd, t_cmd *cmd, char **envp)
 			dup2(fd_out, 1);
 		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out); //function to close all the open fds
 		execute_command(cmd, envp);
+}
+
+int	redir_in(t_token *token)
+{
+	int		fd;
+
+	fd = -1;
+	if (token->type == HEREDOC)
+	{
+		while ()//if exist the redirection create the file
+		{
+			fd = open_heredoc(token->next->value);
+			//function to handle errors
+			//something++;
+		}
+		return (fd);
+	}
+	if (toke->type == REDIR_IN)
+	{
+		while ()//if exist the redirection create the file
+		{
+			fd = open((token->next->value), O_RDONLY);
+			//function to handle errors
+			//something++;
+		}
+		return (fd);
+	}
+	return (fd);
+}
+
+int	redir_out(t_token *token)
+{
+	int		fd;
+
+	fd = -1;
+	if (token->type == APPEND)
+	{
+		while ()//the same
+		{
+			fd = open(token->next->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
+			if (fd < 0)
+				//status and handle errors
+			//something++;
+		}
+		return (fd);
+	}
+	if (token->type == REDIR_OUT)
+	{
+		while ()//the same
+		{
+			fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			//fundtion to handle errors and status
+			//something++;
+		}
+		return (fd);
+	}
+	return (fd);
 }
