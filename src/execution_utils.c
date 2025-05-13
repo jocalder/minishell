@@ -87,11 +87,10 @@ void	execute_command(t_cmd *cmd, char **envp)
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
-		//message error, status de error
+		//message error, update error status
 	if (execve(path, command, envp) != 0)
 	{
-		//actualizar el status de error
-		//y mensaje de error etc...
+		//update the status error
 	}
 }
 
