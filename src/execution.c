@@ -64,7 +64,7 @@ void	ft_child_proccess(int *pipe_fd, int *prev_fd, t_cmd *cmd, char **envp)
 			dup2(pipe_fd[1], 1);
 		else if (fd_out != -1)
 			dup2(fd_out, 1);
-		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out); //function to close all the open fds
+		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
 		execute_command(cmd, envp);
 }
 
@@ -73,25 +73,23 @@ int	redir_in(t_token *token)
 	int		fd;
 
 	fd = -1;
-	if (token->type == HEREDOC)
+	while (token)
 	{
-		while ()//if exist the redirection create the file
+		if (token->type == HEREDOC)
 		{
 			fd = open_heredoc(token->next->value);
-			//function to handle errors
-			//something++;
+			if (fd < 0)
+				//function to handle errors
+			return (fd);
 		}
-		return (fd);
-	}
-	if (toke->type == REDIR_IN)
-	{
-		while ()//if exist the redirection create the file
+		if (toke->type == REDIR_IN)
 		{
 			fd = open((token->next->value), O_RDONLY);
-			//function to handle errors
-			//something++;
+			if (fd < 0)
+				//function to handle errors
+			return (fd);
 		}
-		return (fd);
+		token = token->next;
 	}
 	return (fd);
 }
@@ -101,26 +99,23 @@ int	redir_out(t_token *token)
 	int		fd;
 
 	fd = -1;
-	if (token->type == APPEND)
+	while (token)
 	{
-		while ()//the same
+		if (token->type == APPEND)
 		{
 			fd = open(token->next->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
 			if (fd < 0)
 				//status and handle errors
-			//something++;
+			return (fd);
 		}
-		return (fd);
-	}
-	if (token->type == REDIR_OUT)
-	{
-		while ()//the same
+		if (token->type == REDIR_OUT)
 		{
 			fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			//fundtion to handle errors and status
-			//something++;
+			if (fd < 0)
+				//function to handle errors and status
+			return (fd);
 		}
-		return (fd);
+		token = token->next;
 	}
 	return (fd);
 }

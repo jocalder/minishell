@@ -36,7 +36,7 @@ char	*find_command_path(char	*command, char **envp, t_cmd *cmd)//changes with th
 	i = 0;
 	if (cmd->token->type == CMD)
 	{
-		if (access(cmd->token->value, X_OK) == 0)
+		if (access(cmd->token->value, F_OK) == 0)
 			return (cmd->token->value);
 	}
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
