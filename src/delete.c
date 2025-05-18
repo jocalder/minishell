@@ -91,7 +91,7 @@ static void	input_two(t_input *input)
 	cur->token->next->value = ft_strdup("$USER");
 	if (!cur->token->next->value)
 		return ((void)printf("7.Alloc error\n"));
-	cur->token->next->type = D_QUOTE;
+	cur->token->next->type = ARG;
 	cur->token->next->next = ft_calloc(1, sizeof(t_token));
 	if (!cur->token->next->next)
 		return ((void)printf("8.Alloc error\n"));
@@ -167,7 +167,7 @@ static void	input_three(t_input *input)
 	cur->next->token->next->value = ft_strdup("a");
 	if (!cur->next->token->next->value)
 		return ((void)printf("15.Alloc error\n"));
-	cur->next->token->next->type = S_QUOTE;
+	cur->next->token->next->type = ARG;
 	cur->next->token->next->next = NULL;
 	cur->next->next = ft_calloc(1, sizeof(t_cmd));
 	if (!cur->next->next)
@@ -334,10 +334,6 @@ static char	*token_type_str(int type)
 		return ("CMD");
 	else if (type == ARG)
 		return ("ARG");
-	else if (type == S_QUOTE)
-		return ("S_QUOTE");
-	else if (type == D_QUOTE)
-		return ("D_QUOTE");
 	else if (type == REDIR_IN)
 		return ("REDIR_IN");
 	else if (type == REDIR_OUT)

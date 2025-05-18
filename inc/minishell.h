@@ -17,11 +17,6 @@
 # define WHITE			"\033[0m"
 
 # define USAGE			"Usage: ./minishell"
-# define FAIL_ALLOC		"Memory allocation failure"
-# define FAIL_WRITE		"Function write failure"
-# define OPEN_PIPE		"There is opened pipe"
-# define OPEN_QUOTE		"There is opened quote"
-# define NO_VALID		"Nope"
 
 # define PARSE_ERROR1	"minishell: parse error near `|'"
 # define PARSE_ERROR2	"minishell: parse error near `||'"
@@ -32,20 +27,11 @@
 # define OK		0
 # define END	1
 
-typedef enum	e_flag
-{
-	NONE,
-	OPEN,
-	CLOSE,	
-}	t_flag;
-
 typedef enum	e_token_type
 {
 	CMD,
 	BUILTIN,
 	ARG,
-	S_QUOTE,
-	D_QUOTE,
 	REDIR_IN,
 	REDIR_OUT,
 	APPEND,
@@ -58,8 +44,6 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
-	t_flag			flag;
-	int				fd[2];
 	struct s_token	*next;
 }	t_token;
 
@@ -67,6 +51,8 @@ typedef struct s_cmd
 {
 	char			*value;
 	t_token			*token;
+	int				fd[2];
+	pid_t			pid;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -112,16 +98,8 @@ void	execute_builtins(t_mini *data, char **envp);
 int		validate_pipe(t_input *input, char **str);
 int		new_cmd(t_cmd **new, char *start, size_t *len);
 int		split_cmd(t_cmd **cmd, char *start);
-void	append_cmd(t_input *input, t_cmd *new, char *value);
+void	append_cmd(t_input *input, t_cmd **new, char *value);
 void	reset_var(t_cmd **new, size_t *len);
-
-/*check_input_utils*/
-// bool	redir_error(char *input);
-// bool	has_opened_quote(char *input);
-// bool	has_opened_pipe(char *input);
-// bool	has_inspected_char(char *input);
-// bool	has_logic_ops(char *input);
-// bool	has_wildcard(char *input);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);

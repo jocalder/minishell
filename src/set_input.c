@@ -19,7 +19,7 @@ static int	split_input(t_input *input)
 			if (new_cmd(&new, start, &len) != OK)
 				return (g_status);
 		}
-		append_cmd(input, new, ft_substr(start, 0, len));
+		append_cmd(input, &new, ft_substr(start, 0, len));
 		// if (split_cmd(&new, new->value) != OK)
 		// 	return (g_status);
 		start += len;
@@ -38,5 +38,5 @@ int	set_input(t_mini *data)
 		add_history(data->input->value);
 	if (!*(data->input->value))
 		return (OK);
-	return (split_input(data->input));
+	return ((split_input(data->input)));
 }
