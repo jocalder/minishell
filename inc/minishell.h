@@ -99,18 +99,20 @@ int		validate_pipe(t_input *input, char **str);
 int		new_cmd(t_cmd **new, char *start, size_t *len);
 int		split_cmd(t_cmd **cmd, char *start);
 void	append_cmd(t_input *input, t_cmd **new, char *value);
-void	reset_var(t_cmd **new, size_t *len);
-
-/*free_utils*/
-void	free_all(t_mini *data, bool check);
-void	free_prompt(t_prompt *prompt, bool check);
-void	free_input(t_input *input, bool check);
+void	append_token(t_cmd *cmd, t_token *new, char *value, int type);
+char	*expand_content(char *value);
 
 /*utils*/
 int		is_spacetab(int c);
 int		is_quote(int c);
 int		count_cmd(t_cmd *cmd);
+int		count_token(t_token *token);
 int		update_status(int new_status);
+
+/*free_utils*/
+void	free_all(t_mini *data, bool check);
+void	free_prompt(t_prompt *prompt, bool check);
+void	free_input(t_input *input, bool check);
 
 /*delete*/
 void	printf_input(t_input *input);

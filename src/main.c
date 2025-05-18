@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **envp)
 		if (set_input(&data) != OK)
 			exit_status(g_status, &data);
 		/*test*/
-		invented_input(data.input);
+		//invented_input(data.input);
 		printf_input(data.input);
 		/*end_test*/
 		free_all(&data, false);
