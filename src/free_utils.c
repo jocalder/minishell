@@ -15,49 +15,59 @@ void	free_prompt(t_prompt *prompt, bool check)
 		free(prompt);
 }
 
-static void	free_token(t_token **token)
+static void	free_token(t_token *token)
 {
-	t_token	*tmp;
+	t_token	*cur;
+	t_token *next;
 
-	if (!token || !*token)
+	if (!token)
 		return ;
-	tmp = NULL;
-	while (*token)
+	cur = token;
+	while (cur)
 	{
-		tmp = (*token)->next;
-		free((*token)->value);
-		free(*token);
-		*token = tmp;
+		next = cur->next;
+		if (cur->value)
+			free(cur->value);
+		free(cur);
+		cur = next;
 	}
-	free(token);
 }
 
-static void	free_cmd(t_cmd **cmd)
+static void	free_cmd(t_cmd *cmd)
 {
-	t_cmd	*tmp;
+	t_cmd	*cur;
+	t_cmd	*next;
 
-	if (!cmd || !*cmd)
+	if (!cmd)
 		return ;
-	tmp = NULL;
-	while (*cmd)
+	cur = cmd;
+	while (cur)
 	{
-		tmp = (*cmd)->next;
-		free((*cmd)->value);
-		free_token((*cmd)->token);
-		free(*cmd);
-		*cmd = tmp;
+		next = cur->next;
+		if (cur->value)
+			free(cur->value);
+		if (cur->token)
+		{
+			free_token(cur->token);
+			cur->token = NULL;
+		}
+		free(cur);
+		cur = next;
 	}
-	free(cmd);
 }
 
 void	free_input(t_input *input, bool check)
 {
 	if (!input)
 		return ;
+	input->pipes = 0;
 	if (input->value)
 		free(input->value);
 	if (input->cmd)
+	{
 		free_cmd(input->cmd);
+		input->cmd = NULL;
+	}
 	if (check)
 		free(input);
 }

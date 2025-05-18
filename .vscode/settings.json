@@ -3,6 +3,7 @@
     "files.associations": {
         "unistd.h": "c",
         "minitalk.h": "c",
-        "libft.h": "c"
+        "libft.h": "c",
+        "type_traits": "c"
     }
 }
