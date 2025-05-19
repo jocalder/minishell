@@ -33,7 +33,6 @@ int	main(int argc, char **argv, char **envp)
 	t_mini	data;
 	int		state;
 
-	(void)envp;
 	if (argc > 1)
 		return (perror(USAGE), E_USAGE);
 	if (init_data(&data) == ERROR)
@@ -43,8 +42,10 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (set_prompt((&data)->prompt) == ERROR)
 			exit_status(ERROR, &data);
-		state = set_input(&data);
-		check_state(state, &data);
+		set_input(&data);
+		invented_input(data.input);
+		handle_execution(&data, envp);
+		//check_state(state, &data);
 		//execute_builtins(&data, envp); //before need execute others
 		free_all(&data, false);
 	}

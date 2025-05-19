@@ -10,7 +10,7 @@ int open_heredoc(char *delimiter)
 	line = NULL;
 	large = ft_strlen(delimiter);
 	if (pipe(pipe_fd) < 0)
-		//errors and status
+		perror()//errors and status
 	if ((pid = fork()) < 0)
 		//errors and status
 	if (pid == 0)

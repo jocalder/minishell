@@ -28,7 +28,7 @@ void    handle_execution(t_mini *data, char *envp)
 		if (cmd->next)
 		{
 			if (!pipe(pipe_fd))
-				return (NULL);//message error or handle errors, status
+				perror("pipe failed");//handle errors, status
 		}
 		else
 		{
@@ -45,7 +45,7 @@ void    handle_execution(t_mini *data, char *envp)
 		prev_fd = pipe_fd[0];
 		cmd = cmd->next;
 	}
-	//function wait to handle the father proccess;
+	wait_all();
 }
 
 void	ft_child_proccess(int *pipe_fd, int *prev_fd, t_cmd *cmd, char **envp)
@@ -79,14 +79,14 @@ int	redir_in(t_token *token)
 		{
 			fd = open_heredoc(token->next->value);
 			if (fd < 0)
-				//function to handle errors
+				perror("fd: open_heredoc failed");//handle errors and status
 			return (fd);
 		}
 		if (token->type == REDIR_IN)
 		{
 			fd = open((token->next->value), O_RDONLY);
 			if (fd < 0)
-				//function to handle errors
+				perror("fd: Redir_in failed");//handle errors and status
 			return (fd);
 		}
 		token = token->next;
@@ -105,14 +105,14 @@ int	redir_out(t_token *token)
 		{
 			fd = open(token->next->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
 			if (fd < 0)
-				//status and handle errors
+				perror("fd: APPEND failed");//handle errors and status
 			return (fd);
 		}
 		if (token->type == REDIR_OUT)
 		{
 			fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-				//function to handle errors and status
+				perror("fd: Redir_out failed");handle errors and status
 			return (fd);
 		}
 		token = token->next;

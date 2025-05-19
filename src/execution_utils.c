@@ -87,10 +87,11 @@ void	execute_command(t_cmd *cmd, char **envp)
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
-		//message error, update error status
+		perror("path failed");//message error, update error status
 	if (execve(path, command, envp) != 0)
 	{
-		//update the status error
+		free(command);//i think we make free here
+		perror("execve failed");//update the status error
 	}
 }
 
