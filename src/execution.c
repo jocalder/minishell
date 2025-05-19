@@ -1,20 +1,20 @@
 #include "minishell.h"
 
-static void	close_all_fds(int pipe_fd, int prev_fd[2], int fd_in, int fd_out)
+static void	close_all_fds(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
 {
-	if (pipe_fd != -1)
-		close(pipe_fd);
-	else if (prev_fd[0] != -1)
-		close(prev_fd[0]);
-	else if (prev_fd[1] != -1)
-		close(prev_fd[1])
+	if (prev_fd != -1)
+		close(prev_fd);
+	else if (pipe_fd[0] != -1)
+		close(pipe_fd[0]);
+	else if (pipe_fd[1] != -1)
+		close(pipe_fd[1]);
 	else if (fd_in != -1)
 		close(fd_in);
 	else if (fd_out != -1)
 		close(fd_out);
 }
 
-void    handle_execution(t_mini *data, char *envp)
+void    handle_execution(t_mini *data, char **envp)
 {
     t_cmd	*cmd;
 	int		pipe_fd[2];
@@ -48,7 +48,7 @@ void    handle_execution(t_mini *data, char *envp)
 	wait_all();
 }
 
-void	ft_child_proccess(int *pipe_fd, int *prev_fd, t_cmd *cmd, char **envp)
+void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 {
 		int		fd_in;
 		int		fd_out;
@@ -58,8 +58,8 @@ void	ft_child_proccess(int *pipe_fd, int *prev_fd, t_cmd *cmd, char **envp)
 
 		if (fd_in != -1)
 			dup2(fd_in, 0);
-		else if (prev_fd[0] != -1 && fd_in == -1)
-			dup2(prev_fd[0], 0);
+		else if (prev_fd != -1 && fd_in == -1)
+			dup2(prev_fd, 0);
 		if (pipe_fd[1] != -1 && fd_out == -1)
 			dup2(pipe_fd[1], 1);
 		else if (fd_out != -1)
@@ -112,7 +112,7 @@ int	redir_out(t_token *token)
 		{
 			fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-				perror("fd: Redir_out failed");handle errors and status
+				perror("fd: Redir_out failed");//handle errors and status
 			return (fd);
 		}
 		token = token->next;

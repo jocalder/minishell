@@ -14,9 +14,38 @@ int	is_quote(int c)
 	return (0);
 }
 
-int	is_redir(int c)
+int	count_cmd(t_cmd *cmd)
 {
-	if (c == '<' || c == '>')
-		return (1);
-	return (0);
+	int	count;
+
+	count = 0;
+	if (!cmd)
+		return (count);
+	while (cmd)
+	{
+		count++;
+		cmd = cmd->next;
+	}
+	return (count);
+}
+
+int	count_token(t_token *token)
+{
+	int	count;
+
+	count = 0;
+	if (!token)
+		return (count);
+	while (token)
+	{
+		count++;
+		token = token->next;
+	}
+	return (count);
+}
+
+int	update_status(int new_status)
+{
+	g_status = new_status;
+	return (g_status);
 }

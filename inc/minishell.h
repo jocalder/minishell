@@ -10,18 +10,19 @@
 # include <sys/types.h>
 # include <sys/time.h>
 # include <sys/ioctl.h>
+# include <sys/wait.h>
 
 /*colors*/
-# define RED		"\033[0;34m"
-# define BLUE		"\033[0;31m"
-# define WHITE		"\033[0m"
+# define RED			"\033[0;34m"
+# define BLUE			"\033[0;31m"
+# define WHITE			"\033[0m"
 
-# define USAGE		"Usage: ./minishell"
-# define FAIL_ALLOC	"Memory allocation failure"
-# define FAIL_WRITE	"Function write failure"
-# define OPEN_PIPE	"There is opened pipe"
-# define OPEN_QUOTE	"There is opened quote"
-# define NO_VALID	"Nope";
+# define USAGE			"Usage: ./minishell"
+
+# define PARSE_ERROR1	"minishell: parse error near `|'"
+# define PARSE_ERROR2	"minishell: parse error near `||'"
+
+# define CMD_NO_FOUND	"Command not found"
 
 # define ERROR	-1
 # define OK		0
@@ -96,7 +97,6 @@ enum	e_status
 
 extern int	g_status;
 
-/*main*/
 int		init_data(t_mini *data);
 void	wait_signal(void);
 int		set_prompt(t_prompt *promt);
@@ -104,16 +104,11 @@ int		set_input(t_mini *data);
 void	execute_builtins(t_mini *data, char **envp);
 
 /*split_input_utils*/
-int		check_input(char *input);
-void	append_cmd(t_input *input, t_cmd *new, char *value);
-
-/*check_input_utils*/
-bool	redir_error(char *input);
-bool	has_opened_quote(char *input);
-bool	has_opened_pipe(char *input);
-bool	has_inspected_char(char *input);
-bool	has_logic_ops(char *input);
-bool	has_wildcard(char *input);
+int		validate_pipe(t_input *input, char **str);
+int		new_cmd(t_cmd **new, char *start, size_t *len);
+int		split_cmd(t_cmd **cmd, char *start);
+void	append_cmd(t_input *input, t_cmd **new, char *value);
+void	reset_var(t_cmd **new, size_t *len);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
@@ -123,10 +118,20 @@ void	free_input(t_input *input, bool check);
 /*utils*/
 int		is_spacetab(int c);
 int		is_quote(int c);
-int		is_redir(int c);
+int		count_cmd(t_cmd *cmd);
+int		update_status(int new_status);
 
 /*delete*/
 void	printf_input(t_input *input);
 void	invented_input(t_input *input);
+
+/*execution*/
+void    handle_execution(t_mini *data, char **envp);
+void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
+int		redir_in(t_token *token);
+int		redir_out(t_token *token);
+void	execute_command(t_cmd *cmd, char **envp);
+void	wait_all(void);
+int		open_heredoc(char *delimiter);
 
 #endif

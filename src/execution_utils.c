@@ -26,7 +26,7 @@ static int	count_args(t_token *token)
 	}
 	return (count);
 }
-char	*find_command_path(char	*command, char **envp, t_cmd *cmd)//changes with the structures
+static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)//changes with the structures
 {
 	char	**directories;
 	char	*full_path;
@@ -49,7 +49,7 @@ char	*find_command_path(char	*command, char **envp, t_cmd *cmd)//changes with th
 		full_path = ft_strjoin(path, command);
 		free(path);
 		if (access(full_path, F_OK) == 0)
-			return (full_path, free_directories(directories));
+			return (free_directories(directories), full_path);
 		free(full_path);
 	}
 	free_directories(directories);
@@ -57,7 +57,7 @@ char	*find_command_path(char	*command, char **envp, t_cmd *cmd)//changes with th
 	return (NULL);
 }
 
-char	**build_full_command(t_token *token)
+static char	**build_full_command(t_token *token)
 {
 	int		count;
 	char	**args;
