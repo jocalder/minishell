@@ -82,7 +82,7 @@ int	redir_in(t_token *token)
 				//function to handle errors
 			return (fd);
 		}
-		if (toke->type == REDIR_IN)
+		if (token->type == REDIR_IN)
 		{
 			fd = open((token->next->value), O_RDONLY);
 			if (fd < 0)

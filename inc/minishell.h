@@ -39,6 +39,8 @@ typedef enum	e_token_type
 	CMD,
 	OPC,
 	REDIR_IN,
+	D_QUOTE,
+	S_QUOTE,
 	REDIR_OUT,
 	APPEND,
 	HEREDOC,

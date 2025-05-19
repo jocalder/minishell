@@ -22,7 +22,7 @@ int open_heredoc(char *delimiter)
             if (!line || ft_strncmp(line, delimiter, large) == 0)
             {
 				free(line);
-    				//handle errors nad status
+    			//handle errors and status
     			break ;
         	}
     		write(pipe_fd[1], line, ft_strlen(line));

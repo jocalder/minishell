@@ -46,22 +46,25 @@ static void	ft_env(char **envp)
 
 void	check_builtins(t_mini *data, char **envp)
 {
-	if (!data->args || !data->args[0])
-		return ;
-	//if (ft_strncmp(data->args[0], "echo", 5) == 0)
+	t_token	*token;
+
+	token = data->input->cmd->token;
+	if (!token->value)
+		//messagge error handle status
+	if (ft_strncmp(token->value, "echo", 5) == 0)
 		//here we should do a function to hanlde the built-in ft_echo(args) or my_echo(args);
 	else if (token->value, "cd", 3) == 0)
 		ft_cd(data);
-	else if (ft_strncmp(data->args[0], "pwd", 4) == 0)
+	else if (ft_strncmp(token->value, "pwd", 4) == 0)
 		ft_pwd();
-	//else if (ft_strncmp(data->args[0], "export", 7) == 0)
-	//	ft_export();
-	//else if (ft_strncmp(data->args[0], "unset", 6) == 0)
-	//	ft_unset();
-	else if (ft_strncmp(data->args[0], "env", 4) == 0)
+	else if (ft_strncmp(token->value, "export", 7) == 0)
+		//	ft_export();
+	else if (ft_strncmp(token->value, "unset", 6) == 0)
+		//	ft_unset();
+	else if (ft_strncmp(token->value, "env", 4) == 0)
 		ft_env(envp);
-	//else if (ft_strncmp(data->args[0], "exit", 5) == 0)
-	//	ft_exit();
+	else if (ft_strncmp(token->value, "exit", 5) == 0)
+		//ft_exit();
 	else
 		return ;
 }
