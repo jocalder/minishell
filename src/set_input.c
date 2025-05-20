@@ -33,10 +33,13 @@ int	split_cmd(t_cmd **cmd, char *start)
 					tmp = expand_content(tmp);
 				len++;
 			}
-			else if (start[len] == '$' && (start[len + 1] && !is_spacetab(start[len + 1])))
+			else if (start[len] == '$')
 			{
-				while (start[len] && (start[len] != '$' && !is_spacetab(start[len])))
+				while (start[len] && (start[len] = '$' && !is_spacetab(start[len])))
+				{
+					
 					len++;
+				}
 				tmp = expand_content(ft_substr(start, 0, len));
 				len++;
 			}
@@ -51,7 +54,8 @@ int	split_cmd(t_cmd **cmd, char *start)
 			start += len;
 			free(tmp);
 		}
-		start++;
+		if (*start)
+			start++;
 	}
 	return (OK);
 }

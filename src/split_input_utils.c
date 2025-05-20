@@ -119,11 +119,12 @@ char	*expand_content(char *value)
 		tmp = NULL;
 		if (*value == '$')
 		{
+			value++;
 			if (start[len] == '$')
 					tmp = ft_itoa((int)getpid());
 			//
 		}
 		new_value = ft_strjoin(new_value, tmp);
 	}
-	return (new_value);
+	return (free(value), new_value);
 }
