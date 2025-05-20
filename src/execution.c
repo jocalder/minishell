@@ -27,7 +27,7 @@ void    handle_execution(t_mini *data, char **envp)
 	{
 		if (cmd->next)
 		{
-			if (!pipe(pipe_fd))
+			if (pipe(pipe_fd) != 0)
 				perror("pipe failed");//handle errors, status
 		}
 		else
@@ -86,8 +86,9 @@ int	redir_in(t_token *token)
 		{
 			fd = open((token->next->value), O_RDONLY);
 			if (fd < 0)
-				perror("fd: Redir_in failed");//handle errors and status
-			return (fd);
+				perror("minishell: token->value: No such file or directory");//handle errors and status
+			if (token->next->next == NULL && token->next->type == FILE_PATH)
+				return (fd);
 		}
 		token = token->next;
 	}

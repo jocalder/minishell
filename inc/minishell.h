@@ -38,15 +38,14 @@ typedef enum	e_flag
 typedef enum	e_token_type
 {
 	CMD,
-	OPC,
+	ARG,
 	REDIR_IN,
-	D_QUOTE,
-	S_QUOTE,
 	REDIR_OUT,
 	APPEND,
 	HEREDOC,
 	ENDOFFILE,
 	FILE_PATH,
+	BUILTIN,
 }	t_token_type;
 
 typedef struct s_token

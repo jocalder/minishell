@@ -18,7 +18,7 @@ CLEAR	=	\r\033[K
 NAME = libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fPIC
 
 SRCS	=	ft_isalpha.c			\
 			ft_isdigit.c			\

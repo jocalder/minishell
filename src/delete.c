@@ -57,7 +57,7 @@ static void input_one(t_input *input)
 	cur->next->token->next->value = ft_strdup("-l");
 	if (!cur->next->token->next->value)
 		return ((void)printf("15.Alloc error\n"));
-	cur->next->token->next->type = OPC;
+	cur->next->token->next->type = ARG;
 	cur->next->token->next->next = NULL;
 	cur->next->next = NULL;
 }
@@ -67,7 +67,7 @@ static void	input_two(t_input *input)
 	t_cmd	*cur;
 
 	cur = NULL;
-	input->value = ft_strdup("echo \"$USER\" >> output");
+	input->value = ft_strdup("echo var_expanded >> output");
 	if (!input->value)
 		return ((void)printf("1.Alloc error\n"));
 	input->pipes = 0;
@@ -75,7 +75,7 @@ static void	input_two(t_input *input)
 	if (!input->cmd)
 		return ((void)printf("2.Alloc error\n"));
 	cur = input->cmd;
-	cur->value = ft_strdup("echo \"$USER\" >> output");
+	cur->value = ft_strdup("echo var_expanded >> output");
 	if (!cur->value)
 		return ((void)printf("3.Alloc error\n"));
 	cur->token = ft_calloc(1, sizeof(t_token));
@@ -84,14 +84,14 @@ static void	input_two(t_input *input)
 	cur->token->value = ft_strdup("echo");
 	if (!cur->token->value)
 		return ((void)printf("5.Alloc error\n"));
-	cur->token->type = CMD;
+	cur->token->type = BUILTIN;
 	cur->token->next = ft_calloc(1, sizeof(t_token));
 	if (!cur->token->next)
 		return ((void)printf("6.Alloc error\n"));
-	cur->token->next->value = ft_strdup("$USER");
+	cur->token->next->value = ft_strdup("var_expanded");
 	if (!cur->token->next->value)
 		return ((void)printf("7.Alloc error\n"));
-	cur->token->next->type = D_QUOTE;
+	cur->token->next->type = ARG;
 	cur->token->next->next = ft_calloc(1, sizeof(t_token));
 	if (!cur->token->next->next)
 		return ((void)printf("8.Alloc error\n"));
@@ -115,7 +115,7 @@ static void	input_three(t_input *input)
 	t_cmd	*cur;
 
 	cur = NULL;
-	input->value = ft_strdup("cat << EOF | grep 'a' | cat > output");
+	input->value = ft_strdup("cat << EOF | grep a | cat > output");
 	if (!input->value)
 		return ((void)printf("1.Alloc error\n"));
 	input->pipes = 2;
@@ -151,7 +151,7 @@ static void	input_three(t_input *input)
 	cur->next = ft_calloc(1, sizeof(t_cmd));
 	if (!cur->next)
 		return ((void)printf("10.Alloc error\n"));
-	cur->next->value = ft_strdup("grep 'a'");
+	cur->next->value = ft_strdup("grep a");
 	if (!cur->next->value)
 		return ((void)printf("11.Alloc error\n"));
 	cur->next->token = ft_calloc(1, sizeof(t_token));
@@ -167,7 +167,7 @@ static void	input_three(t_input *input)
 	cur->next->token->next->value = ft_strdup("a");
 	if (!cur->next->token->next->value)
 		return ((void)printf("15.Alloc error\n"));
-	cur->next->token->next->type = S_QUOTE;
+	cur->next->token->next->type = ARG;
 	cur->next->token->next->next = NULL;
 	cur->next->next = ft_calloc(1, sizeof(t_cmd));
 	if (!cur->next->next)
@@ -271,7 +271,7 @@ static void	input_four(t_input *input)
 	cur->next->token->next->value = ft_strdup("-l");
 	if (!cur->next->token->next->value)
 		return((void)printf("Alloc error\n"));
-	cur->next->token->next->type = OPC;
+	cur->next->token->next->type = ARG;
 	cur->next->token->next->next = ft_calloc(1, sizeof(t_token));
 	if (!cur->next->token->next->next)
 		return((void)printf("Alloc error\n"));
@@ -332,26 +332,22 @@ static char	*token_type_str(int type)
 {
 	if (type == 0)
 		return ("CMD");
-	else if (type == 1)
-		return ("OPC");
-	else if (type == 2)
-		return ("S_QUOTE");
-	else if (type == 3)
-		return ("D_QUOTE");
-	else if (type == 4)
+	else if (type == BUILTIN)
+		return ("BUILTIN");
+	else if (type == ARG)
+		return ("ARG");
+	else if (type == REDIR_IN)
 		return ("REDIR_IN");
-	else if (type == 5)
+	else if (type == REDIR_OUT)
 		return ("REDIR_OUT");
-	else if (type == 6)
+	else if (type == APPEND)
 		return ("APPEND");
-	else if (type == 7)
+	else if (type == HEREDOC)
 		return ("HEREDOC");
-	else if (type == 8)
+	else if (type == ENDOFFILE)
 		return ("ENDOFFILE");
-	else if (type == 9)
+	else if (type == FILE_PATH)
 		return ("FILE_PATH");
-	else if (type == 10)
-		return ("VAR");
 	else
 		return ("UNKNOWN");
 }
