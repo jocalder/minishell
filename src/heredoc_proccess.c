@@ -11,15 +11,23 @@ int open_heredoc(char *delimiter)
 	large = ft_strlen(delimiter);
 	if (pipe(pipe_fd) < 0)
 		perror("pipe_heredoc failed");//errors and status
-	if ((pid = fork()) < 0)
-		perror("fork_heredoc failed");//errors and status
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork failed");
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		return (-1);
+	}
 	if (pid == 0)
 	{
+		close(pipe_fd[0]);
 		while(1)
         {
         	write(1, "> ", 2);
         	line = get_next_line(0);
-            if (!line || ft_strncmp(line, delimiter, large) == 0)
+            if ((!line || ft_strncmp(line, delimiter, large) == 0)
+				&& line[ft_strlen(delimiter)] == '\n')
             {
 				free(line);
     			//handle errors and status
@@ -29,7 +37,12 @@ int open_heredoc(char *delimiter)
     		free(line);
     	}
     	close(pipe_fd[1]);
-    	return (pipe_fd[0]);
+	}
+	else
+	{
+		close(pipe_fd[1]);
+		waitpid(pid, NULL, 0);
+		return (pipe_fd[0]);
 	}
 	return (0);
 }

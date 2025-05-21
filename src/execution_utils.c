@@ -50,7 +50,7 @@ static char	*find_command_path(char	*command, char **envp)//changes with the str
 		path = ft_strjoin(directories[i], "/");
 		full_path = ft_strjoin(path, command);
 		if (access(full_path, F_OK) == 0)
-			return (full_path);//we must to free directories
+			return (free(directories), full_path);//we must to free directories
 		free(full_path);
 	}
 	free(directories);

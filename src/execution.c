@@ -77,13 +77,16 @@ int	redir_in(t_token *token)
 	{
 		if (token->type == HEREDOC)
 		{
+			if (fd != -1)
+				close(fd);
 			fd = open_heredoc(token->next->value);
 			if (fd < 0)
 				perror("fd: open_heredoc failed");//handle errors and status
-			return (fd);
 		}
 		if (token->type == REDIR_IN)
 		{
+			if (fd != -1)
+				close(fd);
 			fd = open((token->next->value), O_RDONLY);
 			if (fd < 0)
 				perror("minishell: token->value: No such file or directory");//handle errors and status
@@ -104,17 +107,23 @@ int	redir_out(t_token *token)
 	{
 		if (token->type == APPEND)
 		{
+			if (fd != -1)
+				close(fd);
 			fd = open(token->next->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
 			if (fd < 0)
-				perror("fd: APPEND failed");//handle errors and status
-			return (fd);
+				perror("minishell: token->value: no such file or directory");//handle errors and status
+			if (token->next->next == NULL && token->next->type == FILE_PATH)
+				return (fd);
 		}
 		if (token->type == REDIR_OUT)
 		{
+			if (fd != -1)
+				close(fd);
 			fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-				perror("fd: Redir_out failed");//handle errors and status
-			return (fd);
+				perror("minishell: token->value: no such file or directory");//handle errors and status
+			if (token->next->next == NULL && token->next->type == FILE_PATH)
+				return (fd);
 		}
 		token = token->next;
 	}
