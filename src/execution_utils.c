@@ -90,7 +90,7 @@ void	execute_command(t_cmd *cmd, char **envp)
 		perror("path failed");//message error, update error status
 	if (execve(path, command, envp) != 0)
 	{
-		free_array(command);//i think we make free here
+		free_array(command);
 		perror("execve failed");//update the status error
 	}
 }

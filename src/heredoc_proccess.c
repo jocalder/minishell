@@ -37,9 +37,12 @@ int open_heredoc(char *delimiter)
     		free(line);
     	}
     	close(pipe_fd[1]);
+		exit (0);
+		//handle errors and status
 	}
 	else
 	{
+		//handle errors and status
 		close(pipe_fd[1]);
 		waitpid(pid, NULL, 0);
 		return (pipe_fd[0]);

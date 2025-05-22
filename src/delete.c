@@ -304,6 +304,71 @@ static void	input_four(t_input *input)
 	cur->next->next = NULL;
 }
 
+static void	input_five(t_input *input)
+{
+	t_cmd *cur;
+
+	cur = NULL;
+	input->value = ft_strdup("cat << lim1 << lim2 << lim3");
+	input->pipes = 0;
+	input->cmd = ft_calloc(1, sizeof(t_cmd));
+	if (!input->cmd)
+		return ((void)printf("Alloc error\n"));
+	cur = input->cmd;
+	cur->value = ft_strdup("cat << lim1 << lim2 << lim3");
+	if (!cur->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token = ft_calloc(1, sizeof(t_token));
+	if (!cur->token)
+		return ((void)printf("Alloc error\n"));
+	cur->token->value = ft_strdup("cat");
+	if (!cur->token->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->type = CMD;
+	cur->token->next = ft_calloc(1, sizeof(t_token));
+	if (!cur->token->next)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->value = ft_strdup("<<");
+	if (!cur->token->next->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->type = HEREDOC;
+	cur->token->next->next = ft_calloc(1, sizeof(t_token));
+	if (!cur->token->next->next)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->value = ft_strdup("lim1");
+	if (!cur->token->next->next->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->type = ENDOFFILE;
+	cur->token->next->next->next = ft_calloc(1, sizeof(t_token));
+	if (!cur->token->next->next->next)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->next->value = ft_strdup("<<");
+	if (!cur->token->next->next->next->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->next->type = HEREDOC;
+	cur->token->next->next->next->next = ft_calloc(1, sizeof(t_token));
+	if (!cur->token->next->next->next->next)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->next->next->value = ft_strdup("lim2");
+	if (!cur->token->next->next->next->next->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->next->next->type = ENDOFFILE;
+	cur->token->next->next->next->next->next = ft_calloc(1, sizeof(t_token));
+	cur->token->next->next->next->next->next->value = ft_strdup("<<");
+	if (!cur->token->next->next->next->next->next->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->next->next->next->type = HEREDOC;
+	cur->token->next->next->next->next->next->next =ft_calloc(1, sizeof(t_token));
+	if (!cur->token->next->next->next->next->next->next)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->next->next->next->next->value = ft_strdup("lim3");
+	if (!cur->token->next->next->next->next->next->next->value)
+		return ((void)printf("Alloc error\n"));
+	cur->token->next->next->next->next->next->next->type = ENDOFFILE;
+	cur->token->next->next->next->next->next->next->next = NULL;
+	cur->next = NULL;
+}
+
 void	invented_input(t_input *input)
 {
 	int choise;
@@ -311,7 +376,7 @@ void	invented_input(t_input *input)
 	if (!input || !input->value)
 		return ;
 	choise = ft_atoi(input->value);
-	if (choise >= 1 && choise <= 4)
+	if (choise >= 1 && choise <= 5)
 	{
 		printf("Choise: %d\n", choise);
 		free(input->value);
@@ -321,8 +386,10 @@ void	invented_input(t_input *input)
 			input_two(input);
 		else if (choise == 3)
 			input_three(input);
-		else
+		else if (choise == 4)
 			input_four(input);
+		else if (choise == 5)
+			input_five(input);
 	}
 	else
 		return ((void)printf("Wrong choice when try invented input\n"));
