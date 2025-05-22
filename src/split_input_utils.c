@@ -92,39 +92,65 @@ void	append_token(t_cmd *cmd, t_token *new, char *value, int type)
 		cmd->token->value = value;
 		cmd->token->type = type;
 		cmd->token->next = NULL;
+		cmd->token->prev = NULL;
 	}
 	else
 	{
 		cur = cmd->token;
-		while(cur.next)
-			cur = cur.next;
+		while(cur->next)
+			cur = cur->next;
 		cur->next = new;
 		cur->next->value = value;
 		cur->next->type = type;
 		cur->next->next = NULL;
+		cur->prev = cur;
 	}
 }
 
 char	*expand_content(char *value)
 {
-	char	*new_value;
-	char	*tmp;
-	size_t	len;
+	return (value);
+	// char	*new_value;
+	// char	*tmp;
+	// size_t	len;
 
-	if (!value)
-		return (NULL);
-	new_value = ft_strdup("");
-	while (*value)
-	{
-		tmp = NULL;
-		if (*value == '$')
-		{
-			value++;
-			if (start[len] == '$')
-					tmp = ft_itoa((int)getpid());
-			//
-		}
-		new_value = ft_strjoin(new_value, tmp);
-	}
-	return (free(value), new_value);
+	// if (!value)
+	// 	return (NULL);
+	// new_value = ft_strdup("");
+	// while (*value)
+	// {
+	// 	tmp = NULL;
+	// 	if (*value == '$')
+	// 	{
+	// 		value++;
+	// 		if (start[len] == '$')
+	// 				tmp = ft_itoa((int)getpid());
+	// 		//
+	// 	}
+	// 	new_value = ft_strjoin(new_value, tmp);
+	// }
+	// return (free(value), new_value);
+}
+
+int	get_type(t_token *token, char *value)
+{
+	t_token *prev;
+
+	prev = NULL;
+	if (count_token(token) == 0)
+		return (CMD);
+	else if (prev->type == HEREDOC)
+		return (ENDOFFILE);
+	else if (prev->type == APPEND)
+		return (FILE_PATH);
+	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0)
+		return (REDIR_IN);
+	else if (ft_strncmp(value, ">", ft_strlen(value)) == 0)
+		return (REDIR_OUT);
+	else if (ft_strncmp(value, "<<", ft_strlen(value)) == 0)
+		return (HEREDOC);
+	else if (ft_strncmp(value, ">>", ft_strlen(value)) == 0)
+		return (APPEND);
+	else
+		return (ARG);
 }

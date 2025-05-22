@@ -8,6 +8,8 @@ int	split_cmd(t_cmd **cmd, char *start)
 	size_t			len;
 	unsigned char	quote;
 
+	if (!cmd || !*cmd || start)
+		return (update_status(ERROR));
 	while (*start)
 	{
 		while (*start && is_spacetab(*start))
@@ -33,29 +35,24 @@ int	split_cmd(t_cmd **cmd, char *start)
 					tmp = expand_content(tmp);
 				len++;
 			}
-			else if (start[len] == '$')
+			else if (start[len] == '$' && start[len + 1])
 			{
-				while (start[len] && (start[len] = '$' && !is_spacetab(start[len])))
-				{
-					
-					len++;
-				}
-				tmp = expand_content(ft_substr(start, 0, len));
 				len++;
+				while (start[len] && (!is_spacetab(start[len]) && !is_quote(start[len])))
+					len++;
+				tmp = expand_content(ft_substr(start, 0, len));
 			}
 			else
-			{
-				len++;
-				tmp = ft_substr(start, 0, len);
-			}
+				tmp = ft_substr(start, 0, len++);
 			new->value = ft_strjoin(new->value, tmp);
 			if (!new->value)
 				return (free(tmp), update_status(ERROR));
 			start += len;
 			free(tmp);
 		}
-		if (*start)
-			start++;
+		append_token(*cmd, new, new->value, get_type((*cmd)->token, new->value));
+		free(new);
+		free(new->value);
 	}
 	return (OK);
 }
@@ -80,9 +77,9 @@ static int	split_input(t_input *input)
 			if (new_cmd(&new, start, &len) != OK)
 				return (g_status);
 		}
+		append_cmd(input, &new, ft_substr(start, 0, len));
 		if (split_cmd(&new, new->value) != OK)
 			return (g_status);
-		append_cmd(input, &new, ft_substr(start, 0, len));
 		start += len;
 	}
 	return (OK);
