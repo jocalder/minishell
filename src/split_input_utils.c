@@ -141,7 +141,7 @@ int	get_type(t_token *token, char *value)
 		return (CMD);
 	else if (prev->type == HEREDOC)
 		return (ENDOFFILE);
-	else if (prev->type == APPEND)
+	else if (prev->type == APPEND || prev->type == REDIR_IN || prev->type == REDIR_OUT)
 		return (FILE_PATH);
 	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0)
 		return (REDIR_IN);

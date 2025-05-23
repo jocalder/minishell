@@ -75,11 +75,12 @@ static int	split_input(t_input *input)
 		while (start[len] && start[len] != '|')
 		{
 			if (new_cmd(&new, start, &len) != OK)
-				return (g_status);
+				return (free(new), g_status);
 		}
-		append_cmd(input, &new, ft_substr(start, 0, len));
 		if (split_cmd(&new, new->value) != OK)
-			return (g_status);
+			return (free(new), g_status);
+		append_cmd(input, &new, ft_substr(start, 0, len));
+		free(new);
 		start += len;
 	}
 	return (OK);
