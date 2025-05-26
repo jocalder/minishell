@@ -102,7 +102,7 @@ int		split_cmd(t_cmd **cmd, char *start);
 void	append_cmd(t_input *input, t_cmd **new, char *value);
 void	append_token(t_cmd *cmd, t_token *new, char *value, int type);
 char	*expand_content(char *value);
-int	get_type(t_token *token, char *value);
+int		get_type(t_token *token, char *value);
 
 /*utils*/
 int		is_spacetab(int c);

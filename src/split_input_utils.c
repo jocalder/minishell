@@ -109,39 +109,39 @@ void	append_token(t_cmd *cmd, t_token *new, char *value, int type)
 
 char	*expand_content(char *value)
 {
-	return (value);
-	// char	*new_value;
-	// char	*tmp;
-	// size_t	len;
+	// return (value);
+	char	*new_value;
+	char	*tmp;
+	size_t	len;
 
-	// if (!value)
-	// 	return (NULL);
-	// new_value = ft_strdup("");
-	// while (*value)
-	// {
-	// 	tmp = NULL;
-	// 	if (*value == '$')
-	// 	{
-	// 		value++;
-	// 		if (start[len] == '$')
-	// 				tmp = ft_itoa((int)getpid());
-	// 		//
-	// 	}
-	// 	new_value = ft_strjoin(new_value, tmp);
-	// }
-	// return (free(value), new_value);
+	if (!value)
+		return (NULL);
+	new_value = ft_strdup("");
+	while (*value)
+	{
+		tmp = NULL;
+		if (*value == '$')
+		{
+			value++;
+			if (value[len] == '$')
+				tmp = ft_itoa((int)getpid());
+			else if (value[len] == '?')
+				tmp = ft_itoa(g_status);
+			else
+				tmp = ft_substr(value, 0, len);
+		}
+		new_value = ft_strjoin(new_value, tmp);
+	}
+	return (free(value), new_value);
 }
 
 int	get_type(t_token *token, char *value)
 {
-	t_token *prev;
-
-	prev = NULL;
 	if (count_token(token) == 0)
 		return (CMD);
-	else if (prev->type == HEREDOC)
+	else if (token->prev && token->prev->type   == HEREDOC)
 		return (ENDOFFILE);
-	else if (prev->type == APPEND || prev->type == REDIR_IN || prev->type == REDIR_OUT)
+	else if (token->prev && (token->prev->type == APPEND || token->prev->type == REDIR_IN || token->prev->type == REDIR_OUT))
 		return (FILE_PATH);
 	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0)
 		return (REDIR_IN);
