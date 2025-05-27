@@ -97,9 +97,9 @@ void	execute_builtins(t_mini *data, char **envp);
 
 /*split_input_utils*/
 int		validate_pipe(t_input *input, char **str);
-int		new_cmd(t_cmd **new, char *start, size_t *len);
-int		split_cmd(t_cmd **cmd, char *start);
-void	append_cmd(t_input *input, t_cmd **new, char *value);
+t_cmd	*new_cmd(char *start, size_t *len);
+int		split_cmd(t_cmd **cmd);
+void	append_cmd(t_input *input, t_cmd *new, char *value);
 void	append_token(t_cmd *cmd, t_token *new, char *value, int type);
 char	*expand_content(char *value);
 int		get_type(t_token *token, char *value);
