@@ -82,29 +82,24 @@ void	append_cmd(t_input *input, t_cmd *new, char *value)
 	}
 }
 
-void	append_token(t_cmd *cmd, t_token *new, char *value, int type)
+void	append_token(t_cmd *cmd, t_token **new, int type)
 {
-	t_token	*cur;
+	t_token *cur;
 
-	cur = NULL;
+	if (!cmd || !new || !*new)
+		return ;
+	(*new)->type = type;
+	(*new)->next = NULL;
+	(*new)->prev = NULL;
 	if (!cmd->token)
-	{
-		cmd->token = new;
-		cmd->token->value = value;
-		cmd->token->type = type;
-		cmd->token->next = NULL;
-		cmd->token->prev = NULL;
-	}
+		cmd->token = *new;
 	else
 	{
 		cur = cmd->token;
-		while(cur->next)
+		while (cur->next)
 			cur = cur->next;
-		cur->next = new;
-		cur->next->value = value;
-		cur->next->type = type;
-		cur->next->next = NULL;
-		cur->prev = cur;
+		cur->next = *new;
+		(*new)->prev = cur;
 	}
 }
 
@@ -138,11 +133,14 @@ char	*expand_content(char *value)
 
 int	get_type(t_token *token, char *value)
 {
-	if (count_token(token) == 0)
+	t_token	*last;
+
+	last = last_token(token);
+	if (!last)
 		return (CMD);
-	else if (token->prev && token->prev->type   == HEREDOC)
+	else if (last->type == HEREDOC)
 		return (ENDOFFILE);
-	else if (token->prev && (token->prev->type == APPEND || token->prev->type == REDIR_IN || token->prev->type == REDIR_OUT))
+	else if (last->prev && (last->type == APPEND || last->type == REDIR_IN || last->type == REDIR_OUT))
 		return (FILE_PATH);
 	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0)
 		return (REDIR_IN);

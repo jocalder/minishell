@@ -44,6 +44,18 @@ int	count_token(t_token *token)
 	return (count);
 }
 
+t_token	*last_token(t_token *token)
+{
+	t_token	*last;
+
+	if (!token)
+		return (NULL);
+	last = token;
+	while (last->next)
+		last = last->next;
+	return (last);
+}
+
 int	update_status(int new_status)
 {
 	g_status = new_status;

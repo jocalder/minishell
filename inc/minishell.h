@@ -100,7 +100,7 @@ int		validate_pipe(t_input *input, char **str);
 t_cmd	*new_cmd(char *start, size_t *len);
 int		split_cmd(t_cmd **cmd);
 void	append_cmd(t_input *input, t_cmd *new, char *value);
-void	append_token(t_cmd *cmd, t_token *new, char *value, int type);
+void	append_token(t_cmd *cmd, t_token **new, int type);
 char	*expand_content(char *value);
 int		get_type(t_token *token, char *value);
 
@@ -108,6 +108,7 @@ int		get_type(t_token *token, char *value);
 int		is_spacetab(int c);
 int		is_quote(int c);
 int		count_cmd(t_cmd *cmd);
+t_token	*last_token(t_token *token);
 int		count_token(t_token *token);
 int		update_status(int new_status);
 

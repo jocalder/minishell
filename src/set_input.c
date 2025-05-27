@@ -56,7 +56,7 @@ int	split_cmd(t_cmd **cmd)
 			free(tmp);
 		}
 		if (ft_strncmp(new->value, "", ft_strlen(new->value)) != 0)
-			append_token(*cmd, new, new->value, get_type((*cmd)->token, new->value));
+			append_token(*cmd, &new, get_type((*cmd)->token, new->value));
 		else
 		{
 			free(new->value);
