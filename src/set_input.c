@@ -37,7 +37,7 @@ int	split_cmd(t_cmd **cmd)
 					tmp = expand_content(tmp);
 				len++;
 			}
-			else if (start[len] == '$' && start[len + 1])
+			else if (start[len] == '$' && (start[len + 1] && !is_spacetab(start[len + 1])))
 			{
 				len++;
 				while (start[len] && (!is_spacetab(start[len]) && !is_quote(start[len])))

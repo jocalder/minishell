@@ -105,30 +105,52 @@ void	append_token(t_cmd *cmd, t_token **new, int type)
 
 char	*expand_content(char *value)
 {
-	return (value);
-	// char	*new_value;
-	// char	*tmp;
-	// size_t	len;
+	char	*new_value;
+	char	*start;
+	char	*tmp;
+	char	*var;
+	size_t	len;
 
-	// if (!value)
-	// 	return (NULL);
-	// new_value = ft_strdup("");
-	// while (*value)
-	// {
-	// 	tmp = NULL;
-	// 	if (*value == '$')
-	// 	{
-	// 		value++;
-	// 		if (value[len] == '$')
-	// 			tmp = ft_itoa((int)getpid());
-	// 		else if (value[len] == '?')
-	// 			tmp = ft_itoa(g_status);
-	// 		else
-	// 			tmp = ft_substr(value, 0, len);
-	// 	}
-	// 	new_value = ft_strjoin(new_value, tmp);
-	// }
-	// return (free(value), new_value);
+	if (!value)
+		return (NULL);
+	new_value = ft_strdup("");
+	start = value;
+	while (*value)
+	{
+		tmp = NULL;
+		var  = NULL;
+		len = 0;;
+		if (*value == '$')
+		{
+			value++;
+			if (value[len] == '$')
+			{
+				tmp = ft_itoa((int)getpid());
+				len++;
+			}
+			else if (value[len] == '?')
+			{
+				tmp = ft_itoa(g_status);
+				len++;
+			}
+			else
+			{
+				while (value[len] && value[len] != '$')
+					len++;
+				var = ft_substr(value, 0, len);
+				tmp = getenv(var);
+				free(var);
+			}
+		}
+		else
+		{
+			len++;
+			tmp = ft_substr(value, 0, len);
+		}
+		value += len;
+		new_value = ft_strjoin(new_value, tmp);
+	}
+	return (free(start), new_value);
 }
 
 int	get_type(t_token *token, char *value)
