@@ -46,10 +46,7 @@ int	split_cmd(t_cmd **cmd)
 				tmp = expand_content(ft_substr(start, 0, len));
 			}
 			else
-			{
-				len++;
-				tmp = ft_substr(start, 0, len);
-			}
+				tmp = ft_substr(start, 0, ++len);
 			new->value = ft_strjoin(new->value, tmp);
 			if (!new->value)
 				return (free(tmp), update_status(ERROR));

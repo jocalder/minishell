@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 void	append_token(t_cmd *cmd, t_token **new, int type)
 {
 	t_token *cur;
@@ -20,49 +19,6 @@ void	append_token(t_cmd *cmd, t_token **new, int type)
 		cur->next = *new;
 		(*new)->prev = cur;
 	}
-}
-
-static char	*handle_expand(char *value, size_t *len)
-{
-	char	*new_value;
-
-	if (!value)
-		return ft_strdup("");
-	if (value[*len] == '$' || value[*len] == '?')
-		new_value = get_special_var(value[(*len)++]);
-	else
-	{
-		while (value[*len] && value[*len] != '$')
-			(*len)++;
-		new_value = get_env_var(ft_substr(value, 0, *len));
-	}
-	return (new_value);
-}
-
-char	*expand_content(char *value)
-{
-	char	*new_value;
-	char	*start;
-	char	*tmp;
-	size_t	len;
-
-	if (!value)
-		return (ft_strdup(""));
-	new_value = ft_strdup("");
-	start = value;
-	while (*start)
-	{
-		tmp = NULL;
-		len = 0;
-		if (*start == '$' && (start[len + 1] && !is_spacetab(start[len + 1])))
-			tmp = handle_expand(++start, &len);
-		else
-			tmp = ft_substr(start, 0, ++len);
-		start += len;
-		new_value = ft_strjoin(new_value, tmp);
-		free(tmp);
-	}
-	return (free(value), new_value);
 }
 
 static t_token	*last_token(t_token *token)
