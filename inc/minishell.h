@@ -64,7 +64,7 @@ typedef struct s_input
 	int		pipes;
 }	t_input;
 
-typedef struct prompt
+typedef struct s_prompt
 {
 	char	*value;
 	char	*cwd;
@@ -95,22 +95,25 @@ int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
 void	execute_builtins(t_mini *data, char **envp);
 
-/*split_input_utils*/
+/*split_input*/
+int		split_input(t_input *input);
 int		validate_pipe(t_input *input, char **str);
 t_cmd	*new_cmd(char *start, size_t *len);
-int		split_cmd(t_cmd **cmd);
 void	append_cmd(t_input *input, t_cmd *new, char *value);
+
+/*split_cmd*/
+int		split_cmd(t_cmd **cmd);
 void	append_token(t_cmd *cmd, t_token **new, int type);
 char	*expand_content(char *value);
 int		get_type(t_token *token, char *value);
 
+/*status_utils*/
+int		update_status(int new_status);
+void	exit_status(int status, t_mini *data);
+
 /*utils*/
 int		is_spacetab(int c);
 int		is_quote(int c);
-int		count_cmd(t_cmd *cmd);
-t_token	*last_token(t_token *token);
-int		count_token(t_token *token);
-int		update_status(int new_status);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);

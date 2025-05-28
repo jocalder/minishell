@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 int	split_cmd(t_cmd **cmd)
 {
 	t_token			*new;
@@ -66,7 +65,7 @@ int	split_cmd(t_cmd **cmd)
 	return (OK);
 }
 
-static int	split_input(t_input *input)
+int	split_input(t_input *input)
 {
 	char			*start;
 	t_cmd			*new;
