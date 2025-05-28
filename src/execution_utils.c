@@ -54,6 +54,7 @@ static char	*find_command_path(char	*command, char **envp)//changes with the str
 		free(full_path);
 	}
 	free(directories);
+	free(full_path);
 	return (NULL);
 }
 
@@ -94,4 +95,3 @@ void	execute_command(t_cmd *cmd, char **envp)
 		perror("execve failed");//update the status error
 	}
 }
-

@@ -44,7 +44,7 @@ static void	ft_env(char **envp)
 	}
 }
 
-bool	is_builtins(char *value)
+bool	is_builtin(char *value)
 {
 	if (!value)
 		return (false);
@@ -59,7 +59,7 @@ bool	is_builtins(char *value)
 	return (false);
 }
 
-int	check_builtins(t_mini *data, t_cmd *cmd, char **envp)
+int	execute_builtin_parent(t_mini *data, t_cmd *cmd, char **envp)
 {
 	char	*builtin;
 
@@ -82,4 +82,18 @@ int	check_builtins(t_mini *data, t_cmd *cmd, char **envp)
 		return (update_status(ft_env(cmd, envp)));
 	else
 		return (update_status(ft_exit(cmd)));
+}
+
+int	execute_builtin_child(t_cmd *cmd, char **envp)
+{
+	char	*builtin;
+
+	builtin = cmd->token->value;
+	if (ft_strncmp(name, "echo" 5) == 0)
+		return (update_status(ft_echo(cmd)));
+	else if (ft_strncmp(builtin, "pwd", 4) == 0)
+		return (update_status(ft_pwd(cmd)));
+	else if (ft_strncmp(builtin, "env", 4) == 0)
+		return (update_status(ft_env(cmd, envp)));
+	return (127);
 }
