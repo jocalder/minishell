@@ -22,54 +22,47 @@ void	append_token(t_cmd *cmd, t_token **new, int type)
 	}
 }
 
+static char	*handle_expand(char *value, size_t *len)
+{
+	char	*new_value;
+
+	if (!value)
+		return ft_strdup("");
+	if (value[*len] == '$' || value[*len] == '?')
+		new_value = get_special_var(value[(*len)++]);
+	else
+	{
+		while (value[*len] && value[*len] != '$')
+			(*len)++;
+		new_value = get_env_var(ft_substr(value, 0, *len));
+	}
+	return (new_value);
+}
+
 char	*expand_content(char *value)
 {
 	char	*new_value;
 	char	*start;
 	char	*tmp;
-	char	*var;
 	size_t	len;
 
 	if (!value)
-		return (NULL);
+		return (ft_strdup(""));
 	new_value = ft_strdup("");
 	start = value;
-	while (*value)
+	while (*start)
 	{
 		tmp = NULL;
-		var  = NULL;
-		len = 0;;
-		if (*value == '$')
-		{
-			value++;
-			if (value[len] == '$')
-			{
-				tmp = ft_itoa((int)getpid());
-				len++;
-			}
-			else if (value[len] == '?')
-			{
-				tmp = ft_itoa(g_status);
-				len++;
-			}
-			else
-			{
-				while (value[len] && value[len] != '$')
-					len++;
-				var = ft_substr(value, 0, len);
-				tmp = getenv(var);
-				free(var);
-			}
-		}
+		len = 0;
+		if (*start == '$' && (start[len + 1] && !is_spacetab(start[len + 1])))
+			tmp = handle_expand(++start, &len);
 		else
-		{
-			len++;
-			tmp = ft_substr(value, 0, len);
-		}
-		value += len;
+			tmp = ft_substr(start, 0, ++len);
+		start += len;
 		new_value = ft_strjoin(new_value, tmp);
+		free(tmp);
 	}
-	return (free(start), new_value);
+	return (free(value), new_value);
 }
 
 static t_token	*last_token(t_token *token)
@@ -93,7 +86,8 @@ int	get_type(t_token *token, char *value)
 		return (CMD);
 	else if (last->type == HEREDOC)
 		return (ENDOFFILE);
-	else if (last->prev && (last->type == APPEND || last->type == REDIR_IN || last->type == REDIR_OUT))
+	else if (last->prev
+		&& (last->type == APPEND || last->type == REDIR_IN || last->type == REDIR_OUT))
 		return (FILE_PATH);
 	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0)
 		return (REDIR_IN);

@@ -105,6 +105,7 @@ void	append_cmd(t_input *input, t_cmd *new, char *value);
 int		split_cmd(t_cmd **cmd);
 void	append_token(t_cmd *cmd, t_token **new, int type);
 char	*expand_content(char *value);
+char	*handle_expand(char *value, size_t *len);
 int		get_type(t_token *token, char *value);
 
 /*status_utils*/
@@ -114,6 +115,8 @@ void	exit_status(int status, t_mini *data);
 /*utils*/
 int		is_spacetab(int c);
 int		is_quote(int c);
+char	*get_special_var(int c);
+char	*get_env_var(char *var);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);

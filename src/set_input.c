@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+//Reduce lines
+//Consider the cases when redir and next argument are joined
 int	split_cmd(t_cmd **cmd)
 {
 	t_token			*new;
