@@ -9,6 +9,7 @@ static char	*get_special_var(int c)
 	return (NULL);
 }
 
+//Maybe add a string with "\n" in line 18 or 21
 static char	*get_env_var(char *var)
 {
 	char	*env;

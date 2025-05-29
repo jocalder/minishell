@@ -71,7 +71,7 @@ int	split_input(t_input *input)
 	size_t			len;
 
 	if (!input || !input->value)
-		return (ERROR);
+		return (update_status(ERROR));
 	start = input->value;
 	while (*start)
 	{
