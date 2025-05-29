@@ -23,11 +23,6 @@ void    handle_execution(t_mini *data, char **envp)
 
 	cmd = data->input->cmd;
 	prev_fd = -1;
-	if (is_single_builtin(cmd) && only_parent(cmd->token->value))
-	{
-		execute_builtin_parent(data, cmd, envp);
-		return ;//i think here status and errors
-	}
 	while (cmd)
 	{
 		if (cmd->next)
@@ -69,8 +64,9 @@ void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 		else if (fd_out != -1)
 			dup2(fd_out, 1);
 		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
-		if (is_builtin(cmd->token->value))
-			exit(execute_builtin_child(cmd, envp));
+		//if (is_builtin(cmd->token->value))
+		//	execute_builtin(cmd, envp);
+		//else
 		execute_command(cmd, envp);
 }
 
