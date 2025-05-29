@@ -6,7 +6,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_mini	data;
 
-	(void)envp;
 	if (argc != 1)
 		return (perror(USAGE), E_USAGE);
 	if (init_data(&data) == ERROR)
@@ -21,6 +20,7 @@ int	main(int argc, char **argv, char **envp)
 		/*test*/
 		//invented_input(data.input);
 		printf_input(data.input);
+		handle_execution(&data, envp);
 		/*end_test*/
 		free_all(&data, false);
 	}

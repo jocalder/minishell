@@ -10,11 +10,12 @@
 # include <sys/types.h>
 # include <sys/time.h>
 # include <sys/ioctl.h>
+# include <sys/wait.h>
 
 /*colors*/
-# define RED			"\033[0;34m"
-# define BLUE			"\033[0;31m"
-# define WHITE			"\033[0m"
+# define RED				"\033[0;34m"
+# define BLUE				"\033[0;31m"
+# define WHITE				"\033[0m"
 
 # define USAGE			"Usage: ./minishell"
 
@@ -30,7 +31,6 @@
 typedef enum	e_token_type
 {
 	CMD,
-	BUILTIN,
 	ARG,
 	REDIR_IN,
 	REDIR_OUT,
@@ -38,6 +38,7 @@ typedef enum	e_token_type
 	HEREDOC,
 	ENDOFFILE,
 	FILE_PATH,
+	BUILTIN,
 }	t_token_type;
 
 typedef struct s_token
@@ -88,7 +89,6 @@ enum	e_status
 
 extern int	g_status;
 
-/*main*/
 int		init_data(t_mini *data);
 void	wait_signal(void);
 int		set_prompt(t_prompt *promt);
@@ -120,8 +120,25 @@ void	free_all(t_mini *data, bool check);
 void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
 
+/*utils*/
+int		is_spacetab(int c);
+int		is_quote(int c);
+int		count_cmd(t_cmd *cmd);
+int		update_status(int new_status);
+bool	is_builtin(char *value);
+
 /*delete*/
 void	printf_input(t_input *input);
 void	invented_input(t_input *input);
+
+/*execution*/
+void    handle_execution(t_mini *data, char **envp);
+void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
+int		redir_in(t_token *token);
+int		redir_out(t_token *token);
+void	execute_command(t_cmd *cmd, char **envp);
+int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
+void	wait_all(void);
+int		open_heredoc(char *delimiter);
 
 #endif

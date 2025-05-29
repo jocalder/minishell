@@ -27,6 +27,11 @@ SRCS = 	src/main.c				\
 		src/status_utils.c		\
 		src/utils.c				\
 		src/delete.c			\
+		src/heredoc_proccess.c	\
+		src/execution.c			\
+		src/execution_utils.c	\
+		src/execution_utils2.c	\
+		
 
 OBJS = $(SRCS:%.c=objs/%.o)
 
