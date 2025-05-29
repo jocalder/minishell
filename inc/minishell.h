@@ -19,8 +19,9 @@
 
 # define USAGE			"Usage: ./minishell"
 
-# define PARSE_ERROR1	"minishell: parse error near `|'"
-# define PARSE_ERROR2	"minishell: parse error near `||'"
+# define PARSE_ERROR1	"minishell: syntax error near unexpected token `|'"
+# define PARSE_ERROR2	"minishell: syntax error near unexpected token `||'"
+# define PARSE_ERROR3	"minishell: syntax error near unexpected token `>'"
 
 # define CMD_NO_FOUND	"Command not found"
 
@@ -84,7 +85,7 @@ enum	e_status
 {
 	E_USAGE = 127,
 	E_CTRC	= 130,
-	E_UNSTK	= 258
+	E_UNSTK	= 2
 };
 
 extern int	g_status;
@@ -106,6 +107,7 @@ int		split_cmd(t_cmd **cmd);
 void	append_token(t_cmd *cmd, t_token **new, int type);
 char	*expand_content(char *value);
 int		get_type(t_token *token, char *value);
+char	*get_redir(char **str, size_t *len);
 
 /*status_utils*/
 int		update_status(int new_status);
@@ -114,6 +116,7 @@ void	exit_status(int status, t_mini *data);
 /*utils*/
 int		is_spacetab(int c);
 int		is_quote(int c);
+int		is_redir(char *str);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);

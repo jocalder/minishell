@@ -13,3 +13,13 @@ int	is_quote(int c)
 		return (1);
 	return (0);
 }
+
+int	is_redir(char *str)
+{
+	if (!str || !*str)
+		return (0);
+	if (ft_strncmp(str, "<<", 2) == 0 || ft_strncmp(str, ">>", 2) == 0
+		|| ft_strncmp(str, "<", 1) == 0 || ft_strncmp(str, ">", 1) == 0)
+		return (1);
+	return (0);
+}

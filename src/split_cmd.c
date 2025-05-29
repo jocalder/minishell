@@ -21,6 +21,33 @@ void	append_token(t_cmd *cmd, t_token **new, int type)
 	}
 }
 
+char	*get_redir(char **str, size_t *len)
+{
+	char	*redir;
+
+	if (ft_strncmp(str[0], "<<<", 3) == 0)
+		return ((void)update_status(ERROR), NULL);
+	else if (ft_strncmp(str[0], ">>>", 3) == 0)
+	{
+		write(STDERR_FILENO, PARSE_ERROR3, 50);
+		return ((void)update_status(E_UNSTK), NULL);
+	}
+	else if (ft_strncmp(str[0], "<<", 2) == 0 || ft_strncmp(str[0], ">>", 2) == 0)
+	{
+		redir = ft_substr(str[0], 0, 2);
+		str[0][++(*len)] = ' ';
+	}
+	else if (ft_strncmp(str[0], "<", 1) == 0 || ft_strncmp(str[0], ">", 1) == 0)
+	{
+		redir = ft_substr(str[0], 0, 1);
+		str[0][0] = ' ';
+	}
+	if (redir)
+		return (redir);
+	else
+		return ((void)update_status(ERROR), NULL);
+}
+
 static t_token	*last_token(t_token *token)
 {
 	t_token	*last;

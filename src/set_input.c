@@ -1,7 +1,8 @@
 #include "minishell.h"
 
 //Reduce lines
-//Consider the cases when redir and next argument are joined
+//Consider the cases when redir and next argument are joined (DONE)
+//Consider add flag in cases quote for redir and EOF in Heredoc
 int	split_cmd(t_cmd **cmd)
 {
 	t_token			*new;
@@ -44,6 +45,12 @@ int	split_cmd(t_cmd **cmd)
 				while (start[len] && (!is_spacetab(start[len]) && !is_quote(start[len])))
 					len++;
 				tmp = expand_content(ft_substr(start, 0, len));
+			}
+			else if (is_redir(start))
+			{
+				tmp = get_redir(&start, &len);
+				if (!tmp)
+					return (free(new->value), free(new), g_status);
 			}
 			else
 				tmp = ft_substr(start, 0, ++len);

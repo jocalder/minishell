@@ -23,7 +23,7 @@ int	validate_pipe(t_input *input, char **str)
 		return (OK);
 	input->pipes++;
 	if (count_cmd(input->cmd) < input->pipes)
-		return ((void)write(STDERR_FILENO, PARSE_ERROR1, 31), update_status(E_UNSTK));
+		return ((void)write(STDERR_FILENO, PARSE_ERROR1, 50), update_status(E_UNSTK));
 	(*str)++;
 	if (**str != '|')
 	{
@@ -34,13 +34,13 @@ int	validate_pipe(t_input *input, char **str)
 		if (**str != '|')
 			return (OK);
 		else if (*(*str + 1) != '|')
-			return ((void)write(STDERR_FILENO, PARSE_ERROR1, 31), update_status(E_UNSTK));
-		return ((void)write(STDERR_FILENO, PARSE_ERROR2, 32), update_status(E_UNSTK));
+			return ((void)write(STDERR_FILENO, PARSE_ERROR1, 50), update_status(E_UNSTK));
+		return ((void)write(STDERR_FILENO, PARSE_ERROR2, 51), update_status(E_UNSTK));
 	}
 	else if (*(*str + 1) == '|' && *(*str + 2) != '|')
-		return ((void)write(STDERR_FILENO, PARSE_ERROR1, 31), update_status(E_UNSTK));
+		return ((void)write(STDERR_FILENO, PARSE_ERROR1, 50), update_status(E_UNSTK));
 	else if (*(*str + 1) == '|' && *(*str + 2) == '|')
-		return ((void)write(STDERR_FILENO, PARSE_ERROR2, 32), update_status(E_UNSTK));
+		return ((void)write(STDERR_FILENO, PARSE_ERROR2, 51), update_status(E_UNSTK));
 	return (update_status(ERROR));
 }
 
