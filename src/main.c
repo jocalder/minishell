@@ -2,18 +2,6 @@
 
 int	g_status;
 
-static void	exit_status(int status, t_mini *data)
-{
-	if (status == END)
-	{
-		printf("exit\n");
-		g_status = 0;
-	}
-	free_all(data, true);
-	rl_clear_history();
-	exit (g_status);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	data;
@@ -31,7 +19,7 @@ int	main(int argc, char **argv, char **envp)
 		if (set_input(&data) != OK)
 			exit_status(g_status, &data);
 		/*test*/
-		invented_input(data.input);
+		//invented_input(data.input);
 		printf_input(data.input);
 		/*end_test*/
 		free_all(&data, false);
