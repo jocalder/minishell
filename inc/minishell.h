@@ -123,7 +123,6 @@ void	free_input(t_input *input, bool check);
 /*utils*/
 int		is_spacetab(int c);
 int		is_quote(int c);
-int		count_cmd(t_cmd *cmd);
 int		update_status(int new_status);
 bool	is_builtin(char *value);
 
