@@ -21,7 +21,7 @@ static char	*get_env_var(char *var)
 	return (free(var), env);
 }
 
-static char	*handle_expand(char *value, size_t *len)
+static char	*handler_expand(char *value, size_t *len)
 {
 	char	*new_value;
 
@@ -54,7 +54,7 @@ char	*expand_content(char *value)
 		tmp = NULL;
 		len = 0;
 		if (*start == '$' && (start[len + 1] && !is_spacetab(start[len + 1])))
-			tmp = handle_expand(++start, &len);
+			tmp = handler_expand(++start, &len);
 		else
 			tmp = ft_substr(start, 0, ++len);
 		start += len;
