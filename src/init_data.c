@@ -31,7 +31,7 @@ int	init_data(t_mini *data)
 		return (ERROR);
 	data->input = ft_calloc(1, sizeof(t_input));
 	if (!data->input)
-		return (ERROR);
+		return (free(data->prompt), ERROR);
 	init_prompt(data->prompt);
 	init_input(data->input);
 	return (OK);

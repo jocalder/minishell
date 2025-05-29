@@ -13,9 +13,9 @@
 # include <sys/wait.h>
 
 /*colors*/
-# define RED			"\033[0;34m"
-# define BLUE			"\033[0;31m"
-# define WHITE			"\033[0m"
+# define RED				"\033[0;34m"
+# define BLUE				"\033[0;31m"
+# define WHITE				"\033[0m"
 
 # define USAGE			"Usage: ./minishell"
 
@@ -27,13 +27,6 @@
 # define ERROR	-1
 # define OK		0
 # define END	1
-
-typedef enum	e_flag
-{
-	NONE,
-	OPEN,
-	CLOSE,	
-}	t_flag;
 
 typedef enum	e_token_type
 {
@@ -52,8 +45,6 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
-	t_flag			flag;
-	int				fd[2];
 	struct s_token	*next;
 }	t_token;
 
@@ -61,6 +52,8 @@ typedef struct s_cmd
 {
 	char			*value;
 	t_token			*token;
+	int				fd[2];
+	pid_t			pid;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -82,7 +75,6 @@ typedef struct prompt
 
 typedef struct minishell
 {
-	//char		**args; //delete
 	t_prompt	*prompt;
 	t_input		*input;
 }	t_mini;

@@ -80,6 +80,6 @@ int	execute_builtin(t_mini *data, t_cmd *cmd, char **envp)
 		return (update_status(ft_export(cmd, envp)));
 	else if (ft_strncmp(builtin, "unset", 6) == 0)
 		return (update_status(ft_unset(cmd, envp)));
-	else if
+	else
 		return (update_status(ft_exit(cmd)));
 }
