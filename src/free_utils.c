@@ -18,7 +18,7 @@ void	free_prompt(t_prompt *prompt, bool check)
 static void	free_token(t_token *token)
 {
 	t_token	*cur;
-	t_token *next;
+	t_token	*next;
 
 	if (!token)
 		return ;

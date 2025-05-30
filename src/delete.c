@@ -524,7 +524,7 @@ void	printf_input(t_input *input)
 	printf("Quantity pipes: %d\n\n", input->pipes);
 
 	if (!input->cmd)
-		return ((void)printf("No commands found.\n"));
+		return ((void)printf("Tester: No commands found.\n"));
 
 	i = 0;
 	cur_cmd = input->cmd;
