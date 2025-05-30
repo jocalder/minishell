@@ -23,7 +23,7 @@ int	validate_pipe(t_input *input, char **str)
 		return (OK);
 	input->pipes++;
 	if (count_cmd(input->cmd) < input->pipes)
-		return ((void)write(STDERR_FILENO, ERROR1, 50), update_status(E_UNSTK));
+		return ((void)write(STDERR_FILENO, ERROR1, 51), update_status(SINTAX));
 	(*str)++;
 	if (**str != '|')
 	{
@@ -34,13 +34,13 @@ int	validate_pipe(t_input *input, char **str)
 		if (**str != '|')
 			return (OK);
 		else if (*(*str + 1) != '|')
-			return ((void)write(STDERR_FILENO, ERROR1, 50), update_status(2));
-		return ((void)write(STDERR_FILENO, ERROR2, 51), update_status(E_UNSTK));
+			return ((void)write(STDERR_FILENO, ERROR1, 51), update_status(2));
+		return ((void)write(STDERR_FILENO, ERROR2, 52), update_status(SINTAX));
 	}
 	else if (*(*str + 1) == '|' && *(*str + 2) != '|')
-		return ((void)write(STDERR_FILENO, ERROR1, 50), update_status(E_UNSTK));
+		return ((void)write(STDERR_FILENO, ERROR1, 51), update_status(SINTAX));
 	else if (*(*str + 1) == '|' && *(*str + 2) == '|')
-		return ((void)write(STDERR_FILENO, ERROR2, 51), update_status(E_UNSTK));
+		return ((void)write(STDERR_FILENO, ERROR2, 52), update_status(SINTAX));
 	return (update_status(ERROR));
 }
 

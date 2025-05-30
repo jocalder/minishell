@@ -31,7 +31,7 @@ char	*get_redir(char **str, size_t *len)
 	else if (ft_strncmp(str[0], ">>>", 3) == 0)
 	{
 		write(STDERR_FILENO, ERROR3, 50);
-		return ((void)update_status(E_UNSTK), NULL);
+		return ((void)update_status(SINTAX), NULL);
 	}
 	else if (ft_strncmp(str[0], "<<", 2) == 0
 		|| ft_strncmp(str[0], ">>", 2) == 0)

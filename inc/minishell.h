@@ -13,21 +13,18 @@
 # include <sys/wait.h>
 
 /*colors*/
-# define RED				"\033[0;34m"
-# define BLUE				"\033[0;31m"
-# define WHITE				"\033[0m"
+# define RED	"\033[0;34m"
+# define BLUE	"\033[0;31m"
+# define WHITE	"\033[0m"
 
-# define USAGE			"Usage: ./minishell"
+# define USAGE	"Usage: ./minishell\n"
 
-# define ERROR1	"minishell: syntax error near unexpected token `|'"
-# define ERROR2	"minishell: syntax error near unexpected token `||'"
-# define ERROR3	"minishell: syntax error near unexpected token `>'"
+# define ERROR1	"minishell: syntax error near unexpected token `|'\n"
+# define ERROR2	"minishell: syntax error near unexpected token `||'\n"
+# define ERROR3	"minishell: syntax error near unexpected token `>'\n"
 
-# define CMD_NO_FOUND	"Command not found"
-
-# define ERROR	-1
 # define OK		0
-# define END	1
+# define END	-1
 
 typedef enum	e_token_type
 {
@@ -83,9 +80,11 @@ typedef struct minishell
 
 enum	e_status
 {
-	E_USAGE = 127,
-	E_CTRC	= 130,
-	E_UNSTK	= 2
+	ERROR = 1,
+	SINTAX	= 2,
+	NOTEXEC = 126,
+	NOTFOUND = 127,
+	CTRC	= 130,
 };
 
 extern int	g_status;
