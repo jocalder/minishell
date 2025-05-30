@@ -1,8 +1,7 @@
 #include "minishell.h"
 
 //Reduce lines
-//Consider the cases when redir and next argument are joined (DONE)
-//Consider add flag in cases quote for redir and EOF in Heredoc (DONE)
+
 int	split_cmd(t_cmd **cmd)
 {
 	t_token			*new;
