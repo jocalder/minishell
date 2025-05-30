@@ -19,9 +19,14 @@
 
 # define USAGE	"Usage: ./minishell\n"
 
+/*syntax error*/
 # define ERROR1	"minishell: syntax error near unexpected token `|'\n"
 # define ERROR2	"minishell: syntax error near unexpected token `||'\n"
 # define ERROR3	"minishell: syntax error near unexpected token `>'\n"
+# define ERROR4	"minishell: syntax error near unexpected token `newline'\n"
+
+/*execve errors*/
+# define ERROR5	"minishell: command not found: %s\n"
 
 # define OK		0
 # define END	-1
@@ -82,7 +87,7 @@ typedef struct minishell
 enum	e_status
 {
 	ERROR = 1,
-	SINTAX	= 2,
+	SINTAX	= 2, // or 258
 	NOTEXEC = 126,
 	NOTFOUND = 127,
 	CTRC	= 130,
@@ -115,20 +120,15 @@ int		update_status(int new_status);
 void	exit_status(int status, t_mini *data);
 
 /*utils*/
-int		is_spacetab(int c);
-int		is_quote(int c);
-int		is_redir(char *str);
+bool	is_spacetab(int c);
+bool	is_quote(int c);
+bool	is_redir(char *str);
+bool	is_builtin(char *value);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
 void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
-
-/*utils*/
-int		is_spacetab(int c);
-int		is_quote(int c);
-int		update_status(int new_status);
-bool	is_builtin(char *value);
 
 /*delete*/
 void	printf_input(t_input *input);

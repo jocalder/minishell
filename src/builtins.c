@@ -44,21 +44,6 @@ static void	ft_env(char **envp)
 	}
 }
 
-bool	is_builtin(char *value)
-{
-	if (!value)
-		return (false);
-	if (ft_strncmp(value, "echo", 5) == 0
-		|| ft_strncmp(value, "cd" 3) == 0
-		|| ft_strncmp(value, "pwd", 4) == 0
-		|| ft_strncmp(value, "export", 7) == 0
-		|| ft_strncmp(value, "unset", 6) == 0
-		|| ft_strncmp(value, "env", 4) == 0
-		|| ft_strncmp(value, "exit", 5) == 0)
-		return (true);
-	return (false);
-}
-
 int	execute_builtin(t_mini *data, t_cmd *cmd, char **envp)
 {
 	char	*builtin;
