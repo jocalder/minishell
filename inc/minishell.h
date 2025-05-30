@@ -19,9 +19,9 @@
 
 # define USAGE			"Usage: ./minishell"
 
-# define PARSE_ERROR1	"minishell: syntax error near unexpected token `|'"
-# define PARSE_ERROR2	"minishell: syntax error near unexpected token `||'"
-# define PARSE_ERROR3	"minishell: syntax error near unexpected token `>'"
+# define ERROR1	"minishell: syntax error near unexpected token `|'"
+# define ERROR2	"minishell: syntax error near unexpected token `||'"
+# define ERROR3	"minishell: syntax error near unexpected token `>'"
 
 # define CMD_NO_FOUND	"Command not found"
 

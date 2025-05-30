@@ -2,7 +2,7 @@
 
 void	append_token(t_cmd *cmd, t_token **new, int type)
 {
-	t_token *cur;
+	t_token	*cur;
 
 	if (!cmd || !new || !*new)
 		return ;
@@ -25,14 +25,16 @@ char	*get_redir(char **str, size_t *len)
 {
 	char	*redir;
 
+	redir = NULL;
 	if (ft_strncmp(str[0], "<<<", 3) == 0)
 		return ((void)update_status(ERROR), NULL);
 	else if (ft_strncmp(str[0], ">>>", 3) == 0)
 	{
-		write(STDERR_FILENO, PARSE_ERROR3, 50);
+		write(STDERR_FILENO, ERROR3, 50);
 		return ((void)update_status(E_UNSTK), NULL);
 	}
-	else if (ft_strncmp(str[0], "<<", 2) == 0 || ft_strncmp(str[0], ">>", 2) == 0)
+	else if (ft_strncmp(str[0], "<<", 2) == 0
+		|| ft_strncmp(str[0], ">>", 2) == 0)
 	{
 		redir = ft_substr(str[0], 0, 2);
 		str[0][++(*len)] = ' ';
@@ -70,7 +72,8 @@ int	get_type(t_token *token, char *value)
 	else if (last->type == HEREDOC)
 		return (ENDOFFILE);
 	else if (last->prev
-		&& (last->type == APPEND || last->type == REDIR_IN || last->type == REDIR_OUT))
+		&& (last->type == APPEND || last->type == REDIR_IN
+			|| last->type == REDIR_OUT))
 		return (FILE_PATH);
 	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0)
 		return (REDIR_IN);

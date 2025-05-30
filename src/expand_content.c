@@ -27,7 +27,7 @@ static char	*handler_expand(char *value, size_t *len)
 	char	*new_value;
 
 	if (!value)
-		return ft_strdup("");
+		return (ft_strdup(""));
 	if (value[*len] == '$' || value[*len] == '?')
 		new_value = get_special_var(value[(*len)++]);
 	else

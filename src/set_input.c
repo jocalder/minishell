@@ -94,7 +94,7 @@ int	split_input(t_input *input)
 		}
 		append_cmd(input, new, ft_substr(start, 0, len));
 		if (split_cmd(&new) != OK)
-			return (free(new), g_status);
+			return (g_status);
 		start += len;
 	}
 	return (OK);
@@ -102,7 +102,7 @@ int	split_input(t_input *input)
 
 int	set_input(t_mini *data)
 {
-	if (!data)	
+	if (!data)
 		return (update_status(ERROR));
 	data->input->value = readline(data->prompt->value);
 	if (!data->input->value)
