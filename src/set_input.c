@@ -2,7 +2,7 @@
 
 //Reduce lines
 //Consider the cases when redir and next argument are joined (DONE)
-//Consider add flag in cases quote for redir and EOF in Heredoc
+//Consider add flag in cases quote for redir and EOF in Heredoc (DONE)
 int	split_cmd(t_cmd **cmd)
 {
 	t_token			*new;
@@ -23,12 +23,14 @@ int	split_cmd(t_cmd **cmd)
 		if (!new)
 			return (update_status(ERROR));
 		new->value = ft_strdup("");
+		new->flag = false;
 		while (*start && !is_spacetab(*start))
 		{
 			len = 0;
 			tmp = NULL;
 			if (is_quote(start[len]))
 			{
+				new->flag = true;
 				quote = (unsigned char)start[len++];
 				while (start[len] && start[len] != quote)
 					len++;
@@ -36,7 +38,7 @@ int	split_cmd(t_cmd **cmd)
 					return (update_status(ERROR));
 				tmp = ft_substr(start, 1, len - 1);
 				if (quote == '\"')
-					tmp = expand_content(tmp);
+					tmp = expand_content(tmp, ((last_token((*cmd)->token))->type));
 				len++;
 			}
 			else if (start[len] == '$' && (start[len + 1] && !is_spacetab(start[len + 1])))
@@ -44,7 +46,7 @@ int	split_cmd(t_cmd **cmd)
 				len++;
 				while (start[len] && (!is_spacetab(start[len]) && !is_quote(start[len])))
 					len++;
-				tmp = expand_content(ft_substr(start, 0, len));
+				tmp = expand_content(ft_substr(start, 0, len),  ((last_token((*cmd)->token))->type));
 			}
 			else if (is_redir(start))
 			{
@@ -61,7 +63,7 @@ int	split_cmd(t_cmd **cmd)
 			free(tmp);
 		}
 		if (ft_strncmp(new->value, "", ft_strlen(new->value)) != 0)
-			append_token(*cmd, &new, get_type((*cmd)->token, new->value));
+			append_token(*cmd, &new, get_type((*cmd)->token, new->value, new->flag), new->flag);
 		else
 		{
 			free(new->value);

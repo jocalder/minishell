@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	append_token(t_cmd *cmd, t_token **new, int type)
+void	append_token(t_cmd *cmd, t_token **new, int type, bool flag)
 {
 	t_token	*cur;
 
@@ -9,6 +9,7 @@ void	append_token(t_cmd *cmd, t_token **new, int type)
 	(*new)->type = type;
 	(*new)->next = NULL;
 	(*new)->prev = NULL;
+	(*new)->flag = flag;
 	if (!cmd->token)
 		cmd->token = *new;
 	else
@@ -50,7 +51,7 @@ char	*get_redir(char **str, size_t *len)
 		return ((void)update_status(ERROR), NULL);
 }
 
-static t_token	*last_token(t_token *token)
+t_token	*last_token(t_token *token)
 {
 	t_token	*last;
 
@@ -62,7 +63,7 @@ static t_token	*last_token(t_token *token)
 	return (last);
 }
 
-int	get_type(t_token *token, char *value)
+int	get_type(t_token *token, char *value, bool check)
 {
 	t_token	*last;
 
@@ -75,13 +76,13 @@ int	get_type(t_token *token, char *value)
 		&& (last->type == APPEND || last->type == REDIR_IN
 			|| last->type == REDIR_OUT))
 		return (FILE_PATH);
-	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0)
+	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0 && !check)
 		return (REDIR_IN);
-	else if (ft_strncmp(value, ">", ft_strlen(value)) == 0)
+	else if (ft_strncmp(value, ">", ft_strlen(value)) == 0 && !check)
 		return (REDIR_OUT);
-	else if (ft_strncmp(value, "<<", ft_strlen(value)) == 0)
+	else if (ft_strncmp(value, "<<", ft_strlen(value)) == 0 && !check)
 		return (HEREDOC);
-	else if (ft_strncmp(value, ">>", ft_strlen(value)) == 0)
+	else if (ft_strncmp(value, ">>", ft_strlen(value)) == 0 && !check)
 		return (APPEND);
 	else
 		return (ARG);

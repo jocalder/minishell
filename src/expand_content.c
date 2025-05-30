@@ -39,7 +39,7 @@ static char	*handler_expand(char *value, size_t *len)
 	return (new_value);
 }
 
-char	*expand_content(char *value)
+char	*expand_content(char *value, int pre_type)
 {
 	char	*new_value;
 	char	*start;
@@ -48,6 +48,8 @@ char	*expand_content(char *value)
 
 	if (!value)
 		return (ft_strdup(""));
+	if (pre_type == HEREDOC)
+		return (value);
 	new_value = ft_strdup("");
 	start = value;
 	while (*start)

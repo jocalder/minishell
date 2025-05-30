@@ -45,6 +45,7 @@ typedef struct s_token
 	t_token_type	type;
 	struct s_token	*next;
 	struct s_token	*prev;
+	bool			flag;
 }	t_token;
 
 typedef struct s_cmd
@@ -103,9 +104,10 @@ void	append_cmd(t_input *input, t_cmd *new, char *value);
 
 /*split_cmd*/
 int		split_cmd(t_cmd **cmd);
-void	append_token(t_cmd *cmd, t_token **new, int type);
-char	*expand_content(char *value);
-int		get_type(t_token *token, char *value);
+void	append_token(t_cmd *cmd, t_token **new, int type, bool flag);
+char	*expand_content(char *value, int pre_type);
+t_token	*last_token(t_token *token);
+int		get_type(t_token *token, char *value, bool check);
 char	*get_redir(char **str, size_t *len);
 
 /*status_utils*/
