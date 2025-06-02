@@ -1,18 +1,5 @@
 #include "minishell.h"
 
-// static void	free_directories(char **directories)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	while (directories[i])
-// 	{
-// 		free(directories[i]);
-// 		i++;
-// 	}
-// 	free(directories);
-// }
-
 static int	count_args(t_token *token)
 {
 	int		count;
@@ -26,7 +13,7 @@ static int	count_args(t_token *token)
 	}
 	return (count);
 }
-static char	*find_command_path(char	*command, char **envp)//changes with the structures
+static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 {
 	char	**directories;
 	char	*full_path;
@@ -34,13 +21,14 @@ static char	*find_command_path(char	*command, char **envp)//changes with the str
 	int		i;
 
 	i = 0;
-	// if (cmd->token->type == CMD && ft_strncmp(cmd->token->value, "/bin/", 5) == 0)
-	// {
-	// 	if (access(cmd->token->value, F_OK) != 0)
-	//  		perror("invalid command");
-	// 	else
-	// 		return (cmd->token->value);
-	// }
+	if (ft_strncmp(cmd->token->value, "/bin/", 5) == 0
+		|| ft_strncmp(cmd->token->value, "./", 2) == 0)
+	{
+		if (access(cmd->token->value, F_OK) != 0)
+			perror("invalid command");
+		else
+			return (cmd->token->value);
+	}
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	directories = ft_split(envp[i], ':');
@@ -54,7 +42,6 @@ static char	*find_command_path(char	*command, char **envp)//changes with the str
 		free(full_path);
 	}
 	free(directories);
-	free(full_path);
 	return (NULL);
 }
 
@@ -86,7 +73,7 @@ void	execute_command(t_cmd *cmd, char **envp)
 	char	*path;
 	
 	command = build_full_command(cmd->token);
-	path = find_command_path(command[0], envp);
+	path = find_command_path(command[0], envp, cmd);
 	if (!path)
 		perror("path failed");//message error, update error status
 	if (execve(path, command, envp) != 0)

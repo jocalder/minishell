@@ -13,9 +13,9 @@
 # include <sys/wait.h>
 
 /*colors*/
-# define RED				"\033[0;34m"
-# define BLUE				"\033[0;31m"
-# define WHITE				"\033[0m"
+# define RED				"\001\033[0;34m\002"
+# define BLUE				"\001\033[0;31m\002"
+# define WHITE				"\001\033[0m\002"
 
 # define USAGE			"Usage: ./minishell"
 

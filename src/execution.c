@@ -64,9 +64,6 @@ void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 		else if (fd_out != -1)
 			dup2(fd_out, 1);
 		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
-		//if (is_builtin(cmd->token->value))
-		//	execute_builtin(cmd, envp);
-		//else
 		execute_command(cmd, envp);
 }
 
