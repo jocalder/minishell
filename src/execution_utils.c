@@ -75,7 +75,7 @@ void	execute_command(t_cmd *cmd, char **envp)
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
-		printf("minishell: %s: command not found\n", command[0]);//message error, update error status
+		printf("minishell: %s: command not found\n", command[0]);
 	if (execve(path, command, envp) != 0)
 	{
 		free_array(command);

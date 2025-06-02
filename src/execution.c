@@ -25,16 +25,7 @@ void    handle_execution(t_mini *data, char **envp)
 	prev_fd = -1;
 	while (cmd)
 	{
-		if (cmd->next)
-		{
-			if (pipe(pipe_fd) != 0)
-				perror("pipe failed");//handle errors, status
-		}
-		else
-		{
-			pipe_fd[0] = -1;
-			pipe_fd[1] = -1;
-		}
+		create_pipes(cmd, pipe_fd);
 		pid = fork();
 		if (pid == 0)
 			ft_child_proccess(pipe_fd, prev_fd, cmd, envp);
@@ -67,7 +58,6 @@ void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 			dup2(fd_out, 1);
 		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
 		execute_command(cmd, envp);
-		return ((void)update_status(OK));
 }
 
 int	redir_in(t_token *token)
