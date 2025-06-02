@@ -58,6 +58,7 @@ void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 			dup2(fd_out, 1);
 		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
 		execute_command(cmd, envp);
+		//status when the execution is successful
 }
 
 int	redir_in(t_token *token)
