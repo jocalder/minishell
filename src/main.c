@@ -7,9 +7,9 @@ int	main(int argc, char **argv, char **envp)
 	t_mini	data;
 
 	if (argc != 1)
-		return (perror(USAGE), E_USAGE);
-	if (init_data(&data) == ERROR)
-		return (free_all(&data, true), ERROR);
+		return ((void)write(STDERR_FILENO, USAGE, 20), update_status(SINTAX));
+	if (init_data(&data) != OK)
+		return (free_all(&data, true), update_status(ERROR));
 	wait_signal();
 	while (argv)
 	{
@@ -17,11 +17,8 @@ int	main(int argc, char **argv, char **envp)
 			exit_status(g_status, &data);
 		if (set_input(&data) != OK)
 			exit_status(g_status, &data);
-		/*test*/
-		//invented_input(data.input);
-		printf_input(data.input);
+		//printf_input(data.input);
 		handle_execution(&data, envp);
-		/*end_test*/
 		free_all(&data, false);
 	}
 	exit_status(g_status, &data);

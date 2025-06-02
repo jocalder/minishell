@@ -17,16 +17,19 @@
 # define BLUE				"\001\033[0;31m\002"
 # define WHITE				"\001\033[0m\002"
 
-# define USAGE			"Usage: ./minishell"
+# define USAGE	"Usage: ./minishell\n"
 
-# define PARSE_ERROR1	"minishell: parse error near `|'"
-# define PARSE_ERROR2	"minishell: parse error near `||'"
+/*syntax error*/
+# define ERROR1	"minishell: syntax error near unexpected token `|'\n"
+# define ERROR2	"minishell: syntax error near unexpected token `||'\n"
+# define ERROR3	"minishell: syntax error near unexpected token `>'\n"
+# define ERROR4	"minishell: syntax error near unexpected token `newline'\n"
 
-# define CMD_NO_FOUND	"Command not found"
+/*execve errors*/
+# define ERROR5	"minishell: command not found: %s\n"
 
-# define ERROR	-1
 # define OK		0
-# define END	1
+# define END	-1
 
 typedef enum	e_token_type
 {
@@ -47,6 +50,7 @@ typedef struct s_token
 	t_token_type	type;
 	struct s_token	*next;
 	struct s_token	*prev;
+	bool			flag;
 }	t_token;
 
 typedef struct s_cmd
@@ -82,9 +86,11 @@ typedef struct minishell
 
 enum	e_status
 {
-	E_USAGE = 127,
-	E_CTRC	= 130,
-	E_UNSTK	= 258
+	ERROR = 1,
+	SINTAX	= 2, // or 258
+	NOTEXEC = 126,
+	NOTFOUND = 127,
+	CTRC	= 130,
 };
 
 extern int	g_status;
@@ -103,28 +109,26 @@ void	append_cmd(t_input *input, t_cmd *new, char *value);
 
 /*split_cmd*/
 int		split_cmd(t_cmd **cmd);
-void	append_token(t_cmd *cmd, t_token **new, int type);
-char	*expand_content(char *value);
-int		get_type(t_token *token, char *value);
+void	append_token(t_cmd *cmd, t_token **new, int type, bool flag);
+char	*expand_content(char *value, int pre_type);
+t_token	*last_token(t_token *token);
+int		get_type(t_token *token, char *value, bool check);
+char	*get_redir(char **str, size_t *len);
 
 /*status_utils*/
 int		update_status(int new_status);
 void	exit_status(int status, t_mini *data);
 
 /*utils*/
-int		is_spacetab(int c);
-int		is_quote(int c);
+bool	is_spacetab(int c);
+bool	is_quote(int c);
+bool	is_redir(char *str);
+bool	is_builtin(char *value);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
 void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
-
-/*utils*/
-int		is_spacetab(int c);
-int		is_quote(int c);
-int		update_status(int new_status);
-bool	is_builtin(char *value);
 
 /*delete*/
 void	printf_input(t_input *input);

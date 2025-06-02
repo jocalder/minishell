@@ -55,6 +55,8 @@ void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 
 		fd_in = redir_in(cmd->token);
 		fd_out = redir_out(cmd->token);
+		if (fd_in == 127 || fd_out == 127)
+			return ;
 		if (fd_in != -1)
 			dup2(fd_in, 0);
 		else if (prev_fd != -1 && fd_in == -1)
@@ -65,6 +67,7 @@ void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 			dup2(fd_out, 1);
 		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
 		execute_command(cmd, envp);
+		return ((void)update_status(OK));
 }
 
 int	redir_in(t_token *token)
@@ -74,23 +77,24 @@ int	redir_in(t_token *token)
 	fd = -1;
 	while (token)
 	{
-		if (token->type == HEREDOC)
+		if (token->type == HEREDOC || token->type == REDIR_IN)
 		{
+			if (!token->next || !token->next->value)
+			{
+				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
+				return (update_status(NOTFOUND));
+			}
 			if (fd != -1)
-				close(fd);
-			fd = open_heredoc(token->next->value);
+			close(fd);
+			if (token->type == HEREDOC)
+				fd = open_heredoc(token->next->value);
+			else
+				fd = open((token->next->value), O_RDONLY);
 			if (fd < 0)
-				perror("fd: open_heredoc failed");//handle errors and status
-		}
-		if (token->type == REDIR_IN)
-		{
-			if (fd != -1)
-				close(fd);
-			fd = open((token->next->value), O_RDONLY);
-			if (fd < 0)
-				perror("minishell: token->value: No such file or directory");//handle errors and status
-			if (token->next->next == NULL && token->next->type == FILE_PATH)
-				return (fd);
+			{
+				printf("minishell: %s: no such file or directory\n", token->next->value);
+				return (update_status(NOTFOUND));//update errors to check
+			}
 		}
 		token = token->next;
 	}
@@ -104,25 +108,21 @@ int	redir_out(t_token *token)
 	fd = -1;
 	while (token)
 	{
-		if (token->type == APPEND)
+		if (token->type == APPEND || token->type == REDIR_OUT)
 		{
+			if (!token->next || !token->next->value)
+			{
+				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
+				return (update_status(NOTFOUND));
+			}
 			if (fd != -1)
 				close(fd);
-			fd = open(token->next->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
+			if (token->type == APPEND)
+				fd = open(token->next->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
+			else
+				fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-				perror("minishell: token->value: no such file or directory");//handle errors and status
-			if (token->next->next == NULL && token->next->type == FILE_PATH)
-				return (fd);
-		}
-		if (token->type == REDIR_OUT)
-		{
-			if (fd != -1)
-				close(fd);
-			fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			if (fd < 0)
-				perror("minishell: token->value: no such file or directory");//handle errors and status
-			if (token->next->next == NULL && token->next->type == FILE_PATH)
-				return (fd);
+				return (update_status(NOTFOUND));//update errors to check my panita
 		}
 		token = token->next;
 	}
