@@ -63,7 +63,7 @@ Status = OK
 ```bash
 echo "hola //I think this is in the parser
 ```
-The program crash and exit inmediately
+The program exit inmediately
 ### ❌ Pipe mal formado
 ```bash
 | ls			OK
