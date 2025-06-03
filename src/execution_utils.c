@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+static char	*absolute_path(t_cmd *cmd)
+{
+	if (access(cmd->token->value, F_OK) == 0)
+		return (cmd->token->value);
+	else
+	{
+		printf("minishell: %s: no such file or directory\n", cmd->token->value);
+		return (cmd->token->value);
+	}
+
+}
+
 static int	count_args(t_token *token)
 {
 	int		count;
@@ -23,12 +35,7 @@ static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 	i = 0;
 	if (ft_strncmp(cmd->token->value, "/bin/", 5) == 0
 		|| ft_strncmp(cmd->token->value, "./", 2) == 0)
-	{
-		if (access(cmd->token->value, F_OK) != 0)
-			perror("invalid command");
-		else
-			return (cmd->token->value);
-	}
+		return (absolute_path(cmd));
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	directories = ft_split(envp[i], ':');
@@ -38,7 +45,7 @@ static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 		path = ft_strjoin(directories[i], "/");
 		full_path = ft_strjoin(path, command);
 		if (access(full_path, F_OK) == 0)
-			return (free(directories), full_path);//we must to free directories
+			return (free(directories), full_path);
 		free(full_path);
 	}
 	free(directories);
@@ -81,4 +88,5 @@ void	execute_command(t_cmd *cmd, char **envp)
 		free_array(command);
 		return ((void)update_status(NOTFOUND));
 	}
+	exit (0);
 }

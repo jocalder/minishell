@@ -29,7 +29,7 @@ int open_heredoc(char *delimiter)
 	line = NULL;
 	large = ft_strlen(delimiter);
 	if (pipe(pipe_fd) < 0)
-		perror("pipe_heredoc failed");//return (-1);
+		return (update_status(ERROR));
 	pid = fork();
 	if (pid < 0)
 	{
