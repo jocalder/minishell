@@ -10,9 +10,9 @@ int	split_cmd(t_cmd **cmd)
 	unsigned char	quote;
 	char			*start;
 
-	start = (*cmd)->value;
-	if (!cmd || !*cmd || !start)
+	if (!cmd || !*cmd)
 		return (update_status(ERROR));
+	start = (*cmd)->value;
 	while (*start)
 	{
 		while (*start && is_spacetab(*start))
@@ -37,7 +37,7 @@ int	split_cmd(t_cmd **cmd)
 					return (update_status(ERROR));
 				tmp = ft_substr(start, 1, len - 1);
 				if (quote == '\"')
-					tmp = expand_content(tmp, ((last_token((*cmd)->token))->type));
+					tmp = expand_content(tmp, last_token((*cmd)->token));
 				len++;
 			}
 			else if (start[len] == '$' && (start[len + 1] && !is_spacetab(start[len + 1])))
@@ -45,7 +45,7 @@ int	split_cmd(t_cmd **cmd)
 				len++;
 				while (start[len] && (!is_spacetab(start[len]) && !is_quote(start[len])))
 					len++;
-				tmp = expand_content(ft_substr(start, 0, len),  ((last_token((*cmd)->token))->type));
+				tmp = expand_content(ft_substr(start, 0, len), last_token((*cmd)->token));
 			}
 			else if (is_redir(start))
 			{
@@ -89,9 +89,8 @@ int	split_input(t_input *input)
 		len = 0;
 		while (start[len] && start[len] != '|')
 		{
-			new = new_cmd(start, &len);
-			if (!new)
-				return (update_status(ERROR));
+			if (new_cmd(start, &len) != OK)
+				return (g_status);
 		}
 		append_cmd(input, new, ft_substr(start, 0, len));
 		if (split_cmd(&new) != OK)

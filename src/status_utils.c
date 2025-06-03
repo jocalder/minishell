@@ -1,5 +1,10 @@
 #include "minishell.h"
 
+// void	print_syntax_error(t_token *token)
+// {
+// 	//
+// }
+
 int	update_status(int new_status)
 {
 	g_status = new_status;

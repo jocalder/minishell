@@ -19,22 +19,22 @@ int	validate_pipe(t_input *input, char **str)
 {
 	while (**str && is_spacetab(**str))
 		(*str)++;
-	if (**str != '|')
+	if (**str && **str != '|')
 		return (OK);
 	input->pipes++;
 	if (count_cmd(input->cmd) < input->pipes)
-		return ((void)write(STDERR_FILENO, ERROR1, 51), update_status(SINTAX));
+		return (void)write(STDERR_FILENO, ERROR1, 51), update_status(SINTAX);
 	(*str)++;
 	if (**str != '|')
 	{
 		while (**str && is_spacetab(**str))
 			(*str)++;
 		if (**str == '\0')
-			return (update_status(ERROR));
-		if (**str != '|')
+			return ((void)write(STDERR_FILENO, ERROR7, 50), update_status(SINTAX));
+		else if (**str != '|')
 			return (OK);
 		else if (*(*str + 1) != '|')
-			return ((void)write(STDERR_FILENO, ERROR1, 51), update_status(2));
+			return ((void)write(STDERR_FILENO, ERROR1, 51), update_status(SINTAX));
 		return ((void)write(STDERR_FILENO, ERROR2, 52), update_status(SINTAX));
 	}
 	else if (*(*str + 1) == '|' && *(*str + 2) != '|')
@@ -44,14 +44,14 @@ int	validate_pipe(t_input *input, char **str)
 	return (update_status(ERROR));
 }
 
-t_cmd	*new_cmd(char *start, size_t *len)
+int	new_cmd(char *start, size_t *len)
 {
 	unsigned char	quote;
 	t_cmd			*new;
 
 	new = ft_calloc(1, sizeof(t_cmd));
 	if (!new)
-		return (NULL);
+		return (update_status(ERROR));
 	while (start[*len])
 	{
 		while (start[*len] && is_spacetab(start[*len]))
@@ -62,7 +62,11 @@ t_cmd	*new_cmd(char *start, size_t *len)
 			while (start[*len] && start[*len] != quote)
 				(*len)++;
 			if (!start[*len])
-				return (free(new), NULL);
+			{
+				write(STDERR_FILENO, ERROR6, 59);
+				write(STDERR_FILENO, ERROR7, 50);
+				return (free(new), update_status(SINTAX));
+			}
 			(*len)++;
 			continue ;
 		}
@@ -70,7 +74,7 @@ t_cmd	*new_cmd(char *start, size_t *len)
 			break ;
 		(*len)++;
 	}
-	return (new);
+	return (OK);
 }
 
 void	append_cmd(t_input *input, t_cmd *new, char *value)

@@ -25,6 +25,9 @@
 # define ERROR3	"minishell: syntax error near unexpected token `>'\n"
 # define ERROR4	"minishell: syntax error near unexpected token `newline'\n"
 
+# define ERROR6	"minishell: unexpected EOF while looking for matching `%c'\n"
+# define ERROR7	"minishell: syntax error: unexpected end of file \n"
+
 /*execve errors*/
 # define ERROR5	"minishell: command not found: %s\n"
 
@@ -104,13 +107,13 @@ void	execute_builtins(t_mini *data, char **envp);
 /*split_input*/
 int		split_input(t_input *input);
 int		validate_pipe(t_input *input, char **str);
-t_cmd	*new_cmd(char *start, size_t *len);
+int		new_cmd(char *start, size_t *len);
 void	append_cmd(t_input *input, t_cmd *new, char *value);
 
 /*split_cmd*/
 int		split_cmd(t_cmd **cmd);
 void	append_token(t_cmd *cmd, t_token **new, int type, bool flag);
-char	*expand_content(char *value, int pre_type);
+char	*expand_content(char *value, t_token *last);
 t_token	*last_token(t_token *token);
 int		get_type(t_token *token, char *value, bool check);
 char	*get_redir(char **str, size_t *len);
