@@ -13,9 +13,9 @@
 # include <sys/wait.h>
 
 /*colors*/
-# define RED	"\033[0;34m"
-# define BLUE	"\033[0;31m"
-# define WHITE	"\033[0m"
+# define RED				"\001\033[0;34m\002"
+# define BLUE				"\001\033[0;31m\002"
+# define WHITE				"\001\033[0m\002"
 
 # define USAGE	"Usage: ./minishell\n"
 
@@ -143,5 +143,6 @@ void	execute_command(t_cmd *cmd, char **envp);
 int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
 void	wait_all(void);
 int		open_heredoc(char *delimiter);
+void    create_pipes(t_cmd *cmd, int pipe_fd[2]);
 
 #endif
