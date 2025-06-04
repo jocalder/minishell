@@ -46,8 +46,10 @@ void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 
 		fd_in = redir_in(cmd->token);
 		fd_out = redir_out(cmd->token);
-		if (fd_in == 127 || fd_out == 127)
-			return ;
+		if (fd_in == 2 || fd_out == 2)
+			return ((void)update_status(SINTAX));
+		else if (fd_in == 1 || fd_out == 1)
+			return ((void)update_status(ERROR));
 		if (fd_in != -1)
 			dup2(fd_in, 0);
 		else if (prev_fd != -1 && fd_in == -1)
@@ -73,7 +75,7 @@ int	redir_in(t_token *token)
 			if (!token->next || !token->next->value)
 			{
 				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
-				return (update_status(NOTFOUND));
+				return (update_status(SINTAX));
 			}
 			if (fd != -1)
 			close(fd);
@@ -84,7 +86,7 @@ int	redir_in(t_token *token)
 			if (fd < 0)
 			{
 				printf("minishell: %s: no such file or directory\n", token->next->value);
-				return (update_status(NOTFOUND));//update errors to check
+				return (update_status(ERROR));//update errors to check
 			}
 		}
 		token = token->next;
@@ -104,7 +106,7 @@ int	redir_out(t_token *token)
 			if (!token->next || !token->next->value)
 			{
 				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
-				return (update_status(NOTFOUND));
+				return (update_status(SINTAX));
 			}
 			if (fd != -1)
 				close(fd);
@@ -113,7 +115,7 @@ int	redir_out(t_token *token)
 			else
 				fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-				return (update_status(NOTFOUND));//update errors to check my panita
+				return (update_status(ERROR));//update errors to check my panita
 		}
 		token = token->next;
 	}

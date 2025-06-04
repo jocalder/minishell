@@ -14,7 +14,7 @@ void    create_pipes(t_cmd *cmd, int pipe_fd[2])
     if (cmd->next)
 	{
 		if (pipe(pipe_fd) != 0)
-			perror("pipe failed");//handle errors, status
+			return ((void)update_status(ERROR));//handle errors, status
 	}
 	else
 	{

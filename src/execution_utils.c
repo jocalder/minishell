@@ -25,6 +25,7 @@ static int	count_args(t_token *token)
 	}
 	return (count);
 }
+
 static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 {
 	char	**directories;
@@ -88,5 +89,4 @@ void	execute_command(t_cmd *cmd, char **envp)
 		free_array(command);
 		return ((void)update_status(NOTFOUND));
 	}
-	exit (0);
 }
