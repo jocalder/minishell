@@ -1,7 +1,6 @@
 #include "minishell.h"
 
 //Reduce lines
-
 int	split_cmd(t_cmd **cmd)
 {
 	t_token			*new;
