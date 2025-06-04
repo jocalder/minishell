@@ -108,21 +108,26 @@ void	execute_builtins(t_mini *data, char **envp);
 int		split_input(t_input *input);
 int		validate_pipe(t_input *input, char **str);
 int		new_cmd(t_cmd **new, char *start, size_t *len);
-void	append_cmd(t_input *input, t_cmd *new, char *value);
+void	append_cmd(t_input *input, t_cmd **new, char *value);
 
 /*split_cmd*/
 int		split_cmd(t_cmd **cmd);
-void	append_token(t_cmd *cmd, t_token **new, int type, bool flag);
-char	*expand_content(char *value, t_token *last);
-t_token	*last_token(t_token *token);
+void	append_token(t_cmd *cmd, t_token **new, int type);
 int		get_type(t_token *token, char *value, bool check);
+t_token	*last_token(t_token *token);
+
+/*new_token*/
+int		new_token(t_cmd *cmd, t_token **new, char **start);
+int		quote_case(t_cmd *cmd, char *start, char **tmp, size_t *len);
+void	special_case(t_cmd *cmd, char *start, char **tmp, size_t *len);
+char	*expand_content(char *value, t_token *last);
 char	*get_redir(char **str, size_t *len);
 
 /*status_utils*/
 int		update_status(int new_status);
 void	exit_status(int status, t_mini *data);
 
-/*utils*/
+/*bools utils*/
 bool	is_spacetab(int c);
 bool	is_quote(int c);
 bool	is_redir(char *str);

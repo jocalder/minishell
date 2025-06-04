@@ -72,22 +72,22 @@ int	new_cmd(t_cmd **new, char *start, size_t *len)
 	return (OK);
 }
 
-void	append_cmd(t_input *input, t_cmd *new, char *value)
+void	append_cmd(t_input *input, t_cmd **new, char *value)
 {
 	t_cmd	*cur;
 
-	if (!input || !new)
+	if (!input || !*new)
 		return ;
-	new->value = value;
-	new->token = NULL;
-	new->next = NULL;
+	(*new)->value = value;
+	(*new)->token = NULL;
+	(*new)->next = NULL;
 	if (!input->cmd)
-		input->cmd = new;
+		input->cmd = *new;
 	else
 	{
 		cur = input->cmd;
 		while (cur->next)
 			cur = cur->next;
-		cur->next = new;
+		cur->next = *new;
 	}
 }

@@ -1,13 +1,10 @@
 #include "minishell.h"
 
-//Reduce lines
 int	split_cmd(t_cmd **cmd)
 {
-	t_token			*new;
-	char			*tmp;
-	size_t			len;
-	unsigned char	quote;
-	char			*start;
+	t_token	*new;
+	char	*start;
+	int		type;
 
 	if (!cmd || !*cmd)
 		return (update_status(ERROR));
@@ -22,51 +19,10 @@ int	split_cmd(t_cmd **cmd)
 			return (update_status(ERROR));
 		new->value = ft_strdup("");
 		new->flag = false;
-		while (*start && !is_spacetab(*start))
-		{
-			len = 0;
-			tmp = NULL;
-			if (is_quote(start[len]))
-			{
-				new->flag = true;
-				quote = (unsigned char)start[len++];
-				while (start[len] && start[len] != quote)
-					len++;
-				if (!start[len])
-					return (update_status(ERROR));
-				tmp = ft_substr(start, 1, len - 1);
-				if (quote == '\"')
-					tmp = expand_content(tmp, last_token((*cmd)->token));
-				len++;
-			}
-			else if (start[len] == '$' && (start[len + 1] && !is_spacetab(start[len + 1])))
-			{
-				len++;
-				while (start[len] && (!is_spacetab(start[len]) && !is_quote(start[len])))
-					len++;
-				tmp = expand_content(ft_substr(start, 0, len), last_token((*cmd)->token));
-			}
-			else if (is_redir(start))
-			{
-				tmp = get_redir(&start, &len);
-				if (!tmp)
-					return (free(new->value), free(new), g_status);
-			}
-			else
-				tmp = ft_substr(start, 0, ++len);
-			new->value = ft_strjoin(new->value, tmp);
-			if (!new->value)
-				return (free(tmp), update_status(ERROR));
-			start += len;
-			free(tmp);
-		}
-		if (ft_strncmp(new->value, "", ft_strlen(new->value)) != 0)
-			append_token(*cmd, &new, get_type((*cmd)->token, new->value, new->flag), new->flag);
-		else
-		{
-			free(new->value);
-			free(new);
-		}
+		if (new_token(*cmd, &new, &start) != OK)
+			return (g_status);
+		type = get_type((*cmd)->token, new->value, new->flag);
+		append_token(*cmd, &new, type);
 	}
 	return (OK);
 }
@@ -91,7 +47,7 @@ int	split_input(t_input *input)
 			if (new_cmd(&new, start, &len) != OK)
 				return (g_status);
 		}
-		append_cmd(input, new, ft_substr(start, 0, len));
+		append_cmd(input, &new, ft_substr(start, 0, len));
 		if (split_cmd(&new) != OK)
 			return (g_status);
 		start += len;

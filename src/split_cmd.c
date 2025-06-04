@@ -1,54 +1,40 @@
 #include "minishell.h"
 
-void	append_token(t_cmd *cmd, t_token **new, int type, bool flag)
+int	new_token(t_cmd *cmd, t_token **new, char **start)
 {
-	t_token	*cur;
+	char			*tmp;
+	size_t			len;
 
-	if (!cmd || !new || !*new)
-		return ;
-	(*new)->type = type;
-	(*new)->next = NULL;
-	(*new)->prev = NULL;
-	(*new)->flag = flag;
-	if (!cmd->token)
-		cmd->token = *new;
-	else
+	if (!new || !start || !*start)
+		return (update_status(ERROR));
+	while (**start && !is_spacetab(**start))
 	{
-		cur = cmd->token;
-		while (cur->next)
-			cur = cur->next;
-		cur->next = *new;
-		(*new)->prev = cur;
+		len = 0;
+		tmp = NULL;
+		if (*start[len] && is_quote(*start[len]))
+		{
+			(*new)->flag = true;
+			if (quote_case(cmd, *start, &tmp, &len) != OK)
+				return (g_status);
+		}
+		else if (*start[len] == '$'
+			&& ((*start)[len + 1] && !is_spacetab((*start)[len + 1])))
+			special_case(cmd, *start, &tmp, &len);
+		else if (is_redir(*start))
+		{
+			tmp = get_redir(start, &len);
+			if (!tmp)
+				return (free((*new)->value), free(*new), g_status);
+		}
+		else
+			tmp = ft_substr(*start, 0, ++len);
+		(*new)->value = ft_strjoin((*new)->value, tmp);
+		if (!(*new)->value)
+			return (free(tmp), update_status(ERROR));
+		*start += len;
+		free(tmp);
 	}
-}
-
-char	*get_redir(char **str, size_t *len)
-{
-	char	*redir;
-
-	redir = NULL;
-	if (ft_strncmp(str[0], "<<<", 3) == 0)
-		return ((void)update_status(ERROR), NULL);
-	else if (ft_strncmp(str[0], ">>>", 3) == 0)
-	{
-		write(STDERR_FILENO, ERROR3, 50);
-		return ((void)update_status(SINTAX), NULL);
-	}
-	else if (ft_strncmp(str[0], "<<", 2) == 0
-		|| ft_strncmp(str[0], ">>", 2) == 0)
-	{
-		redir = ft_substr(str[0], 0, 2);
-		str[0][++(*len)] = ' ';
-	}
-	else if (ft_strncmp(str[0], "<", 1) == 0 || ft_strncmp(str[0], ">", 1) == 0)
-	{
-		redir = ft_substr(str[0], 0, 1);
-		str[0][0] = ' ';
-	}
-	if (redir)
-		return (redir);
-	else
-		return ((void)update_status(ERROR), NULL);
+	return (OK);
 }
 
 t_token	*last_token(t_token *token)
@@ -86,4 +72,27 @@ int	get_type(t_token *token, char *value, bool check)
 		return (APPEND);
 	else
 		return (ARG);
+}
+
+void	append_token(t_cmd *cmd, t_token **new, int type)
+{
+	t_token	*cur;
+
+	if (!cmd || !new || !*new || !(*new)->value)
+		return ;
+	if (ft_strncmp((*new)->value, "", ft_strlen((*new)->value)) == 0)
+		return (free((*new)->value), free(*new));
+	(*new)->type = type;
+	(*new)->next = NULL;
+	(*new)->prev = NULL;
+	if (!cmd->token)
+		cmd->token = *new;
+	else
+	{
+		cur = cmd->token;
+		while (cur->next)
+			cur = cur->next;
+		cur->next = *new;
+		(*new)->prev = cur;
+	}
 }

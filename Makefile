@@ -23,9 +23,10 @@ SRCS = 	src/main.c				\
 		src/split_input.c		\
 		src/split_cmd.c			\
 		src/expand_content.c	\
+		src/new_token.c			\
 		src/free_utils.c		\
 		src/status_utils.c		\
-		src/utils.c				\
+		src/bools_utils.c		\
 		src/delete.c			\
 		src/heredoc_proccess.c	\
 		src/execution.c			\
