@@ -67,6 +67,26 @@ void	special_case(t_cmd *cmd, char *start, char **tmp, size_t *len)
 	*tmp = expand_content(ft_substr(start, 0, *len), last_token(cmd->token));
 }
 
+int	check_cases(t_cmd *cmd, char **start, char **tmp, size_t *len)
+{
+	if (!cmd || !start || !*start || !tmp)
+		return (update_status(ERROR));
+	if (is_quote(*start[*len]))
+	{
+		if (quote_case(cmd, *start, tmp, len) != OK)
+			return (g_status);
+	}
+	else if (is_special(*start))
+		special_case(cmd, *start, tmp, len);
+	else
+	{
+		*tmp = get_redir(start, len);
+		if (!*tmp)
+			return (g_status);
+	}
+	return (OK);
+}
+
 // int	split_cmd(t_cmd **cmd, char *start)
 // {
 // 	t_token			*new;

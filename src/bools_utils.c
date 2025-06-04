@@ -25,6 +25,19 @@ bool	is_redir(char *str)
 	return (false);
 }
 
+bool	is_special(char *str)
+{
+	size_t	len;
+
+	if (!str || !*str)
+		return (false);
+	len = 0;
+	if (str[len] == '$'
+		&& (str[len + 1] && !is_spacetab(str[len + 1])))
+		return (true);
+	return (false);
+}
+
 bool	is_builtin(char *value)
 {
 	if (!value)

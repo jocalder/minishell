@@ -118,6 +118,7 @@ t_token	*last_token(t_token *token);
 
 /*new_token*/
 int		new_token(t_cmd *cmd, t_token **new, char **start);
+int		check_cases(t_cmd *cmd, char **start, char **tmp, size_t *len);
 int		quote_case(t_cmd *cmd, char *start, char **tmp, size_t *len);
 void	special_case(t_cmd *cmd, char *start, char **tmp, size_t *len);
 char	*expand_content(char *value, t_token *last);
@@ -131,6 +132,7 @@ void	exit_status(int status, t_mini *data);
 bool	is_spacetab(int c);
 bool	is_quote(int c);
 bool	is_redir(char *str);
+bool	is_special(char *str);
 bool	is_builtin(char *value);
 
 /*free_utils*/

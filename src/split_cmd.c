@@ -11,19 +11,11 @@ int	new_token(t_cmd *cmd, t_token **new, char **start)
 	{
 		len = 0;
 		tmp = NULL;
-		if (*start[len] && is_quote(*start[len]))
+		if (is_quote(*start[len]) || is_special(*start) || is_redir(*start))
 		{
-			(*new)->flag = true;
-			if (quote_case(cmd, *start, &tmp, &len) != OK)
-				return (g_status);
-		}
-		else if (*start[len] == '$'
-			&& ((*start)[len + 1] && !is_spacetab((*start)[len + 1])))
-			special_case(cmd, *start, &tmp, &len);
-		else if (is_redir(*start))
-		{
-			tmp = get_redir(start, &len);
-			if (!tmp)
+			if (is_quote(*start[len]))
+				(*new)->flag = true;
+			if (check_cases(cmd, start, &tmp, &len) != OK)
 				return (free((*new)->value), free(*new), g_status);
 		}
 		else
