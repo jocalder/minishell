@@ -11,7 +11,7 @@ int	update_status(int new_status)
 	return (g_status);
 }
 
-void	exit_status(int status, t_mini *data)
+void	check_exit_status(int status, t_mini *data)
 {
 	if (status == END || status == ERROR)
 	{

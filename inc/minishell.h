@@ -25,11 +25,8 @@
 # define ERROR3	"minishell: syntax error near unexpected token `>'\n"
 # define ERROR4	"minishell: syntax error near unexpected token `newline'\n"
 
-# define ERROR6	"minishell: unexpected EOF while looking for matching `%c'\n"
-# define ERROR7	"minishell: syntax error: unexpected end of file \n"
-
-/*execve errors*/
-# define ERROR5	"minishell: command not found: %s\n"
+# define ERROR5	"minishell: unexpected EOF while looking for matching `"
+# define ERROR6	"minishell: syntax error: unexpected end of file \n"
 
 # define OK		0
 # define END	-1
@@ -102,7 +99,6 @@ int		init_data(t_mini *data);
 void	wait_signal(void);
 int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
-void	execute_builtins(t_mini *data, char **envp);
 
 /*split_input*/
 int		split_input(t_input *input);
@@ -126,7 +122,7 @@ char	*get_redir(char **str, size_t *len);
 
 /*status_utils*/
 int		update_status(int new_status);
-void	exit_status(int status, t_mini *data);
+void	check_exit_status(int status, t_mini *data);
 
 /*bools utils*/
 bool	is_spacetab(int c);
@@ -134,6 +130,9 @@ bool	is_quote(int c);
 bool	is_redir(char *str);
 bool	is_special(char *str);
 bool	is_builtin(char *value);
+
+/*utils*/
+void	write_open(unsigned char quote);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);

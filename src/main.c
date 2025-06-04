@@ -14,9 +14,9 @@ int	main(int argc, char **argv, char **envp)
 	while (argv)
 	{
 		if (set_prompt((&data)->prompt) != OK)
-			exit_status(g_status, &data);
+			check_exit_status(g_status, &data);
 		if (set_input(&data) != OK)
-			exit_status(g_status, &data);
+			check_exit_status(g_status, &data);
 		handle_execution(&data, envp); // Needs a errors protection
 		free_all(&data, false);
 	}
