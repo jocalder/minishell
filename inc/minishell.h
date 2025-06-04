@@ -107,7 +107,7 @@ void	execute_builtins(t_mini *data, char **envp);
 /*split_input*/
 int		split_input(t_input *input);
 int		validate_pipe(t_input *input, char **str);
-int		new_cmd(char *start, size_t *len);
+int		new_cmd(t_cmd **new, char *start, size_t *len);
 void	append_cmd(t_input *input, t_cmd *new, char *value);
 
 /*split_cmd*/

@@ -39,18 +39,16 @@ int	validate_pipe(t_input *input, char **str)
 	}
 	else if (*(*str + 1) == '|' && *(*str + 2) != '|')
 		return ((void)write(STDERR_FILENO, ERROR1, 51), update_status(SINTAX));
-	else if (*(*str + 1) == '|' && *(*str + 2) == '|')
+	else
 		return ((void)write(STDERR_FILENO, ERROR2, 52), update_status(SINTAX));
-	return (update_status(ERROR));
 }
 
-int	new_cmd(char *start, size_t *len)
+int	new_cmd(t_cmd **new, char *start, size_t *len)
 {
 	unsigned char	quote;
-	t_cmd			*new;
 
-	new = ft_calloc(1, sizeof(t_cmd));
-	if (!new)
+	*new = ft_calloc(1, sizeof(t_cmd));
+	if (!*new)
 		return (update_status(ERROR));
 	while (start[*len])
 	{
@@ -65,7 +63,7 @@ int	new_cmd(char *start, size_t *len)
 			{
 				write(STDERR_FILENO, ERROR6, 59);
 				write(STDERR_FILENO, ERROR7, 50);
-				return (free(new), update_status(SINTAX));
+				return (free(*new), update_status(SINTAX));
 			}
 			(*len)++;
 			continue ;

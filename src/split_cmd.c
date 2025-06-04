@@ -68,11 +68,11 @@ int	get_type(t_token *token, char *value, bool check)
 	t_token	*last;
 
 	last = last_token(token);
-	if (!last)
+	if (!last && !is_redir(value))
 		return (CMD);
-	else if (last->type == HEREDOC)
+	else if (last && last->type == HEREDOC)
 		return (ENDOFFILE);
-	else if (last->prev
+	else if (last && last->prev
 		&& (last->type == APPEND || last->type == REDIR_IN
 			|| last->type == REDIR_OUT))
 		return (FILE_PATH);

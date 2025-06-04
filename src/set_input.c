@@ -89,7 +89,7 @@ int	split_input(t_input *input)
 		len = 0;
 		while (start[len] && start[len] != '|')
 		{
-			if (new_cmd(start, &len) != OK)
+			if (new_cmd(&new, start, &len) != OK)
 				return (g_status);
 		}
 		append_cmd(input, new, ft_substr(start, 0, len));
@@ -107,9 +107,8 @@ int	set_input(t_mini *data)
 	data->input->value = readline(data->prompt->value);
 	if (!data->input->value)
 		return (update_status(END));
-	if (data->input->value && *(data->input->value))
-		add_history(data->input->value);
-	if (!*(data->input->value))
+	else if (!*(data->input->value))
 		return (OK);
-	return ((split_input(data->input)));
+	add_history(data->input->value);
+	return (split_input(data->input));
 }
