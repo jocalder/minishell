@@ -9,7 +9,6 @@ static char	*absolute_path(t_cmd *cmd)
 		printf("minishell: %s: no such file or directory\n", cmd->token->value);
 		return (cmd->token->value);
 	}
-
 }
 
 static int	count_args(t_token *token)
@@ -79,7 +78,7 @@ void	execute_command(t_cmd *cmd, char **envp)
 {
 	char	**command;
 	char	*path;
-	
+
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)

@@ -1,20 +1,20 @@
 #include "minishell.h"
 
-void    wait_all(void)
+void	wait_all(void)
 {
-    int status;
+	int	status;
 
-    status = 0;
-    while (wait(&status) > 0)
-        ;
+	status = 0;
+	while (wait(&status) > 0)
+		;
 }
 
-void    create_pipes(t_cmd *cmd, int pipe_fd[2])
+void	create_pipes(t_cmd *cmd, int pipe_fd[2])
 {
-    if (cmd->next)
+	if (cmd->next)
 	{
 		if (pipe(pipe_fd) != 0)
-			return ((void)update_status(ERROR));//handle errors, status
+			return ((void)update_status(ERROR));
 	}
 	else
 	{

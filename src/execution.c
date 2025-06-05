@@ -14,12 +14,12 @@ static void	close_all_fds(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
 		close(fd_out);
 }
 
-void    handle_execution(t_mini *data, char **envp)
+void	handle_execution(t_mini *data, char **envp)
 {
-    t_cmd	*cmd;
-	int		pipe_fd[2];
-	int		prev_fd;
-	pid_t	pid;
+	t_cmd				*cmd;
+	int					pipe_fd[2];
+	int					prev_fd;
+	pid_t				pid;
 
 	cmd = data->input->cmd;
 	prev_fd = -1;
@@ -41,26 +41,25 @@ void    handle_execution(t_mini *data, char **envp)
 
 void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 {
-		int		fd_in;
-		int		fd_out;
+	int	fd_in;
+	int	fd_out;
 
-		fd_in = redir_in(cmd->token);
-		fd_out = redir_out(cmd->token);
-		if (fd_in == 2 || fd_out == 2)
-			return ((void)update_status(SINTAX));
-		else if (fd_in == 1 || fd_out == 1)
-			return ((void)update_status(ERROR));
-		if (fd_in != -1)
-			dup2(fd_in, 0);
-		else if (prev_fd != -1 && fd_in == -1)
-			dup2(prev_fd, 0);
-		if (pipe_fd[1] != -1 && fd_out == -1)
-			dup2(pipe_fd[1], 1);
-		else if (fd_out != -1)
-			dup2(fd_out, 1);
-		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
-		execute_command(cmd, envp);
-		//status when the execution is successful
+	fd_in = redir_in(cmd->token);
+	fd_out = redir_out(cmd->token);
+	if (fd_in == 2 || fd_out == 2)
+		return ((void)update_status(SINTAX));
+	else if (fd_in == 1 || fd_out == 1)
+		return ((void)update_status(ERROR));
+	if (fd_in != -1)
+		dup2(fd_in, 0);
+	else if (prev_fd != -1 && fd_in == -1)
+		dup2(prev_fd, 0);
+	if (pipe_fd[1] != -1 && fd_out == -1)
+		dup2(pipe_fd[1], 1);
+	else if (fd_out != -1)
+		dup2(fd_out, 1);
+	close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
+	execute_command(cmd, envp);
 }
 
 int	redir_in(t_token *token)
@@ -74,11 +73,11 @@ int	redir_in(t_token *token)
 		{
 			if (!token->next || !token->next->value)
 			{
-				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
-				return (update_status(SINTAX));
+				printf("minishell: syntax error near unexpected token `newline'\n");
+				return (SINTAX);
 			}
 			if (fd != -1)
-			close(fd);
+				close(fd);
 			if (token->type == HEREDOC)
 				fd = open_heredoc(token->next->value);
 			else
@@ -86,7 +85,7 @@ int	redir_in(t_token *token)
 			if (fd < 0)
 			{
 				printf("minishell: %s: no such file or directory\n", token->next->value);
-				return (update_status(ERROR));//update errors to check
+				return (ERROR);
 			}
 		}
 		token = token->next;
@@ -105,7 +104,7 @@ int	redir_out(t_token *token)
 		{
 			if (!token->next || !token->next->value)
 			{
-				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
+				printf("minishell: syntax error near unexpected token `newline'\n");
 				return (update_status(SINTAX));
 			}
 			if (fd != -1)
@@ -115,7 +114,7 @@ int	redir_out(t_token *token)
 			else
 				fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-				return (update_status(ERROR));//update errors to check my panita
+				return (update_status(ERROR));
 		}
 		token = token->next;
 	}
