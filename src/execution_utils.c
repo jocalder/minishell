@@ -25,7 +25,7 @@ static int	count_args(t_token *token)
 	}
 	return (count);
 }
-static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
+char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 {
 	char	**directories;
 	char	*full_path;
@@ -33,8 +33,8 @@ static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 	int		i;
 
 	i = 0;
-	if (ft_strncmp(cmd->token->value, "/bin/", 5) == 0
-		|| ft_strncmp(cmd->token->value, "./", 2) == 0)
+	if (cmd && (ft_strncmp(cmd->token->value, "/bin/", 5) == 0
+		|| ft_strncmp(cmd->token->value, "./", 2) == 0))
 		return (absolute_path(cmd));
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
@@ -45,10 +45,13 @@ static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 		path = ft_strjoin(directories[i], "/");
 		full_path = ft_strjoin(path, command);
 		if (access(full_path, F_OK) == 0)
-			return (free(directories), full_path);
+		{
+			printf("here\n");
+			return (free_array(directories, i), full_path);
+		}
 		free(full_path);
 	}
-	free(directories);
+	free_array(directories, i);
 	return (NULL);
 }
 
@@ -85,7 +88,7 @@ void	execute_command(t_cmd *cmd, char **envp)
 		printf("minishell: %s: command not found\n", command[0]);
 	if (execve(path, command, envp) != 0)
 	{
-		free_array(command);
+		free_array(command, -1);
 		return ((void)update_status(NOTFOUND));
 	}
 	exit (0);

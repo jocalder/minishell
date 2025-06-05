@@ -4,6 +4,15 @@ Este documento contiene una lista de comandos para probar el comportamiento espe
 
 ---
 
+echo asd$PWD
+
+echo "$PWD asd $USER"
+vgoyzuet
+
+echo $1PWD
+
+echo asd$1PWD
+
 ## ✅ Comandos Válidos
 
 ```bash

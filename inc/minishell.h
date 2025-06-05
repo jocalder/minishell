@@ -145,6 +145,7 @@ void	invented_input(t_input *input);
 
 /*execution*/
 void    handle_execution(t_input *input, char **envp);
+char	*find_command_path(char	*command, char **envp, t_cmd *cmd);
 void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
 int		redir_in(t_token *token);
 int		redir_out(t_token *token);

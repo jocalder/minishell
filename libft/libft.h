@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:48:23 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/04/21 20:26:20 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/06/05 20:29:06 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int		ft_puthex_fd(unsigned long long num, char format, int fd);
 char	*get_next_line(int fd);
 
 /*free*/
-void	free_array(char **arr);
+void	free_array(char **arr, int i);
 void	ft_exit_free(int EXIT, char *message, char **arr);
 
 #endif
