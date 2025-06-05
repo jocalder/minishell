@@ -18,7 +18,7 @@ static char	*handler_expand(char *value, size_t *len)
 
 	if (!value)
 		return (ft_strdup(""));
-	if (value[*len] == '$')
+	if (value[*len] == '?')
 	{
 		new_value = ft_itoa(g_status);
 		(*len)++;
