@@ -17,7 +17,7 @@
 # define BLUE				"\001\033[0;31m\002"
 # define WHITE				"\001\033[0m\002"
 
-# define USAGE	"Usage: ./minishell\n"
+# define USAGE	"Usage: ./minishell [-c] ...\n"
 
 /*syntax error*/
 # define ERROR1	"minishell: syntax error near unexpected token `|'\n"
