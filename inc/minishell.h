@@ -17,7 +17,7 @@
 # define BLUE				"\001\033[0;31m\002"
 # define WHITE				"\001\033[0m\002"
 
-# define USAGE	"Usage: ./minishell\n"
+# define USAGE	"Usage: ./minishell\n [-c] ...\n"
 
 /*syntax error*/
 # define ERROR1	"minishell: syntax error near unexpected token `|'\n"
@@ -144,7 +144,7 @@ void	printf_input(t_input *input);
 void	invented_input(t_input *input);
 
 /*execution*/
-void    handle_execution(t_mini *data, char **envp);
+void    handle_execution(t_input *input, char **envp);
 void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
 int		redir_in(t_token *token);
 int		redir_out(t_token *token);

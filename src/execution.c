@@ -14,14 +14,14 @@ static void	close_all_fds(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
 		close(fd_out);
 }
 
-void    handle_execution(t_mini *data, char **envp)
+void    handle_execution(t_input *input, char **envp)
 {
     t_cmd	*cmd;
 	int		pipe_fd[2];
 	int		prev_fd;
 	pid_t	pid;
 
-	cmd = data->input->cmd;
+	cmd = input->cmd;
 	prev_fd = -1;
 	while (cmd)
 	{
