@@ -9,7 +9,7 @@ static void	ft_cd(t_mini *data)
 	{
 		home = getenv("HOME");
 		if (!home)
-			printf("minishell: cd: HOME not set\n");
+			perror("minishell: cd: HOME not set\n");
 		if (chdir(home) != 0)
 			perror("error home");//change for a similar error message
 	}

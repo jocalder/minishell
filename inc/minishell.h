@@ -13,11 +13,11 @@
 # include <sys/wait.h>
 
 /*colors*/
-# define RED	"\033[0;34m"
-# define BLUE	"\033[0;31m"
-# define WHITE	"\033[0m"
+# define RED				"\001\033[0;34m\002"
+# define BLUE				"\001\033[0;31m\002"
+# define WHITE				"\001\033[0m\002"
 
-# define USAGE	"Usage: ./minishell\n"
+# define USAGE	"Usage: ./minishell [-c] ...\n"
 
 /*syntax error*/
 # define ERROR1	"minishell: syntax error near unexpected token `|'\n"
@@ -25,8 +25,8 @@
 # define ERROR3	"minishell: syntax error near unexpected token `>'\n"
 # define ERROR4	"minishell: syntax error near unexpected token `newline'\n"
 
-/*execve errors*/
-# define ERROR5	"minishell: command not found: %s\n"
+# define ERROR5	"minishell: unexpected EOF while looking for matching `"
+# define ERROR6	"minishell: syntax error: unexpected end of file \n"
 
 # define OK		0
 # define END	-1
@@ -99,31 +99,40 @@ int		init_data(t_mini *data);
 void	wait_signal(void);
 int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
-void	execute_builtins(t_mini *data, char **envp);
 
 /*split_input*/
 int		split_input(t_input *input);
 int		validate_pipe(t_input *input, char **str);
-t_cmd	*new_cmd(char *start, size_t *len);
-void	append_cmd(t_input *input, t_cmd *new, char *value);
+int		new_cmd(t_cmd **new, char *start, size_t *len);
+void	append_cmd(t_input *input, t_cmd **new, char *value);
 
 /*split_cmd*/
 int		split_cmd(t_cmd **cmd);
-void	append_token(t_cmd *cmd, t_token **new, int type, bool flag);
-char	*expand_content(char *value, int pre_type);
-t_token	*last_token(t_token *token);
+void	append_token(t_cmd *cmd, t_token **new, int type);
 int		get_type(t_token *token, char *value, bool check);
+t_token	*last_token(t_token *token);
+
+/*new_token*/
+int		new_token(t_cmd *cmd, t_token **new, char **start);
+int		check_cases(t_cmd *cmd, char **start, char **tmp, size_t *len);
+int		quote_case(t_cmd *cmd, char *start, char **tmp, size_t *len);
+void	special_case(t_cmd *cmd, char *start, char **tmp, size_t *len);
+char	*expand_content(char *value, t_token *last);
 char	*get_redir(char **str, size_t *len);
 
 /*status_utils*/
 int		update_status(int new_status);
-void	exit_status(int status, t_mini *data);
+void	check_exit_status(int status, t_mini *data);
 
-/*utils*/
+/*bools utils*/
 bool	is_spacetab(int c);
 bool	is_quote(int c);
 bool	is_redir(char *str);
+bool	is_special(char *str);
 bool	is_builtin(char *value);
+
+/*utils*/
+void	write_open(unsigned char quote);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
@@ -143,5 +152,6 @@ void	execute_command(t_cmd *cmd, char **envp);
 int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
 void	wait_all(void);
 int		open_heredoc(char *delimiter);
+void    create_pipes(t_cmd *cmd, int pipe_fd[2]);
 
 #endif
