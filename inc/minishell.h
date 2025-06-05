@@ -144,14 +144,14 @@ void	printf_input(t_input *input);
 void	invented_input(t_input *input);
 
 /*execution*/
-void    handle_execution(t_mini *data, char **envp);
-void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
+int		handle_execution(t_mini *data, char **envp);
+int		ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
 int		redir_in(t_token *token);
 int		redir_out(t_token *token);
-void	execute_command(t_cmd *cmd, char **envp);
+int		execute_command(t_cmd *cmd, char **envp);
 int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
 void	wait_all(void);
 int		open_heredoc(char *delimiter);
-void    create_pipes(t_cmd *cmd, int pipe_fd[2]);
+void	create_pipes(t_cmd *cmd, int pipe_fd[2]);
 
 #endif

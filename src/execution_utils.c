@@ -74,18 +74,22 @@ static char	**build_full_command(t_token *token)
 	return (args);
 }
 
-void	execute_command(t_cmd *cmd, char **envp)
+int	execute_command(t_cmd *cmd, char **envp)
 {
 	char	**command;
 	char	*path;
+	int		status;
 
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
 		printf("minishell: %s: command not found\n", command[0]);
-	if (execve(path, command, envp) != 0)
+	status = execve(path, command, envp);
+	free_array(command);
+	if (status == 0)
 	{
-		free_array(command);
-		return ((void)update_status(NOTFOUND));
+		return(update_status(OK));
 	}
+	else
+		return (NOTFOUND);
 }

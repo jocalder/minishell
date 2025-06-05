@@ -17,8 +17,9 @@ int	main(int argc, char **argv, char **envp)
 			check_exit_status(g_status, &data);
 		if (set_input(&data) != OK)
 			check_exit_status(g_status, &data);
+		//printf_input(data.input);
 		handle_execution(&data, envp); // Needs a errors protection
 		free_all(&data, false);
 	}
-	exit_status(g_status, &data);
+	check_exit_status(g_status, &data);
 }

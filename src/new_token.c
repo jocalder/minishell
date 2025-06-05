@@ -36,9 +36,7 @@ static int	close_quote(char *start, unsigned char quote, size_t *len)
 	while (start[*len] && start[*len] != quote)
 		(*len)++;
 	if (!start[*len])
-		return ((void)write(STDERR_FILENO, ERROR6, 59),
-				(void)write(STDERR_FILENO, ERROR7, 50),
-				update_status(SINTAX));
+		return (write_open(quote), update_status(SINTAX));
 	return (OK);
 }
 
