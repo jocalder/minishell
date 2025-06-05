@@ -2,14 +2,9 @@
 
 static char	*get_special_var(int c)
 {
-	if (c == '$')
-		return (ft_itoa((int)getpid()));
-	else if (c == '?')
-		return (ft_itoa(g_status));
-	return (NULL);
+	return (ft_itoa(g_status));
 }
 
-//Maybe add a string with "\n" in line 18 or 21
 static char	*get_env_var(char *var)
 {
 	char	*env;
@@ -28,7 +23,7 @@ static char	*handler_expand(char *value, size_t *len)
 
 	if (!value)
 		return (ft_strdup(""));
-	if (value[*len] == '$' || value[*len] == '?')
+	if (value[*len] == '$')
 		new_value = get_special_var(value[(*len)++]);
 	else
 	{
@@ -39,7 +34,7 @@ static char	*handler_expand(char *value, size_t *len)
 	return (new_value);
 }
 
-char	*expand_content(char *value, int pre_type)
+char	*expand_content(char *value, t_token *last)
 {
 	char	*new_value;
 	char	*start;
@@ -48,7 +43,7 @@ char	*expand_content(char *value, int pre_type)
 
 	if (!value)
 		return (ft_strdup(""));
-	if (pre_type == HEREDOC)
+	if (last && last->type == HEREDOC)
 		return (value);
 	new_value = ft_strdup("");
 	start = value;

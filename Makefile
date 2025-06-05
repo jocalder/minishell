@@ -17,20 +17,22 @@ LIBFT = libft/libft.a
 
 SRCS = 	src/main.c				\
 		src/init_data.c			\
+		src/status_utils.c		\
+		src/free_utils.c		\
 		src/wait_signal.c		\
 		src/set_prompt.c		\
 		src/set_input.c			\
 		src/split_input.c		\
 		src/split_cmd.c			\
+		src/new_token.c			\
 		src/expand_content.c	\
-		src/free_utils.c		\
-		src/status_utils.c		\
-		src/utils.c				\
-		src/delete.c			\
 		src/heredoc_proccess.c	\
 		src/execution.c			\
 		src/execution_utils.c	\
 		src/execution_utils2.c	\
+		src/bools_utils.c		\
+		src/utils.c				\
+		src/delete.c			\
 		
 
 OBJS = $(SRCS:%.c=objs/%.o)

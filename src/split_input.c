@@ -19,7 +19,7 @@ int	validate_pipe(t_input *input, char **str)
 {
 	while (**str && is_spacetab(**str))
 		(*str)++;
-	if (**str != '|')
+	if (**str && **str != '|')
 		return (OK);
 	input->pipes++;
 	if (count_cmd(input->cmd) < input->pipes)
@@ -30,28 +30,26 @@ int	validate_pipe(t_input *input, char **str)
 		while (**str && is_spacetab(**str))
 			(*str)++;
 		if (**str == '\0')
-			return (update_status(ERROR));
-		if (**str != '|')
+			return ((void)write(2, ERROR6, 50), update_status(SINTAX));
+		else if (**str != '|')
 			return (OK);
 		else if (*(*str + 1) != '|')
-			return ((void)write(STDERR_FILENO, ERROR1, 51), update_status(2));
+			return ((void)write(2, ERROR1, 51), update_status(SINTAX));
 		return ((void)write(STDERR_FILENO, ERROR2, 52), update_status(SINTAX));
 	}
 	else if (*(*str + 1) == '|' && *(*str + 2) != '|')
 		return ((void)write(STDERR_FILENO, ERROR1, 51), update_status(SINTAX));
-	else if (*(*str + 1) == '|' && *(*str + 2) == '|')
+	else
 		return ((void)write(STDERR_FILENO, ERROR2, 52), update_status(SINTAX));
-	return (update_status(ERROR));
 }
 
-t_cmd	*new_cmd(char *start, size_t *len)
+int	new_cmd(t_cmd **new, char *start, size_t *len)
 {
 	unsigned char	quote;
-	t_cmd			*new;
 
-	new = ft_calloc(1, sizeof(t_cmd));
-	if (!new)
-		return (NULL);
+	*new = ft_calloc(1, sizeof(t_cmd));
+	if (!*new)
+		return (update_status(ERROR));
 	while (start[*len])
 	{
 		while (start[*len] && is_spacetab(start[*len]))
@@ -61,34 +59,33 @@ t_cmd	*new_cmd(char *start, size_t *len)
 			quote = (unsigned char)start[(*len)++];
 			while (start[*len] && start[*len] != quote)
 				(*len)++;
-			if (!start[*len])
-				return (free(new), NULL);
-			(*len)++;
+			if (!start[(*len)++])
+				return (free(*new), write_open(quote), update_status(SINTAX));
 			continue ;
 		}
 		if (start[*len] == '|' || !start[*len])
 			break ;
 		(*len)++;
 	}
-	return (new);
+	return (OK);
 }
 
-void	append_cmd(t_input *input, t_cmd *new, char *value)
+void	append_cmd(t_input *input, t_cmd **new, char *value)
 {
 	t_cmd	*cur;
 
-	if (!input || !new)
+	if (!input || !*new)
 		return ;
-	new->value = value;
-	new->token = NULL;
-	new->next = NULL;
+	(*new)->value = value;
+	(*new)->token = NULL;
+	(*new)->next = NULL;
 	if (!input->cmd)
-		input->cmd = new;
+		input->cmd = *new;
 	else
 	{
 		cur = input->cmd;
 		while (cur->next)
 			cur = cur->next;
-		cur->next = new;
+		cur->next = *new;
 	}
 }

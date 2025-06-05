@@ -67,8 +67,8 @@ The program exit inmediately
 ### ❌ Pipe mal formado
 ```bash
 | ls			OK
-ls |			//I think this in the parser
-ls || grep .c	//The same
+ls |			//I think this in the parser (DONE, but still running the command)
+ls || grep .c	//The same (DONE, but still running the command)
 ```
 
 ### ❌ Heredoc sin delimitador
@@ -88,7 +88,7 @@ echo hola > /root/test.txt
 Print message// minishell: /root/test.txt: permission denied Update status = 1(generic error)
 ### ❌ Redirección sin comando
 ```bash
-> archivo.txt	//i think this in the parser
+> archivo.txt	//i think this in the parser (DONE, but make redir without command)
 ```
 Update status = 0 because the first value you give me like a command and print in stdout "command not found".
 ### ❌ Error de ejecución
@@ -126,7 +126,7 @@ EOF
 Status = OK
 ### ❌ Redirección sin comando después del pipe
 ```bash
-echo hola | > archivo.txt		//Parsing needs to know what type it is whitout a first valid command and creates the file
+echo hola | > archivo.txt		//Parsing needs to know what type it is whitout a first valid command and creates the file (DONE, but same other similar cases)
 ```
 update status = 0
 ### ❌ Uso confuso de heredoc con redirección
@@ -177,7 +177,7 @@ echo "\\\\\\\\\\"			OK Status = OK
 ### Caso de input inválido especial
 
 ```bash
-$?
+$?  (DONE)
 Show the next message:
 
 AddressSanitizer:DEADLYSIGNAL
