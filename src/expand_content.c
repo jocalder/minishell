@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-static char	*get_special_var(int c)
-{
-	return (ft_itoa(g_status));
-}
-
 static char	*get_env_var(char *var)
 {
 	char	*env;
@@ -23,8 +18,11 @@ static char	*handler_expand(char *value, size_t *len)
 
 	if (!value)
 		return (ft_strdup(""));
-	if (value[*len] == '$')
-		new_value = get_special_var(value[(*len)++]);
+	if (value[*len] == '?')
+	{
+		new_value = ft_itoa(g_status);
+		(*len)++;
+	}
 	else
 	{
 		while (value[*len] && value[*len] != '$')
