@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 19:48:23 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/06/05 20:29:06 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/06/07 01:18:09 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,5 @@ char	*get_next_line(int fd);
 
 /*free*/
 void	free_array(char **arr, int i);
-void	ft_exit_free(int EXIT, char *message, char **arr);
 
 #endif

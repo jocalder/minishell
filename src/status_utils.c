@@ -24,4 +24,6 @@ void	check_exit_status(int status, t_mini *data)
 		rl_clear_history();
 		exit (g_status);
 	}
+	else if (status == SINTAX)
+		free_all(data, false);
 }
