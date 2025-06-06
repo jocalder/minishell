@@ -32,6 +32,7 @@ static char	*handler_expand(char *value, size_t *len)
 	return (new_value);
 }
 
+/*check new unvalidate cases*/
 char	*expand_content(char *value, t_token *last)
 {
 	char	*new_value;

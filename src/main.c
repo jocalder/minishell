@@ -16,6 +16,7 @@ static int	interactive_mode(t_mini *data, char **envp)
 	return (g_status);
 }
 
+/*To be finished*/
 static void	command_mode(t_mini *data, char **argv, int argc, char **envp)
 {
 	char	*line;
