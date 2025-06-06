@@ -36,7 +36,7 @@ static int	close_quote(char *start, unsigned char quote, size_t *len)
 	while (start[*len] && start[*len] != quote)
 		(*len)++;
 	if (!start[*len])
-		return (write_open(quote), update_status(SINTAX));
+		return (w_openquote(quote), update_status(SINTAX));
 	return (OK);
 }
 

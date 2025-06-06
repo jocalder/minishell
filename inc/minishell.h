@@ -17,16 +17,21 @@
 # define BLUE				"\001\033[0;31m\002"
 # define WHITE				"\001\033[0m\002"
 
-# define USAGE	"Usage: ./minishell [-c] ...\n"
+# define USAGE		"Usage: ./minishell [-c] ...\n"
 
 /*syntax error*/
-# define ERROR1	"minishell: syntax error near unexpected token `|'\n"
-# define ERROR2	"minishell: syntax error near unexpected token `||'\n"
-# define ERROR3	"minishell: syntax error near unexpected token `>'\n"
-# define ERROR4	"minishell: syntax error near unexpected token `newline'\n"
+# define ERROR1		"minishell: syntax error near unexpected token `|'\n"
+# define ERROR2		"minishell: syntax error near unexpected token `||'\n"
+# define ERROR3		"minishell: syntax error near unexpected token `>'\n"
+# define ERROR4		"minishell: syntax error near unexpected token `newline'\n"
 
-# define ERROR5	"minishell: unexpected EOF while looking for matching `"
-# define ERROR6	"minishell: syntax error: unexpected end of file \n"
+# define ERROR5		"minishell: unexpected EOF while looking for matching `"
+# define ERROR6		"minishell: syntax error: unexpected end of file \n"
+
+# define ERROR7 	"minishell: syntax error near unexpected token `&&'\n"
+# define ERROR8		"minishell: syntax error near unexpected token `[['\n"
+# define ERROR9		"minishell: syntax error near unexpected token `['\n"
+# define ERROR10	"minishell: unsupported token '\\'\n"
 
 # define OK		0
 # define END	-1
@@ -129,10 +134,12 @@ bool	is_spacetab(int c);
 bool	is_quote(int c);
 bool	is_redir(char *str);
 bool	is_special(char *str);
+bool	is_supported(char *str);
 bool	is_builtin(char *value);
 
 /*utils*/
-void	write_open(unsigned char quote);
+void	w_openquote(unsigned char quote);
+void	w_unsupported(char *str);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);

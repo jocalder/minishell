@@ -60,11 +60,13 @@ int	new_cmd(t_cmd **new, char *start, size_t *len)
 			while (start[*len] && start[*len] != quote)
 				(*len)++;
 			if (!start[(*len)++])
-				return (free(*new), write_open(quote), update_status(SINTAX));
+				return (free(*new), w_openquote(quote), update_status(SINTAX));
 			continue ;
 		}
 		if (start[*len] == '|' || !start[*len])
 			break ;
+		else if (!is_supported(start))
+			return (free(*new), w_unsupported(start), update_status(SINTAX));
 		(*len)++;
 	}
 	return (OK);
