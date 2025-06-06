@@ -38,20 +38,27 @@ bool	is_special(char *str)
 	return (false);
 }
 
-bool	is_supported(char *str)
+bool	is_supported(char **str, size_t len)
 {
-	int		c;
-	size_t	i;
+	char	*start;
+	size_t	end;
+	char	c;
 
 	if (!str || !*str)
-		return (false);
-	c = str[0];
-	i = ft_strlen(str) - 1;
-	if ((ft_strncmp(str, "&&", 2) == 0) || (ft_strncmp(str, "||", 2) == 0)
+		return (true);
+	start = *str + len;
+	c = start[0];
+	end = ft_strlen(start) - 1;
+	while (end > 0 && is_spacetab((start)[end]))
+		end--;
+	if ((ft_strncmp(start, "&&", 2) == 0) || (ft_strncmp(start, "||", 2) == 0)
 		|| c == ';' || c == '&' || c == '\\' || c == '`'
-		|| c == '(' || c == ')' || str[i] == '(' || str[i] == ')'
+		|| c == '(' || c == ')' || start[end] == '(' || start[end] == ')'
 		|| c == '*' || c == '?'
-		|| (c == '[' && (str[1] && !is_spacetab(str[1]))))
+		|| unvalidate_bracket(start))
+	{
+		*str = start;
 		return (false);
+	}
 	return (true);
 }

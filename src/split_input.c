@@ -65,7 +65,7 @@ int	new_cmd(t_cmd **new, char *start, size_t *len)
 		}
 		if (start[*len] == '|' || !start[*len])
 			break ;
-		else if (!is_supported(start))
+		else if (start[*len] && !is_supported(&start, *len))
 			return (free(*new), w_unsupported(start), update_status(SINTAX));
 		(*len)++;
 	}

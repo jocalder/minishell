@@ -45,10 +45,7 @@ char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 		path = ft_strjoin(directories[i], "/");
 		full_path = ft_strjoin(path, command);
 		if (access(full_path, F_OK) == 0)
-		{
-			printf("here\n");
 			return (free_array(directories, i), full_path);
-		}
 		free(full_path);
 	}
 	free_array(directories, i);
