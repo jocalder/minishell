@@ -25,8 +25,8 @@ int	split_cmd(t_cmd **cmd)
 		append_token(*cmd, &new, type);
 		// This comprobation is in the execution,
 		// because the syntax error is post to check the access of the command
-		if (!is_supported(new->value))
-			return (w_unsupported(new->value), update_status(SINTAX));
+		// if (!is_supported(new->value))
+		// 	return (w_unsupported(new->value), update_status(SINTAX));
 	}
 	return (OK);
 }

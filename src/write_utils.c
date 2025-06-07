@@ -34,10 +34,10 @@ void	w_unsupported(char *str)
 		write(STDERR_FILENO, ERROR7, 52);
 	else if (ft_strncmp(str, "||", 2) == 0)
 		write(STDERR_FILENO, ERROR2, 52);
-	else if (unvalidate_bracket(str))
-		write(STDERR_FILENO, ERROR9, 51);
 	else if (c == '*' || c == '?')
 		w_wildcard(c);
+	else if (c == '[' && ((ft_strlen(str) - 1) > 0 && !is_spacetab(str[1])))
+		write(STDERR_FILENO, ERROR9, 51);
 	else if (c == '\\')
 		write(STDERR_FILENO, ERROR10, 34);
 	else if (str[ft_strlen(str) - 1] != '(' && str[ft_strlen(str) - 1] != ')')

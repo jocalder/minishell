@@ -53,32 +53,7 @@ bool	is_supported(char *start)
 		|| c == ';' || c == '&' || c == '\\' || c == '`'
 		|| c == '(' || c == ')' || start[end] == '(' || start[end] == ')'
 		|| c == '*' || c == '?'
-		|| unvalidate_bracket(start))
+		|| (c == '[' && (end > 0 && !is_spacetab(start[1]))))
 		return (false);
 	return (true);
 }
-
-// bool	is_supported(char **str, size_t len)
-// {
-// 	char	*start;
-// 	size_t	end;
-// 	char	c;
-
-// 	if (!str || !*str)
-// 		return (true);
-// 	start = *str + len;
-// 	c = start[0];
-// 	end = ft_strlen(start) - 1;
-// 	while (end > 0 && is_spacetab((start)[end]))
-// 		end--;
-// 	if ((ft_strncmp(start, "&&", 2) == 0) || (ft_strncmp(start, "||", 2) == 0)
-// 		|| c == ';' || c == '&' || c == '\\' || c == '`'
-// 		|| c == '(' || c == ')' || start[end] == '(' || start[end] == ')'
-// 		|| c == '*' || c == '?'
-// 		|| unvalidate_bracket(start))
-// 	{
-// 		*str = start;
-// 		return (false);
-// 	}
-// 	return (true);
-// }

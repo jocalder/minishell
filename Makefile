@@ -15,25 +15,23 @@ LDFLAGS = -L/opt/homebrew/opt/readline/lib -lreadline
 
 LIBFT = libft/libft.a
 
-SRCS = 	src/main.c				\
-		src/init_data.c			\
-		src/status_utils.c		\
-		src/free_utils.c		\
-		src/wait_signal.c		\
-		src/set_prompt.c		\
-		src/set_input.c			\
-		src/split_input.c		\
-		src/split_cmd.c			\
-		src/new_token.c			\
-		src/expand_content.c	\
-		src/heredoc_proccess.c	\
-		src/execution.c			\
-		src/execution_utils.c	\
-		src/execution_utils2.c	\
-		src/bools_utils.c		\
-		src/write_utils.c		\
-		src/utils.c				\
-		src/delete.c			\
+SRCS = 	src/main.c						\
+		src/init_data.c					\
+		src/status_utils.c				\
+		src/free_utils.c				\
+		src/wait_signal.c				\
+		src/set_prompt.c				\
+		src/set_input.c					\
+		src/split_input.c				\
+		src/split_cmd.c					\
+		src/new_token.c					\
+		src/expand_content.c			\
+		src/execution.c					\
+		src/child_process_utils.c		\
+		src/execute_command_utils.c		\
+		src/heredoc_proccess.c			\
+		src/bools_utils.c				\
+		src/write_utils.c				\
 		
 
 OBJS = $(SRCS:%.c=objs/%.o)

@@ -62,8 +62,6 @@ typedef struct s_cmd
 {
 	char			*value;
 	t_token			*token;
-	int				fd[2];
-	pid_t			pid;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -92,7 +90,7 @@ typedef struct minishell
 enum	e_status
 {
 	ERROR = 1,
-	SINTAX	= 2, // or 258
+	SINTAX	= 2,
 	NOTEXEC = 126,
 	NOTFOUND = 127,
 	CTRC	= 130,
@@ -104,6 +102,13 @@ int		init_data(t_mini *data);
 void	wait_signal(void);
 int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
+
+/*execution*/
+void    handle_execution(t_input *input, char **envp);
+void	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
+void	execute_command(t_cmd *cmd, char **envp);
+int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
+int		open_heredoc(char *delimiter);
 
 /*split_input*/
 int		split_input(t_input *input);
@@ -136,11 +141,11 @@ bool	is_redir(char *str);
 bool	is_special(char *str);
 bool	is_supported(char *str);
 bool	is_builtin(char *value);
+bool	is_validate_bracket(char *str);
 
 /*utils*/
 void	w_openquote(unsigned char quote);
 void	w_unsupported(char *str);
-bool	unvalidate_bracket(char *str);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
@@ -150,17 +155,5 @@ void	free_input(t_input *input, bool check);
 /*delete*/
 void	printf_input(t_input *input);
 void	invented_input(t_input *input);
-
-/*execution*/
-void    handle_execution(t_input *input, char **envp);
-char	*find_command_path(char	*command, char **envp, t_cmd *cmd);
-void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
-int		redir_in(t_token *token);
-int		redir_out(t_token *token);
-void	execute_command(t_cmd *cmd, char **envp);
-int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
-void	wait_all(void);
-int		open_heredoc(char *delimiter);
-void    create_pipes(t_cmd *cmd, int pipe_fd[2]);
 
 #endif

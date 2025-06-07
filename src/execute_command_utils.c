@@ -9,7 +9,6 @@ static char	*absolute_path(t_cmd *cmd)
 		printf("minishell: %s: no such file or directory\n", cmd->token->value);
 		return (cmd->token->value);
 	}
-
 }
 
 static int	count_args(t_token *token)
@@ -25,7 +24,7 @@ static int	count_args(t_token *token)
 	}
 	return (count);
 }
-char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
+static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 {
 	char	**directories;
 	char	*full_path;
@@ -78,11 +77,19 @@ void	execute_command(t_cmd *cmd, char **envp)
 {
 	char	**command;
 	char	*path;
+	t_token	*cur;
 	
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
 		printf("minishell: %s: command not found\n", command[0]);
+	cur = cmd->token;
+	while (path && cur)
+	{
+		if (cur->type == ARG && !cur->flag && !is_supported(cur->value))
+			return (w_unsupported(cur->value), (void)update_status(SINTAX));
+		cur = cur->next;
+	}
 	if (execve(path, command, envp) != 0)
 	{
 		free_array(command, -1);
