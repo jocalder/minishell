@@ -32,7 +32,8 @@ static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 	int		i;
 
 	i = 0;
-	if (cmd && (ft_strncmp(cmd->token->value, "/bin/", 5) == 0
+	if (cmd && cmd->token && cmd->token->value
+		&& (ft_strncmp(cmd->token->value, "/bin/", 5) == 0
 		|| ft_strncmp(cmd->token->value, "./", 2) == 0))
 		return (absolute_path(cmd));
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
@@ -87,7 +88,7 @@ void	execute_command(t_cmd *cmd, char **envp)
 	while (path && cur)
 	{
 		if (cur->type == ARG && !cur->flag && !is_supported(cur->value))
-			return (w_unsupported(cur->value), (void)update_status(SINTAX));
+			return (w_unsupported(cur->value), (void)update_status(SYNTAX));
 		cur = cur->next;
 	}
 	if (execve(path, command, envp) != 0)

@@ -26,7 +26,7 @@ static void	w_unexpected(int c)
 void	w_unsupported(char *str)
 {
 	int		c;
-	
+
 	if (!str)
 		return ;
 	c = str[0];

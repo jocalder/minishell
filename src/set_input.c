@@ -26,7 +26,7 @@ int	split_cmd(t_cmd **cmd)
 		// This comprobation is in the execution,
 		// because the syntax error is post to check the access of the command
 		// if (!is_supported(new->value))
-		// 	return (w_unsupported(new->value), update_status(SINTAX));
+		// 	return (w_unsupported(new->value), update_status(SYNTAX));
 	}
 	return (OK);
 }

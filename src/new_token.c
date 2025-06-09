@@ -10,7 +10,7 @@ char	*get_redir(char **str, size_t *len)
 	else if (ft_strncmp(str[0], ">>>", 3) == 0)
 	{
 		write(STDERR_FILENO, ERROR3, 50);
-		return ((void)update_status(SINTAX), NULL);
+		return ((void)update_status(SYNTAX), NULL);
 	}
 	else if (ft_strncmp(str[0], "<<", 2) == 0
 		|| ft_strncmp(str[0], ">>", 2) == 0)
@@ -36,7 +36,7 @@ static int	close_quote(char *start, unsigned char quote, size_t *len)
 	while (start[*len] && start[*len] != quote)
 		(*len)++;
 	if (!start[*len])
-		return (w_openquote(quote), update_status(SINTAX));
+		return (w_openquote(quote), update_status(SYNTAX));
 	return (OK);
 }
 

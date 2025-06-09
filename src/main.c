@@ -10,7 +10,7 @@ static int	interactive_mode(t_mini *data, char **envp)
 			check_exit_status(g_status, data);
 		if (set_input(data) != OK)
 			check_exit_status(g_status, data);
-		handle_execution(data->input, envp);
+		handler_execution(data->input, envp);
 		free_all(data, false);
 	}
 	return (g_status);
@@ -46,8 +46,8 @@ static void	command_mode(t_mini *data, char **argv, int argc, char **envp)
 			free_input(data->input, true);
 			check_exit_status(g_status, NULL);
 		}
-		if (g_status != SINTAX)
-			handle_execution(data->input, envp);
+		if (g_status != SYNTAX)
+			handler_execution(data->input, envp);
 		free_input(data->input, true);
 	}
 	// else if (argc > 2 && ft_strncmp(argv[1], "-c", ft_strlen(argv[1])) == 0)
@@ -63,8 +63,8 @@ static void	command_mode(t_mini *data, char **argv, int argc, char **envp)
 	else
 	{
 		free_input(data->input, true);
-		(void)write(STDERR_FILENO, USAGE, 29), update_status(SINTAX);
-		exit(SINTAX);
+		(void)write(STDERR_FILENO, USAGE, 29), update_status(SYNTAX);
+		exit(SYNTAX);
 	}
 }
 
@@ -81,6 +81,6 @@ int	main(int argc, char **argv, char **envp)
 	else if (!isatty(STDIN_FILENO))
 		command_mode(&data, argv, argc,envp);
 	else
-		return ((void)write(STDERR_FILENO, USAGE, 29), update_status(SINTAX));
+		return ((void)write(STDERR_FILENO, USAGE, 29), update_status(SYNTAX));
 	return (g_status);
 }

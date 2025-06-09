@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-// void	print_syntax_error(t_token *token)
-// {
-// 	//
-// }
-
 int	update_status(int new_status)
 {
 	g_status = new_status;
@@ -24,6 +19,6 @@ void	check_exit_status(int status, t_mini *data)
 		rl_clear_history();
 		exit (g_status);
 	}
-	else if (status == SINTAX)
+	else if (status == SYNTAX)
 		free_all(data, false);
 }

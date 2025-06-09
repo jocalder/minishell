@@ -23,7 +23,7 @@ static void	create_pipes(t_cmd *cmd, int pipe_fd[2])
 	}
 }
 
-void    handle_execution(t_input *input, char **envp)
+void    handler_execution(t_input *input, char **envp)
 {
     t_cmd	*cmd;
 	int		pipe_fd[2];

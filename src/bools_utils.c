@@ -52,7 +52,7 @@ bool	is_supported(char *start)
 	if ((ft_strncmp(start, "&&", 2) == 0) || (ft_strncmp(start, "||", 2) == 0)
 		|| c == ';' || c == '&' || c == '\\' || c == '`'
 		|| c == '(' || c == ')' || start[end] == '(' || start[end] == ')'
-		|| c == '*' || c == '?'
+		|| c == '*' || c == '?' // || c == '.'
 		|| (c == '[' && (end > 0 && !is_spacetab(start[1]))))
 		return (false);
 	return (true);
