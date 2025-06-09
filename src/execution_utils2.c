@@ -1,12 +1,20 @@
 #include "minishell.h"
 
-void	wait_all(void)
+int	wait_all(void)
 {
-	int	status;
+	int		status;
+	pid_t	pid;
 
 	status = 0;
-	while (wait(&status) > 0)
-		;
+	pid = -1;
+	while ((pid = wait(&status)) > 0)
+	{
+		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+			return (update_status(status));
+		else if (WIFSIGNALED(status))
+			return (update_status(128 + WTERMSIG(status)));
+	}
+	return (update_status(OK));
 }
 
 void	create_pipes(t_cmd *cmd, int pipe_fd[2])

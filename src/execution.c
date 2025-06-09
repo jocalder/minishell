@@ -30,7 +30,7 @@ int	handle_execution(t_mini *data, char **envp)
 		create_pipes(cmd, pipe_fd);
 		pid = fork();
 		if (pid == 0)
-			status = ft_child_proccess(pipe_fd, prev_fd, cmd, envp);
+			ft_child_proccess(pipe_fd, prev_fd, cmd, envp);
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmd->next)
@@ -38,8 +38,7 @@ int	handle_execution(t_mini *data, char **envp)
 		prev_fd = pipe_fd[0];
 		cmd = cmd->next;
 	}
-	wait_all();
-	return (update_status(status));
+	return (wait_all());
 }
 
 int	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
@@ -51,9 +50,9 @@ int	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 	fd_in = redir_in(cmd->token);
 	fd_out = redir_out(cmd->token);
 	if (fd_in == 2 || fd_out == 2)
-		return (update_status(SINTAX));
+		return (SINTAX);
 	else if (fd_in == 1 || fd_out == 1)
-		return (update_status(ERROR));
+		return (ERROR);
 	if (fd_in != -1)
 		dup2(fd_in, 0);
 	else if (prev_fd != -1 && fd_in == -1)
@@ -64,7 +63,7 @@ int	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 		dup2(fd_out, 1);
 	close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
 	status = execute_command(cmd, envp);
-	return (status);
+	exit(status);
 }
 
 int	redir_in(t_token *token)
@@ -110,7 +109,7 @@ int	redir_out(t_token *token)
 			if (!token->next || !token->next->value)
 			{
 				printf("minishell: syntax error near unexpected token `newline'\n");
-				return (update_status(SINTAX));
+				return (SINTAX);
 			}
 			if (fd != -1)
 				close(fd);
@@ -119,7 +118,7 @@ int	redir_out(t_token *token)
 			else
 				fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-				return (update_status(ERROR));
+				return (ERROR);
 		}
 		token = token->next;
 	}

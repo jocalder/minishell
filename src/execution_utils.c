@@ -83,7 +83,16 @@ int	execute_command(t_cmd *cmd, char **envp)
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
+	{
 		printf("minishell: %s: command not found\n", command[0]);
+		free_array(command);
+		return (NOTFOUND);
+	}
+	if (open(command[1], O_RDONLY, 0644) != 0)
+	{
+		free_array(command);
+		return (ERROR);
+	}
 	status = execve(path, command, envp);
 	free_array(command);
 	if (status == 0)
