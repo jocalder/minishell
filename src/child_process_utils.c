@@ -91,7 +91,7 @@ void	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 		else if (fd_out != -1)
 			dup2(fd_out, 1);
 		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
-		execute_command(cmd, envp, NULL);
+		execute_command(cmd, envp);
 		//Need exit in child proccess,
 		//'cuz else still in it and not parent_process(minishell)
 		exit(0);

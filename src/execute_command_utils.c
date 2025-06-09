@@ -53,7 +53,7 @@ static int	count_args(t_token *token)
 	return (count);
 }
 
-static char	**build_full_command(t_token *token, char *mode)
+static char	**build_full_command(t_token *token)
 {
 	int		count;
 	char	**args;
@@ -61,17 +61,10 @@ static char	**build_full_command(t_token *token, char *mode)
 
 	i = 0;
 	count = count_args(token);
-	if (mode)
-		count++;
 	args = malloc(sizeof(char *) * (count + 1));
 	while (token)
 	{
-		if (mode && i == 0)
-		{
-			args[i++] = mode;
-			continue ;
-		}
-		else if (token->type == CMD || token->type == ARG)
+		if (token->type == CMD || token->type == ARG)
 			args[i++] = ft_strdup(token->value);
 		token = token->next;
 	}
@@ -79,13 +72,13 @@ static char	**build_full_command(t_token *token, char *mode)
 	return (args);
 }
 
-void	execute_command(t_cmd *cmd, char **envp, char *mode)
+void	execute_command(t_cmd *cmd, char **envp)
 {
 	char	**command;
 	char	*path;
 	t_token	*cur;
 	
-	command = build_full_command(cmd->token, mode);
+	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
 		printf("minishell: %s: command not found\n", command[0]);
