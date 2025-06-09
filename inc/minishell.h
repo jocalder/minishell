@@ -106,7 +106,7 @@ int		set_input(t_mini *data);
 /*execution*/
 void    handler_execution(t_input *input, char **envp);
 void	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
-void	execute_command(t_cmd *cmd, char **envp);
+void	execute_command(t_cmd *cmd, char **envp, char *mode);
 int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
 int		open_heredoc(char *delimiter);
 
