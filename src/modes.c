@@ -14,7 +14,7 @@ void	interactive_mode(t_mini *data, char **envp)
 	}
 }
 
-static void	commando_mode_one(t_mini *data, char **envp)
+static void	command_mode_one(t_mini *data, char **envp)
 {
 	char	*line;
 
@@ -51,7 +51,7 @@ static void	command_mode_two(t_mini *data, char *arg, char **envp)
 void	command_mode(t_mini *data, char **argv, int argc, char **envp)
 {
 	if (argc == 1)
-		commando_mode_one(data, envp);
+		command_mode_one(data, envp);
 	else if (argc > 2 && ft_strncmp(argv[1], "-c", ft_strlen(argv[1])) == 0)
 		command_mode_two(data, argv[2], envp);
 	else
