@@ -17,9 +17,8 @@ LIBFT = libft/libft.a
 
 SRCS = 	src/main.c						\
 		src/init_data.c					\
-		src/status_utils.c				\
-		src/free_utils.c				\
 		src/wait_signal.c				\
+		src/modes.c						\
 		src/set_prompt.c				\
 		src/set_input.c					\
 		src/split_input.c				\
@@ -32,6 +31,8 @@ SRCS = 	src/main.c						\
 		src/heredoc_proccess.c			\
 		src/bools_utils.c				\
 		src/write_utils.c				\
+		src/status_utils.c				\
+		src/free_utils.c				\
 		
 
 OBJS = $(SRCS:%.c=objs/%.o)

@@ -13,9 +13,9 @@
 # include <sys/wait.h>
 
 /*colors*/
-# define RED				"\001\033[0;34m\002"
-# define BLUE				"\001\033[0;31m\002"
-# define WHITE				"\001\033[0m\002"
+# define RED		"\001\033[0;34m\002"
+# define BLUE		"\001\033[0;31m\002"
+# define WHITE		"\001\033[0m\002"
 
 # define USAGE		"Usage: ./minishell [-c] ...\n"
 
@@ -53,9 +53,9 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
+	bool			flag;
 	struct s_token	*next;
 	struct s_token	*prev;
-	bool			flag;
 }	t_token;
 
 typedef struct s_cmd
@@ -98,8 +98,12 @@ enum	e_status
 
 extern int	g_status;
 
-int		init_data(t_mini *data);
+void	init_data(t_mini *data);
 void	wait_signal(void);
+void	interactive_mode(t_mini *data, char **envp);
+void	command_mode(t_mini *data, char **argv, int argc, char **envp);
+
+/*set_structs*/
 int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
 
@@ -133,6 +137,7 @@ char	*get_redir(char **str, size_t *len);
 /*status_utils*/
 int		update_status(int new_status);
 void	check_exit_status(int status, t_mini *data);
+void	exit_free(t_mini *data, int status, bool check);
 
 /*bools utils*/
 bool	is_spacetab(int c);
@@ -140,10 +145,10 @@ bool	is_quote(int c);
 bool	is_redir(char *str);
 bool	is_special(char *str);
 bool	is_supported(char *str);
-bool	is_builtin(char *value);
 bool	is_validate_bracket(char *str);
+bool	is_builtin(char *value);
 
-/*utils*/
+/*wirte_utils*/
 void	w_openquote(unsigned char quote);
 void	w_unsupported(char *str);
 

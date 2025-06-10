@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+void	exit_free(t_mini *data, int status, bool check)
+{
+	free_all(data, check);
+	exit(status);
+}
+
 int	update_status(int new_status)
 {
 	g_status = new_status;
@@ -19,6 +25,4 @@ void	check_exit_status(int status, t_mini *data)
 		rl_clear_history();
 		exit (g_status);
 	}
-	else if (status == SYNTAX)
-		free_all(data, false);
 }
