@@ -153,5 +153,6 @@ int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
 int		wait_all(void);
 int		open_heredoc(char *delimiter);
 void	create_pipes(t_cmd *cmd, int pipe_fd[2]);
+void	handler_redirections(int pipe_fd[2], int prev_fd, int fd_in, int fd_out);
 
 #endif

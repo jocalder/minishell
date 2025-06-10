@@ -24,11 +24,39 @@ void	create_pipes(t_cmd *cmd, int pipe_fd[2])
 	if (cmd->next)
 	{
 		if (pipe(pipe_fd) != 0)
+		{
+			close(pipe_fd[0]);
+			close(pipe_fd[1]);
 			return ((void)update_status(ERROR));
+		}
 	}
 	else
 	{
 		pipe_fd[0] = -1;
 		pipe_fd[1] = -1;
+	}
+}
+
+void	handler_redirections(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
+{
+	if (fd_in != -1)
+	{
+		dup2(fd_in, 0);
+		close(fd_in);
+	}
+	else if (prev_fd != -1)
+	{
+		dup2(prev_fd, 0);
+		close(prev_fd);
+	}
+	if (pipe_fd[1] != -1)
+	{
+		dup2(pipe_fd[1], 1);
+		close(pipe_fd[1]);
+	}
+	else if (fd_out != -1)
+	{
+		dup2(fd_out, 1);
+		close(fd_out);
 	}
 }

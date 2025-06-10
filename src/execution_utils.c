@@ -79,7 +79,6 @@ int	execute_command(t_cmd *cmd, char **envp)
 {
 	char	**command;
 	char	*path;
-	int		status;
 
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
@@ -89,10 +88,7 @@ int	execute_command(t_cmd *cmd, char **envp)
 		free_array(command);
 		return (NOTFOUND);
 	}
-	status = execve(path, command, envp);
+	execve(path, command, envp);
 	free_array(command);
-	if (status == 0)
-		return(update_status(OK));
-	else
-		return (NOTFOUND);
+	return (ERROR);
 }

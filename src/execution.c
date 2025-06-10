@@ -4,13 +4,13 @@ static void	close_all_fds(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
 {
 	if (prev_fd != -1)
 		close(prev_fd);
-	else if (pipe_fd[0] != -1)
+	if (pipe_fd[0] != -1)
 		close(pipe_fd[0]);
-	else if (pipe_fd[1] != -1)
+	if (pipe_fd[1] != -1)
 		close(pipe_fd[1]);
-	else if (fd_in != -1)
+	if (fd_in != -1)
 		close(fd_in);
-	else if (fd_out != -1)
+	if (fd_out != -1)
 		close(fd_out);
 }
 
@@ -36,6 +36,8 @@ int	handle_execution(t_mini *data, char **envp)
 		prev_fd = pipe_fd[0];
 		cmd = cmd->next;
 	}
+	if (prev_fd != -1)
+		close(prev_fd);
 	return (wait_all());
 }
 
@@ -51,14 +53,7 @@ int	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 		exit(SINTAX);
 	else if (fd_in == 1 || fd_out == 1)
 		exit(ERROR);
-	if (fd_in != -1)
-		dup2(fd_in, 0);
-	else if (prev_fd != -1 && fd_in == -1)
-		dup2(prev_fd, 0);
-	if (pipe_fd[1] != -1 && fd_out == -1)
-		dup2(pipe_fd[1], 1);
-	else if (fd_out != -1)
-		dup2(fd_out, 1);
+	handler_redirections(pipe_fd, prev_fd, fd_in, fd_out);
 	close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
 	status = execute_command(cmd, envp);
 	exit(status);
@@ -76,6 +71,8 @@ int	redir_in(t_token *token)
 			if (!token->next || !token->next->value)
 			{
 				printf("minishell: syntax error near unexpected token `newline'\n");
+				if (fd != -1)
+					close(fd);
 				return (SINTAX);
 			}
 			if (fd != -1)
