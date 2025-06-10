@@ -11,6 +11,6 @@ int	main(int argc, char **argv, char **envp)
 	if (isatty(STDIN_FILENO) && argc == 1)
 		interactive_mode(&data, envp);
 	else
-		command_mode(&data, argv, argc,envp);
+		command_mode(&data, argv, argc, envp);
 	exit (g_status);
 }

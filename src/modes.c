@@ -30,7 +30,7 @@ static void	command_mode_one(t_mini *data, char **envp)
 		line = get_next_line(STDIN_FILENO);
 	}
 	if (ft_strncmp(data->input->value, "\n",
-		ft_strlen(data->input->value)) == 0)
+			ft_strlen(data->input->value)) == 0)
 		exit_free(data, OK, true);
 	if (split_input(data->input) == ERROR)
 		exit_free(data, ERROR, true);
@@ -57,6 +57,7 @@ void	command_mode(t_mini *data, char **argv, int argc, char **envp)
 	else
 	{
 		free_all(data, true);
-		write(STDERR_FILENO, USAGE, 29), update_status(SYNTAX);
+		write(STDERR_FILENO, USAGE, 29);
+		update_status(SYNTAX);
 	}
 }
