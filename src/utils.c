@@ -1,9 +1,28 @@
 #include "minishell.h"
 
-void	write_open(unsigned char quote)
-{
-	write(STDERR_FILENO, ERROR5, 55);
-	write(STDERR_FILENO, &quote, 1);
-	write(STDERR_FILENO, "\'\n", 2);
-	write(STDERR_FILENO, ERROR6, 50);
-}
+/*case zsh*/
+// bool	is_validate_bracket(char *str)
+// {
+// 	int	cur;
+// 	int	end;
+	
+// 	if (!str || !*str)
+// 		return (true);
+// 	cur = 0;
+// 	end = ft_strlen(str) - 1;
+// 	while(str[cur])
+// 	{
+// 		if (str[cur] == '[')
+// 		{
+// 			if ((cur == 0 && end > 0) && !is_spacetab(str[cur + 1]))
+// 				return (false);
+// 			else if ((cur > 0 && cur == end) && !is_spacetab(str[cur - 1]))
+// 				return (false);
+// 			else if ((cur > 0 && cur < end)
+// 				&& (!is_spacetab(str[cur - 1]) || (!is_spacetab(str[cur + 1]))))
+// 				return (false);
+// 		}
+// 		cur++;
+// 	}
+// 	return (true);
+// }

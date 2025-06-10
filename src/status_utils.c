@@ -1,9 +1,10 @@
 #include "minishell.h"
 
-// void	print_syntax_error(t_token *token)
-// {
-// 	//
-// }
+void	exit_free(t_mini *data, int status, bool check)
+{
+	free_all(data, check);
+	exit(status);
+}
 
 int	update_status(int new_status)
 {

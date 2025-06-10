@@ -38,17 +38,22 @@ bool	is_special(char *str)
 	return (false);
 }
 
-bool	is_builtin(char *value)
+bool	is_supported(char *start)
 {
-	if (!value)
-		return (false);
-	if (ft_strncmp(value, "echo", 5) == 0
-		|| ft_strncmp(value, "cd", 3) == 0
-		|| ft_strncmp(value, "pwd", 4) == 0
-		|| ft_strncmp(value, "export", 7) == 0
-		|| ft_strncmp(value, "unset", 6) == 0
-		|| ft_strncmp(value, "env", 4) == 0
-		|| ft_strncmp(value, "exit", 5) == 0)
+	size_t	end;
+	char	c;
+
+	if (!start)
 		return (true);
-	return (false);
+	c = start[0];
+	end = ft_strlen(start) - 1;
+	while (end > 0 && is_spacetab((start)[end]))
+		end--;
+	if ((ft_strncmp(start, "&&", 2) == 0) || (ft_strncmp(start, "||", 2) == 0)
+		|| c == ';' || c == '&' || c == '\\' || c == '`'
+		|| c == '(' || c == ')' || start[end] == '(' || start[end] == ')'
+		|| c == '*' || c == '?' // || c == '.'
+		|| (c == '[' && (end > 0 && !is_spacetab(start[1]))))
+		return (false);
+	return (true);
 }

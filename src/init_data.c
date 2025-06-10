@@ -20,18 +20,20 @@ static void	init_prompt(t_prompt *prompt)
 	prompt->len = 0;
 }
 
-int	init_data(t_mini *data)
+void	init_data(t_mini *data)
 {
 	g_status = 0;
 	data->prompt = NULL;
 	data->input = NULL;
 	data->prompt = ft_calloc(1, sizeof(t_prompt));
 	if (!data->prompt)
-		return (ERROR);
+		exit (ERROR);
 	data->input = ft_calloc(1, sizeof(t_input));
 	if (!data->input)
-		return (free(data->prompt), ERROR);
+	{
+		free(data->prompt);
+		exit (ERROR);
+	}
 	init_prompt(data->prompt);
 	init_input(data->input);
-	return (OK);
 }

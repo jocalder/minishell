@@ -13,20 +13,25 @@
 # include <sys/wait.h>
 
 /*colors*/
-# define RED				"\001\033[0;34m\002"
-# define BLUE				"\001\033[0;31m\002"
-# define WHITE				"\001\033[0m\002"
+# define RED		"\001\033[0;34m\002"
+# define BLUE		"\001\033[0;31m\002"
+# define WHITE		"\001\033[0m\002"
 
-# define USAGE	"Usage: ./minishell [-c] ...\n"
+# define USAGE		"Usage: ./minishell [-c] ...\n"
 
 /*syntax error*/
-# define ERROR1	"minishell: syntax error near unexpected token `|'\n"
-# define ERROR2	"minishell: syntax error near unexpected token `||'\n"
-# define ERROR3	"minishell: syntax error near unexpected token `>'\n"
-# define ERROR4	"minishell: syntax error near unexpected token `newline'\n"
+# define ERROR1		"minishell: syntax error near unexpected token `|'\n"
+# define ERROR2		"minishell: syntax error near unexpected token `||'\n"
+# define ERROR3		"minishell: syntax error near unexpected token `>'\n"
+# define ERROR4		"minishell: syntax error near unexpected token `newline'\n"
 
-# define ERROR5	"minishell: unexpected EOF while looking for matching `"
-# define ERROR6	"minishell: syntax error: unexpected end of file \n"
+# define ERROR5		"minishell: unexpected EOF while looking for matching `"
+# define ERROR6		"minishell: syntax error: unexpected end of file \n"
+
+# define ERROR7 	"minishell: syntax error near unexpected token `&&'\n"
+# define ERROR8		"minishell: syntax error near unexpected token `[['\n"
+# define ERROR9		"minishell: syntax error near unexpected token `['\n"
+# define ERROR10	"minishell: unsupported token '\\'\n"
 
 # define OK		0
 # define END	-1
@@ -48,17 +53,15 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
+	bool			flag;
 	struct s_token	*next;
 	struct s_token	*prev;
-	bool			flag;
 }	t_token;
 
 typedef struct s_cmd
 {
 	char			*value;
 	t_token			*token;
-	int				fd[2];
-	pid_t			pid;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -87,7 +90,7 @@ typedef struct minishell
 enum	e_status
 {
 	ERROR = 1,
-	SINTAX	= 2, // or 258
+	SYNTAX	= 2,
 	NOTEXEC = 126,
 	NOTFOUND = 127,
 	CTRC	= 130,
@@ -95,10 +98,21 @@ enum	e_status
 
 extern int	g_status;
 
-int		init_data(t_mini *data);
+void	init_data(t_mini *data);
 void	wait_signal(void);
+void	interactive_mode(t_mini *data, char **envp);
+void	command_mode(t_mini *data, char **argv, int argc, char **envp);
+
+/*set_structs*/
 int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
+
+/*execution*/
+void    handler_execution(t_input *input, char **envp);
+void	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
+void	execute_command(t_cmd *cmd, char **envp);
+int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
+int		open_heredoc(char *delimiter);
 
 /*split_input*/
 int		split_input(t_input *input);
@@ -123,16 +137,20 @@ char	*get_redir(char **str, size_t *len);
 /*status_utils*/
 int		update_status(int new_status);
 void	check_exit_status(int status, t_mini *data);
+void	exit_free(t_mini *data, int status, bool check);
 
 /*bools utils*/
 bool	is_spacetab(int c);
 bool	is_quote(int c);
 bool	is_redir(char *str);
 bool	is_special(char *str);
+bool	is_supported(char *str);
+bool	is_validate_bracket(char *str);
 bool	is_builtin(char *value);
 
-/*utils*/
-void	write_open(unsigned char quote);
+/*wirte_utils*/
+void	w_openquote(unsigned char quote);
+void	w_unsupported(char *str);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
@@ -142,16 +160,5 @@ void	free_input(t_input *input, bool check);
 /*delete*/
 void	printf_input(t_input *input);
 void	invented_input(t_input *input);
-
-/*execution*/
-void    handle_execution(t_mini *data, char **envp);
-void	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
-int		redir_in(t_token *token);
-int		redir_out(t_token *token);
-void	execute_command(t_cmd *cmd, char **envp);
-int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
-void	wait_all(void);
-int		open_heredoc(char *delimiter);
-void    create_pipes(t_cmd *cmd, int pipe_fd[2]);
 
 #endif

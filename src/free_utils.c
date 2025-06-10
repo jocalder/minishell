@@ -10,9 +10,15 @@ void	free_prompt(t_prompt *prompt, bool check)
 		free(prompt->cwd);
 	if (prompt->display)
 		free(prompt->display);
+	prompt->value = NULL;
 	prompt->user = NULL;
+	prompt->cwd = NULL;
+	prompt->display = NULL;
 	if (check)
+	{
 		free(prompt);
+		prompt = NULL;
+	}
 }
 
 static void	free_token(t_token *token)
@@ -28,6 +34,7 @@ static void	free_token(t_token *token)
 		next = cur->next;
 		if (cur->value)
 			free(cur->value);
+		cur->value = NULL;
 		free(cur);
 		cur = next;
 	}
@@ -51,6 +58,7 @@ static void	free_cmd(t_cmd *cmd)
 			free_token(cur->token);
 			cur->token = NULL;
 		}
+		cur->value = NULL;
 		free(cur);
 		cur = next;
 	}
@@ -68,8 +76,12 @@ void	free_input(t_input *input, bool check)
 		free_cmd(input->cmd);
 		input->cmd = NULL;
 	}
+	input->value = NULL;
 	if (check)
+	{
 		free(input);
+		input = NULL;
+	}
 }
 
 void	free_all(t_mini *data, bool check)

@@ -6,19 +6,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_mini	data;
 
-	if (argc != 1)
-		return ((void)write(STDERR_FILENO, USAGE, 29), update_status(SINTAX));
-	if (init_data(&data) != OK)
-		return (free_all(&data, true), update_status(ERROR));
+	init_data(&data);
 	wait_signal();
-	while (argv)
-	{
-		if (set_prompt((&data)->prompt) != OK)
-			check_exit_status(g_status, &data);
-		if (set_input(&data) != OK)
-			check_exit_status(g_status, &data);
-		handle_execution(&data, envp);
-		free_all(&data, false);
-	}
-	check_exit_status(g_status, &data);
+	if (isatty(STDIN_FILENO) && argc == 1)
+		interactive_mode(&data, envp);
+	else
+		command_mode(&data, argv, argc, envp);
+	exit (g_status);
 }

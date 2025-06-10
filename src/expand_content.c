@@ -18,16 +18,23 @@ static char	*handler_expand(char *value, size_t *len)
 
 	if (!value)
 		return (ft_strdup(""));
+	new_value = NULL;
 	if (value[*len] == '?')
 	{
 		new_value = ft_itoa(g_status);
 		(*len)++;
 	}
-	else
+	else if (ft_isalpha(value[*len]) || value[*len] == '_')
 	{
-		while (value[*len] && value[*len] != '$')
+		while (value[*len]
+			&& (value[*len] != '$' && !is_spacetab(value[*len])))
 			(*len)++;
 		new_value = get_env_var(ft_substr(value, 0, *len));
+	}
+	else
+	{
+		(*len)++;
+		return (ft_strdup(""));
 	}
 	return (new_value);
 }
