@@ -33,8 +33,9 @@ static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 	int		i;
 
 	i = 0;
-	if (ft_strncmp(cmd->token->value, "/bin/", 5) == 0
-		|| ft_strncmp(cmd->token->value, "./", 2) == 0)
+	if (cmd && cmd->token && cmd->token->value &&
+		(ft_strncmp(cmd->token->value, "/bin/", 5) == 0
+		|| ft_strncmp(cmd->token->value, "./", 2) == 0))
 		return (absolute_path(cmd));
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
@@ -88,17 +89,10 @@ int	execute_command(t_cmd *cmd, char **envp)
 		free_array(command);
 		return (NOTFOUND);
 	}
-	if (open(command[1], O_RDONLY, 0644) != 0)
-	{
-		free_array(command);
-		return (ERROR);
-	}
 	status = execve(path, command, envp);
 	free_array(command);
 	if (status == 0)
-	{
 		return(update_status(OK));
-	}
 	else
 		return (NOTFOUND);
 }

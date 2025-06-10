@@ -19,18 +19,16 @@ int	handle_execution(t_mini *data, char **envp)
 	t_cmd				*cmd;
 	int					pipe_fd[2];
 	int					prev_fd;
-	int					status;
 	pid_t				pid;
 
 	cmd = data->input->cmd;
 	prev_fd = -1;
-	status = 0;
 	while (cmd)
 	{
 		create_pipes(cmd, pipe_fd);
 		pid = fork();
 		if (pid == 0)
-			ft_child_proccess(pipe_fd, prev_fd, cmd, envp);
+			child_proccess(pipe_fd, prev_fd, cmd, envp);
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmd->next)
@@ -41,7 +39,7 @@ int	handle_execution(t_mini *data, char **envp)
 	return (wait_all());
 }
 
-int	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
+int	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 {
 	int	fd_in;
 	int	fd_out;
@@ -50,9 +48,9 @@ int	ft_child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 	fd_in = redir_in(cmd->token);
 	fd_out = redir_out(cmd->token);
 	if (fd_in == 2 || fd_out == 2)
-		return (SINTAX);
+		exit(SINTAX);
 	else if (fd_in == 1 || fd_out == 1)
-		return (ERROR);
+		exit(ERROR);
 	if (fd_in != -1)
 		dup2(fd_in, 0);
 	else if (prev_fd != -1 && fd_in == -1)
