@@ -47,12 +47,12 @@ int	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 	int	fd_out;
 	int	status;
 
+	fd_out = -1;
 	fd_in = redir_in(cmd->token);
-	fd_out = redir_out(cmd->token);
-	if (fd_in == 2 || fd_out == 2)
-		exit(SINTAX);
-	else if (fd_in == 1 || fd_out == 1)
-		exit(ERROR);
+	if (fd_in == 2 || fd_in == 1)
+		exit(fd_in);
+	if (cmd->next == NULL)
+		fd_out = redir_out(cmd);
 	handler_redirections(pipe_fd, prev_fd, fd_in, fd_out);
 	close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
 	status = execute_command(cmd, envp);
@@ -92,11 +92,15 @@ int	redir_in(t_token *token)
 	return (fd);
 }
 
-int	redir_out(t_token *token)
+int	redir_out(t_cmd *cmd)
 {
+	t_token *token;
 	int		fd;
 
+	token = cmd->token;
 	fd = -1;
+	if (cmd->next)
+		return (-1);
 	while (token)
 	{
 		if (token->type == APPEND || token->type == REDIR_OUT)

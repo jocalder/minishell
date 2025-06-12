@@ -147,7 +147,7 @@ void	invented_input(t_input *input);
 int		handle_execution(t_mini *data, char **envp);
 int		child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
 int		redir_in(t_token *token);
-int		redir_out(t_token *token);
+int		redir_out(t_cmd *cmd);
 int		execute_command(t_cmd *cmd, char **envp);
 int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
 int		wait_all(void);

@@ -24,11 +24,7 @@ void	create_pipes(t_cmd *cmd, int pipe_fd[2])
 	if (cmd->next)
 	{
 		if (pipe(pipe_fd) != 0)
-		{
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
-			return ((void)update_status(ERROR));
-		}
+			exit(ERROR);
 	}
 	else
 	{
