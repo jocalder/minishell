@@ -40,47 +40,58 @@ static int	close_quote(char *start, unsigned char quote, size_t *len)
 	return (OK);
 }
 
-int	quote_case(t_cmd *cmd, char *start, char **tmp, size_t *len)
+char	*quote_case(t_cmd *cmd, char *start, size_t *len)
 {
 	unsigned char	quote;
+	char			*tmp;
 
-	if (!start || !tmp)
-		return (update_status(ERROR));
+	if (!start)
+		return ((void)update_status(ERROR), NULL);
 	quote = (unsigned char)start[(*len)++];
 	if (close_quote(start, quote, len) != OK)
-		return (g_status);
-	*tmp = ft_substr(start, 1, (*len) - 1);
+		return (NULL);
+	tmp = ft_substr(start, 1, (*len) - 1);
+	if (!tmp)
+		return ((void)update_status(ERROR), NULL);
 	if (quote == '\"')
-		*tmp = expand_content(*tmp, last_token(cmd->token));
+		tmp = expand_content(tmp, last_token(cmd->token));
 	(*len)++;
-	return (OK);
+	return (tmp);
 }
 
-void	special_case(t_cmd *cmd, char *start, char **tmp, size_t *len)
+char	*special_case(t_cmd *cmd, char *start, size_t *len)
 {
+	char	*tmp;
+
 	(*len)++;
 	while (start[*len]
 		&& (!is_spacetab(start[*len]) && !is_quote(start[*len])))
 		(*len)++;
-	*tmp = expand_content(ft_substr(start, 0, *len), last_token(cmd->token));
+	tmp = expand_content(ft_substr(start, 0, *len), last_token(cmd->token));
+	return (tmp);
 }
 
-int	check_cases(t_cmd *cmd, char **start, char **tmp, size_t *len)
+char	*check_cases(t_cmd *cmd, t_token *new, char **start, size_t *len)
 {
-	if (!cmd || !start || !*start || !tmp)
-		return (update_status(ERROR));
+	char	*tmp;
+
+	if (!cmd || !new || !start || !*start)
+		return ((void)update_status(ERROR), NULL);
+	tmp = NULL;
 	if (is_quote(*start[*len]))
 	{
-		if (quote_case(cmd, *start, tmp, len) != OK)
-			return (g_status);
+		new->flag = true;
+		tmp = quote_case(cmd, *start, len);
 	}
 	else if (is_special(*start))
-		special_case(cmd, *start, tmp, len);
+		tmp = special_case(cmd, *start, len);
+	else if (is_redir(*start))
+		tmp = get_redir(start, len);
 	else
 	{
-		*tmp = get_redir(start, len);
-		if (!*tmp)
-			return (g_status);
+		tmp = ft_substr(*start, 0, ++(*len));
+		if (!tmp)
+			return ((void)update_status(ERROR), NULL);
 	}
-	return (OK);
+	return (tmp);
 }

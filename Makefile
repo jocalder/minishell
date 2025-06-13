@@ -33,6 +33,7 @@ SRCS = 	src/main.c						\
 		src/write_utils.c				\
 		src/status_utils.c				\
 		src/free_utils.c				\
+		src/delete.c
 		
 
 OBJS = $(SRCS:%.c=objs/%.o)

@@ -20,11 +20,10 @@ int	split_cmd(t_cmd **cmd)
 		new->value = ft_strdup("");
 		new->flag = false;
 		if (new_token(*cmd, &new, &start) != OK)
-			return (g_status);
+			return (free(new->value), free(new), g_status);
 		type = get_type((*cmd)->token, new->value, new->flag);
 		append_token(*cmd, &new, type);
-		// This comprobation is in the execution,
-		// because the syntax error is post to check the access of the command
+		// Here or at execution?
 		// if (!is_supported(new->value))
 		// 	return (w_unsupported(new->value), update_status(SYNTAX));
 	}
@@ -56,6 +55,7 @@ int	split_input(t_input *input)
 			return (g_status);
 		start += len;
 	}
+	printf_input(input);
 	return (OK);
 }
 

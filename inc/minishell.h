@@ -36,7 +36,7 @@
 # define OK		0
 # define END	-1
 
-typedef enum	e_token_type
+typedef enum e_token_type
 {
 	CMD,
 	ARG,
@@ -108,7 +108,7 @@ int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
 
 /*execution*/
-void    handler_execution(t_input *input, char **envp);
+void	handler_execution(t_input *input, char **envp);
 void	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
 void	execute_command(t_cmd *cmd, char **envp);
 int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
@@ -128,9 +128,9 @@ t_token	*last_token(t_token *token);
 
 /*new_token*/
 int		new_token(t_cmd *cmd, t_token **new, char **start);
-int		check_cases(t_cmd *cmd, char **start, char **tmp, size_t *len);
-int		quote_case(t_cmd *cmd, char *start, char **tmp, size_t *len);
-void	special_case(t_cmd *cmd, char *start, char **tmp, size_t *len);
+char	*check_cases(t_cmd *cmd, t_token *new, char **start, size_t *len);
+char	*quote_case(t_cmd *cmd, char *start, size_t *len);
+char	*special_case(t_cmd *cmd, char *start, size_t *len);
 char	*expand_content(char *value, t_token *last);
 char	*get_redir(char **str, size_t *len);
 

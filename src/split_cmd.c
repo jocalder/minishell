@@ -11,15 +11,11 @@ int	new_token(t_cmd *cmd, t_token **new, char **start)
 	{
 		len = 0;
 		tmp = NULL;
-		if (is_quote(*start[len]) || is_special(*start) || is_redir(*start))
-		{
-			if (is_quote(*start[len]))
-				(*new)->flag = true;
-			if (check_cases(cmd, start, &tmp, &len) != OK)
-				return (free((*new)->value), free(*new), g_status);
-		}
-		else
-			tmp = ft_substr(*start, 0, ++len);
+		if (is_redir(*start) && ft_strncmp((*new)->value, "", 1) != 0)
+			break ;
+		tmp = check_cases(cmd, *new, start, &len);
+		if (!tmp)
+			return (g_status);
 		(*new)->value = ft_strjoin((*new)->value, tmp);
 		if (!(*new)->value)
 			return (free(tmp), update_status(ERROR));
