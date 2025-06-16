@@ -26,13 +26,21 @@ int	handle_execution(t_mini *data, char **envp)
 	while (cmd)
 	{
 		create_pipes(cmd, pipe_fd);
+		cmd->fd_in = redir_in(cmd->token);
+		cmd->fd_out = redir_out(cmd->token);
 		pid = fork();
 		if (pid == 0)
 			child_proccess(pipe_fd, prev_fd, cmd, envp);
+		if (cmd->fd_in != -1)
+			close(cmd->fd_in);
+		if (cmd->fd_out != -1)
+			close(cmd->fd_out);
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmd->next)
 			close(pipe_fd[1]);
+		if (!cmd->next && pipe_fd[0] != -1)
+			close(pipe_fd[0]);
 		prev_fd = pipe_fd[0];
 		cmd = cmd->next;
 	}
@@ -43,18 +51,17 @@ int	handle_execution(t_mini *data, char **envp)
 
 int	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 {
-	int	fd_in;
-	int	fd_out;
 	int	status;
 
-	fd_out = -1;
-	fd_in = redir_in(cmd->token);
-	if (fd_in == 2 || fd_in == 1)
-		exit(fd_in);
-	if (cmd->next == NULL)
-		fd_out = redir_out(cmd);
-	handler_redirections(pipe_fd, prev_fd, fd_in, fd_out);
-	close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
+	//cmd->fd_in = redir_in(cmd->token);
+	//cmd->fd_out = redir_out(cmd->token);
+	if (cmd->fd_in == 2 || cmd->fd_in == 1)
+		exit(cmd->fd_in);
+	cmd->fd_out = redir_out(cmd->token);
+	if (cmd->fd_out == 2 || cmd->fd_out == 1)
+		exit(cmd->fd_out);
+	handler_redirections(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
+	close_all_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
 	status = execute_command(cmd, envp);
 	exit(status);
 }
@@ -92,15 +99,11 @@ int	redir_in(t_token *token)
 	return (fd);
 }
 
-int	redir_out(t_cmd *cmd)
+int	redir_out(t_token *token)
 {
-	t_token *token;
 	int		fd;
 
-	token = cmd->token;
 	fd = -1;
-	if (cmd->next)
-		return (-1);
 	while (token)
 	{
 		if (token->type == APPEND || token->type == REDIR_OUT)

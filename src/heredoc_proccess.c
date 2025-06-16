@@ -29,22 +29,16 @@ int	open_heredoc(char *delimiter)
 
 	line = NULL;
 	large = ft_strlen(delimiter);
+	if (!delimiter)
+		return (-1);
 	if (pipe(pipe_fd) < 0)
 		return (update_status(ERROR));
 	pid = fork();
 	if (pid < 0)
-	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		return (-1);
-	}
+		return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
 	if (pid == 0)
 		core_heredoc(line, delimiter, large, pipe_fd);
-	else
-	{
-		close(pipe_fd[1]);
-		waitpid(pid, NULL, 0);
-		return (pipe_fd[0]);
-	}
-	return (0);
+	close(pipe_fd[1]);
+	waitpid(pid, NULL, 0);
+	return (pipe_fd[0]);
 }
