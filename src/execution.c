@@ -28,6 +28,16 @@ int	handle_execution(t_mini *data, char **envp)
 		create_pipes(cmd, pipe_fd);
 		cmd->fd_in = redir_in(cmd->token);
 		cmd->fd_out = redir_out(cmd->token);
+		if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
+		{
+			if (cmd->fd_in != -1)
+				close(cmd->fd_in);
+			if (cmd->fd_out != -1)
+				close(cmd->fd_out);
+			cmd = cmd->next;
+			continue ;
+		}
+		printf("fd_in: %d\n", cmd->fd_in);
 		pid = fork();
 		if (pid == 0)
 			child_proccess(pipe_fd, prev_fd, cmd, envp);
@@ -53,11 +63,10 @@ int	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 {
 	int	status;
 
-	//cmd->fd_in = redir_in(cmd->token);
-	//cmd->fd_out = redir_out(cmd->token);
+	if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
+		exit(ERROR);
 	if (cmd->fd_in == 2 || cmd->fd_in == 1)
 		exit(cmd->fd_in);
-	cmd->fd_out = redir_out(cmd->token);
 	if (cmd->fd_out == 2 || cmd->fd_out == 1)
 		exit(cmd->fd_out);
 	handler_redirections(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
@@ -69,7 +78,9 @@ int	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 int	redir_in(t_token *token)
 {
 	int		fd;
+	int		i;
 
+	i = 0;
 	fd = -1;
 	while (token)
 	{
@@ -77,7 +88,7 @@ int	redir_in(t_token *token)
 		{
 			if (!token->next || !token->next->value)
 			{
-				printf("minishell: syntax error near unexpected token `newline'\n");
+				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
 				if (fd != -1)
 					close(fd);
 				return (SINTAX);
@@ -90,7 +101,10 @@ int	redir_in(t_token *token)
 				fd = open((token->next->value), O_RDONLY);
 			if (fd < 0)
 			{
-				printf("minishell: %s: no such file or directory\n", token->next->value);
+				write(2, "minishell: ", 11);
+				while (token->next->value[i])
+					write(2, &token->next->value[i++], 1);
+				write(2, ": no such file or directory\n", 28);
 				return (ERROR);
 			}
 		}
@@ -110,7 +124,7 @@ int	redir_out(t_token *token)
 		{
 			if (!token->next || !token->next->value)
 			{
-				printf("minishell: syntax error near unexpected token `newline'\n");
+				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
 				return (SINTAX);
 			}
 			if (fd != -1)

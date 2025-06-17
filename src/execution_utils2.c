@@ -12,7 +12,10 @@ int	wait_all(void)
 	while ((pid = wait(&status)) > 0)
 	{
 		if (WIFEXITED(status))
+		{
+			//printf("status: %d\n", status);
 			last_status = WEXITSTATUS(status);
+		}
 		else if (WIFSIGNALED(status))
 			last_status = 128 + WTERMSIG(status);
 	}

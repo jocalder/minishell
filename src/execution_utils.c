@@ -79,12 +79,17 @@ int	execute_command(t_cmd *cmd, char **envp)
 {
 	char	**command;
 	char	*path;
+	int		i;
 
+	i = 0;
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
 	{
-		printf("minishell: %s: command not found\n", command[0]);
+		write(2, "minishell: ", 11);
+		while (command[0][i])
+			write(2, &command[0][i++], 1); 
+		write(2, ": command not found\n", 20);
 		free_array(command);
 		return (NOTFOUND);
 	}
