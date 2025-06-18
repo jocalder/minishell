@@ -32,6 +32,7 @@ void    handler_execution(t_input *input, char **envp)
 
 	cmd = input->cmd;
 	prev_fd = -1;
+	wait_signal(1);
 	while (cmd)
 	{
 		create_pipes(cmd, pipe_fd);

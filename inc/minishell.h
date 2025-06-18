@@ -99,7 +99,7 @@ enum	e_status
 extern int	g_status;
 
 void	init_data(t_mini *data);
-void	wait_signal(void);
+void	wait_signal(int i);
 void	interactive_mode(t_mini *data, char **envp);
 void	command_mode(t_mini *data, char **argv, int argc, char **envp);
 
@@ -148,7 +148,7 @@ bool	is_supported(char *str);
 bool	is_validate_bracket(char *str);
 bool	is_builtin(char *value);
 
-/*wirte_utils*/
+/*write_utils*/
 void	w_openquote(unsigned char quote);
 void	w_unsupported(char *str);
 
