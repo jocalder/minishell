@@ -55,6 +55,5 @@ int	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 		status = execute_builtin(data, cmd, envp);
 	else
 		status = execute_command(cmd, envp);
-	free_all(data, true); //pfff hasta el nepe
 	exit(status);
 }

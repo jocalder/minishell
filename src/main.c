@@ -12,5 +12,5 @@ int	main(int argc, char **argv, char **envp)
 		interactive_mode(&data, envp);
 	else
 		command_mode(&data, argv, argc, envp);
-	exit (g_status);
+	exit(g_status);
 }
