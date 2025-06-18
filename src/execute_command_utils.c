@@ -2,11 +2,17 @@
 
 static char	*absolute_path(t_cmd *cmd)
 {
+	int	i;
+
+	i = 0;
 	if (access(cmd->token->value, F_OK) == 0)
 		return (cmd->token->value);
 	else
 	{
-		printf("minishell: %s: no such file or directory\n", cmd->token->value);
+		write(STDERR_FILENO, "minishell: ", 12);
+		while (cmd->token->next->value[i])
+			write(STDERR_FILENO, &cmd->token->next->value[i++], 1);
+		write(STDERR_FILENO, ": no such file or directory\n", 29);
 		return (cmd->token->value);
 	}
 }
@@ -72,27 +78,38 @@ static char	**build_full_command(t_token *token)
 	return (args);
 }
 
-void	execute_command(t_cmd *cmd, char **envp)
+int	execute_command(t_cmd *cmd, char **envp)
 {
 	char	**command;
 	char	*path;
 	t_token	*cur;
+	int		i;
 	
+	i = 0;
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
-		printf("minishell: %s: command not found\n", command[0]);
+	{
+		write(STDERR_FILENO, "minishell: ", 12);
+		while(command[0][i])
+			write(STDERR_FILENO, &command[0][i++], 1);
+		write(STDERR_FILENO, ": command not found\n", 21);
+		free_array(command, -1);
+		return (NOTFOUND);
+	}
 	cur = cmd->token;
 	while (path && cur)
 	{
 		if (cur->type == ARG && !cur->flag && !is_supported(cur->value))
-			return (w_unsupported(cur->value), (void)update_status(SYNTAX));
+			return (w_unsupported(cur->value), update_status(SYNTAX));
 		cur = cur->next;
 	}
-	if (execve(path, command, envp) != 0)
-	{
-		free_array(command, -1);
-		return ((void)update_status(NOTFOUND));
-	}
-	exit (0);
+	// if (execve(path, command, envp) != 0)
+	// {
+	// 	free_array(command, -1);
+	// 	return ((void)update_status(NOTFOUND));
+	// }
+	execve(path, command, envp);
+	free_array(command, -1);
+	return (ERROR);
 }

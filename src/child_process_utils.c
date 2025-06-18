@@ -1,98 +1,58 @@
 #include "minishell.h"
 
-static int	redir_in(t_token *token)
+static void	close_all_fds(t_mini *data, t_cmd **cmd)
 {
-	int		fd;
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
+	else if ((*cmd)->pipe_fd[0] != -1)
+		close((*cmd)->pipe_fd[0]);
+	else if ((*cmd)->pipe_fd[1] != -1)
+		close((*cmd)->pipe_fd[1]);
+	else if ((*cmd)->fd_in != -1)
+		close((*cmd)->fd_in);
+	else if ((*cmd)->fd_out != -1)
+		close((*cmd)->fd_out);
+}
 
-	fd = -1;
-	while (token)
+static void	handler_redir(t_mini *data, t_cmd **cmd)
+{
+	if ((*cmd)->fd_in != -1)
 	{
-		if (token->type == HEREDOC || token->type == REDIR_IN)
-		{
-			if (!token->next || !token->next->value)
-			{
-				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
-				return (update_status(NOTFOUND));
-			}
-			if (fd != -1)
-			close(fd);
-			if (token->type == HEREDOC)
-				fd = open_heredoc(token->next->value);
-			else
-				fd = open((token->next->value), O_RDONLY);
-			if (fd < 0)
-			{
-				printf("minishell: %s: no such file or directory\n", token->next->value);
-				return (update_status(NOTFOUND));//update errors to check
-			}
-		}
-		token = token->next;
+		dup2((*cmd)->fd_in, STDIN_FILENO);
+		close((*cmd)->fd_in);
 	}
-	return (fd);
-}
-
-static int	redir_out(t_token *token)
-{
-	int		fd;
-
-	fd = -1;
-	while (token)
+	else if (data->prev_fd != -1)
 	{
-		if (token->type == APPEND || token->type == REDIR_OUT)
-		{
-			if (!token->next || !token->next->value)
-			{
-				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
-				return (update_status(NOTFOUND));
-			}
-			if (fd != -1)
-				close(fd);
-			if (token->type == APPEND)
-				fd = open(token->next->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
-			else
-				fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			if (fd < 0)
-				return (update_status(NOTFOUND));//update errors to check my panita
-		}
-		token = token->next;
+		dup2(data->prev_fd, STDIN_FILENO);
+		close(data->prev_fd);
 	}
-	return (fd);
+	if ((*cmd)->pipe_fd[1] != -1)
+	{
+		dup2((*cmd)->pipe_fd[1], STDOUT_FILENO);
+		close((*cmd)->pipe_fd[1]);
+	}
+	else if ((*cmd)->fd_out != -1)
+	{
+		dup2((*cmd)->fd_out, STDOUT_FILENO);
+		close((*cmd)->fd_out);
+	}
 }
 
-static void	close_all_fds(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
+int	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 {
-	if (prev_fd != -1)
-		close(prev_fd);
-	else if (pipe_fd[0] != -1)
-		close(pipe_fd[0]);
-	else if (pipe_fd[1] != -1)
-		close(pipe_fd[1]);
-	else if (fd_in != -1)
-		close(fd_in);
-	else if (fd_out != -1)
-		close(fd_out);
-}
+		int	status;
 
-void	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
-{
-		int		fd_in;
-		int		fd_out;
-
-		fd_in = redir_in(cmd->token);
-		fd_out = redir_out(cmd->token);
-		if (fd_in == 127 || fd_out == 127)
-			return ;
-		if (fd_in != -1)
-			dup2(fd_in, 0);
-		else if (prev_fd != -1 && fd_in == -1)
-			dup2(prev_fd, 0);
-		if (pipe_fd[1] != -1 && fd_out == -1)
-			dup2(pipe_fd[1], 1);
-		else if (fd_out != -1)
-			dup2(fd_out, 1);
-		close_all_fds(pipe_fd, prev_fd, fd_in, fd_out);
-		execute_command(cmd, envp);
-		//Need exit in child proccess,
-		//'cuz else still in it and not parent_process(minishell)
-		exit(0);
+		if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
+			exit(ERROR); // leaks?
+		if (cmd->fd_in == 2 || cmd->fd_in == 1)
+			exit(cmd->fd_in); // ?? fd return like status; leaks?
+		if (cmd->fd_out == 2 || cmd->fd_out == 1)
+			exit(cmd->fd_out); // same
+		handler_redir(data, &cmd);
+		close_all_fds(data, &cmd);
+		// if (is_builtin(cmd->token->value))
+		// 	status = execute_builtin(data, cmd, envp);
+		// else
+		status = execute_command(cmd, envp);
+		exit(status);
 }

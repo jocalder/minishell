@@ -8,7 +8,7 @@ void	interactive_mode(t_mini *data, char **envp)
 			check_exit_status(g_status, data);
 		if (set_input(data) != OK)
 			check_exit_status(g_status, data);
-		handler_execution(data->input, envp);
+		handler_execution(data, envp);
 			// check_exit_status(g_status, data);
 		free_all(data, false);
 	}
@@ -34,7 +34,7 @@ static void	command_mode_one(t_mini *data, char **envp)
 		exit_free(data, OK, true);
 	if (split_input(data->input) == ERROR)
 		exit_free(data, ERROR, true);
-	handler_execution(data->input, envp);
+	handler_execution(data, envp);
 	free_input(data->input, true);
 }
 
@@ -44,7 +44,7 @@ static void	command_mode_two(t_mini *data, char *arg, char **envp)
 	data->input->value = ft_strdup(arg);
 	if (split_input(data->input) == ERROR)
 		exit_free(data, ERROR, true);
-	handler_execution(data->input, envp);
+	handler_execution(data, envp);
 	free_input(data->input, true);
 }
 
