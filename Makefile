@@ -28,6 +28,8 @@ SRCS = 	src/main.c						\
 		src/execution.c					\
 		src/child_process_utils.c		\
 		src/execute_command_utils.c		\
+		src/builtins.c					\
+		src/ft_echo.c					\
 		src/heredoc_proccess.c			\
 		src/bools_utils.c				\
 		src/write_utils.c				\

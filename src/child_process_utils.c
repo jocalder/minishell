@@ -40,19 +40,21 @@ static void	handler_redir(t_mini *data, t_cmd **cmd)
 
 int	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 {
-		int	status;
+	int	status;
 
-		if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
-			exit(ERROR); // leaks?
-		if (cmd->fd_in == 2 || cmd->fd_in == 1)
-			exit(cmd->fd_in); // ?? fd return like status; leaks?
-		if (cmd->fd_out == 2 || cmd->fd_out == 1)
-			exit(cmd->fd_out); // same
-		handler_redir(data, &cmd);
-		close_all_fds(data, &cmd);
-		// if (is_builtin(cmd->token->value))
-		// 	status = execute_builtin(data, cmd, envp);
-		// else
+	if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
+		exit(ERROR); // leaks?
+	if (cmd->fd_in == 2 || cmd->fd_in == 1)
+		exit(cmd->fd_in); // ?? fd return like status; leaks?
+	if (cmd->fd_out == 2 || cmd->fd_out == 1)
+		exit(cmd->fd_out); // same
+	handler_redir(data, &cmd);
+	close_all_fds(data, &cmd);
+	if ((cmd->token && cmd->token->value && cmd->token->type == CMD)
+		&& is_builtin(cmd->token->value))
+		status = execute_builtin(data, cmd, envp);
+	else
 		status = execute_command(cmd, envp);
-		exit(status);
+	free_all(data, true); //pfff hasta el nepe
+	exit(status);
 }

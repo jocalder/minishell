@@ -118,6 +118,9 @@ int		execute_command(t_cmd *cmd, char **envp);
 int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
 int		open_heredoc(char *delimiter);
 
+/*built-ins*/
+int		ft_echo(t_cmd * cmd);
+
 /*split_input*/
 int		split_input(t_input *input);
 int		validate_pipe(t_input *input, char **str);
