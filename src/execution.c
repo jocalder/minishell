@@ -110,6 +110,7 @@ int	handler_execution(t_mini *data, char **envp)
     t_cmd	*cmd;
 
 	cmd = data->input->cmd;
+	wait_signal(1);
 	while (cmd)
 	{
 		create_pipes(&cmd);

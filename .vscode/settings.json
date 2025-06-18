@@ -2,7 +2,7 @@
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "unistd.h": "c",
-        "minitalk.h": "c",
+        "minishell.h": "c",
         "libft.h": "c",
         "type_traits": "c"
     }
