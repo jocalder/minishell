@@ -23,6 +23,8 @@ static void	init_prompt(t_prompt *prompt)
 void	init_data(t_mini *data)
 {
 	g_status = 0;
+	data->prev_fd = -1;
+	data->pid = getpid();
 	data->prompt = NULL;
 	data->input = NULL;
 	data->prompt = ft_calloc(1, sizeof(t_prompt));

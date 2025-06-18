@@ -46,7 +46,6 @@ typedef enum e_token_type
 	HEREDOC,
 	ENDOFFILE,
 	FILE_PATH,
-	BUILTIN,
 }	t_token_type;
 
 typedef struct s_token
@@ -62,6 +61,9 @@ typedef struct s_cmd
 {
 	char			*value;
 	t_token			*token;
+	int				fd_in;
+	int				fd_out;
+	int				pipe_fd[2];
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -85,6 +87,8 @@ typedef struct minishell
 {
 	t_prompt	*prompt;
 	t_input		*input;
+	pid_t		pid;
+	int			prev_fd;
 }	t_mini;
 
 enum	e_status
@@ -108,9 +112,9 @@ int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
 
 /*execution*/
-void	handler_execution(t_input *input, char **envp);
-void	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp);
-void	execute_command(t_cmd *cmd, char **envp);
+int		handler_execution(t_mini *data, char **envp);
+int		child_proccess(t_mini *data, t_cmd *cmd, char **envp);
+int		execute_command(t_cmd *cmd, char **envp);
 int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
 int		open_heredoc(char *delimiter);
 
