@@ -36,6 +36,13 @@
 # define OK		0
 # define END	-1
 
+typedef enum e_buffer_type
+{
+	IS_MINI,
+	IS_PROMPT,
+	IS_INPUT,
+}	t_buffer_type;
+
 typedef enum e_token_type
 {
 	CMD,
@@ -144,7 +151,7 @@ char	*get_redir(char **str, size_t *len);
 /*status_utils*/
 int		update_status(int new_status);
 void	check_exit_status(int status, t_mini *data);
-void	exit_free(t_mini *data, int status, bool check);
+void	exit_free(void *buffer, int status, bool check, t_buffer_type type);
 
 /*bools utils*/
 bool	is_spacetab(int c);

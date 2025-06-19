@@ -1,8 +1,15 @@
 #include "minishell.h"
 
-void	exit_free(t_mini *data, int status, bool check)
+void	exit_free(void *buffer, int status, bool check, t_buffer_type type)
 {
-	free_all(data, check);
+	if (!buffer)
+		exit(status);
+	if (type == IS_MINI)
+		free_all(buffer, check);
+	else if (IS_PROMPT)
+		free_prompt(buffer, check);
+	else if (IS_INPUT)
+		free_input(buffer, check);
 	exit(status);
 }
 

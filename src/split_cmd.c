@@ -50,13 +50,13 @@ int	get_type(t_token *token, char *value, bool check)
 		&& (last->type == APPEND || last->type == REDIR_IN
 			|| last->type == REDIR_OUT))
 		return (FILE_PATH);
-	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0 && !check)
+	else if (ft_strncmp(value, "<", 2) == 0 && !check)
 		return (REDIR_IN);
-	else if (ft_strncmp(value, ">", ft_strlen(value)) == 0 && !check)
+	else if (ft_strncmp(value, ">", 2) == 0 && !check)
 		return (REDIR_OUT);
-	else if (ft_strncmp(value, "<<", ft_strlen(value)) == 0 && !check)
+	else if (ft_strncmp(value, "<<", 2) == 0 && !check)
 		return (HEREDOC);
-	else if (ft_strncmp(value, ">>", ft_strlen(value)) == 0 && !check)
+	else if (ft_strncmp(value, ">>", 2) == 0 && !check)
 		return (APPEND);
 	else
 		return (ARG);
@@ -68,7 +68,7 @@ void	append_token(t_cmd *cmd, t_token **new, int type)
 
 	if (!cmd || !new || !*new || !(*new)->value)
 		return ;
-	if (ft_strncmp((*new)->value, "", ft_strlen((*new)->value)) == 0)
+	if (ft_strncmp((*new)->value, "", 1) == 0)
 		return (free((*new)->value), free(*new));
 	(*new)->type = type;
 	(*new)->next = NULL;
