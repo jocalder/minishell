@@ -9,6 +9,7 @@ static int    wait_all(void)
     status = 0;
 	last_status = 0;
 	pid = -1;
+	printf("hi\n");
     while ((pid = wait(&status) > 0))
 	{
 		if (WIFEXITED(status))
@@ -16,6 +17,7 @@ static int    wait_all(void)
 		else if (WIFSIGNALED(status))
 			last_status = 128 + WTERMSIG(status);
 	}
+	printf("bye\n");
     return (update_status(last_status));
 }
 

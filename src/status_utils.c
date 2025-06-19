@@ -6,10 +6,11 @@ void	exit_free(void *buffer, int status, bool check, t_buffer_type type)
 		exit(status);
 	if (type == IS_MINI)
 		free_all(buffer, check);
-	else if (IS_PROMPT)
+	else if (type == IS_PROMPT)
 		free_prompt(buffer, check);
-	else if (IS_INPUT)
+	else if (type == IS_INPUT)
 		free_input(buffer, check);
+	rl_clear_history();
 	exit(status);
 }
 
