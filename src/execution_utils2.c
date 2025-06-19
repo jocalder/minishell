@@ -13,7 +13,7 @@ int	wait_all(void)
 	{
 		if (WIFEXITED(status))
 		{
-			//printf("status: %d\n", status);
+			printf("status: %d\n", status);
 			last_status = WEXITSTATUS(status);
 		}
 		else if (WIFSIGNALED(status))
@@ -40,22 +40,22 @@ void	handler_redirections(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
 {
 	if (fd_in != -1)
 	{
-		dup2(fd_in, 0);
+		dup2(fd_in, STDIN_FILENO);
 		close(fd_in);
 	}
 	else if (prev_fd != -1)
 	{
-		dup2(prev_fd, 0);
+		dup2(prev_fd, STDIN_FILENO);
 		close(prev_fd);
 	}
 	if (pipe_fd[1] != -1)
 	{
-		dup2(pipe_fd[1], 1);
+		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 	}
 	else if (fd_out != -1)
 	{
-		dup2(fd_out, 1);
+		dup2(fd_out, STDOUT_FILENO);
 		close(fd_out);
 	}
 }

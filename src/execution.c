@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	close_all_fds(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
+static void	close_fds(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
 {
 	if (prev_fd != -1)
 		close(prev_fd);
@@ -28,29 +28,31 @@ int	handle_execution(t_mini *data, char **envp)
 		create_pipes(cmd, pipe_fd);
 		cmd->fd_in = redir_in(cmd->token);
 		cmd->fd_out = redir_out(cmd->token);
-		if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
-		{
-			if (cmd->fd_in != -1)
-				close(cmd->fd_in);
-			if (cmd->fd_out != -1)
-				close(cmd->fd_out);
-			cmd = cmd->next;
-			continue ;
-		}
 		printf("fd_in: %d\n", cmd->fd_in);
+		if (cmd->fd_in == ERROR || cmd->fd_out == ERROR
+			|| cmd->fd_in == SINTAX || cmd->fd_out == SINTAX)
+		{
+			close_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
+			prev_fd = -1;
+			if (!cmd->next)
+			{
+				if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
+					return (update_status(1));
+				else
+					return (update_status(2));
+			}
+			cmd = cmd->next;
+			continue;
+		}
 		pid = fork();
+		if (pid == -1)
+		{
+			close_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
+			return (update_status(1));
+		}
 		if (pid == 0)
 			child_proccess(pipe_fd, prev_fd, cmd, envp);
-		if (cmd->fd_in != -1)
-			close(cmd->fd_in);
-		if (cmd->fd_out != -1)
-			close(cmd->fd_out);
-		if (prev_fd != -1)
-			close(prev_fd);
-		if (cmd->next)
-			close(pipe_fd[1]);
-		if (!cmd->next && pipe_fd[0] != -1)
-			close(pipe_fd[0]);
+		close_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
 		prev_fd = pipe_fd[0];
 		cmd = cmd->next;
 	}
@@ -63,14 +65,12 @@ int	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 {
 	int	status;
 
-	if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
-		exit(ERROR);
-	if (cmd->fd_in == 2 || cmd->fd_in == 1)
+	if (cmd->fd_in == SINTAX || cmd->fd_in == ERROR)
 		exit(cmd->fd_in);
-	if (cmd->fd_out == 2 || cmd->fd_out == 1)
+	if (cmd->fd_out == SINTAX || cmd->fd_out == ERROR)
 		exit(cmd->fd_out);
 	handler_redirections(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
-	close_all_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
+	close_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
 	status = execute_command(cmd, envp);
 	exit(status);
 }
@@ -104,7 +104,7 @@ int	redir_in(t_token *token)
 				write(2, "minishell: ", 11);
 				while (token->next->value[i])
 					write(2, &token->next->value[i++], 1);
-				write(2, ": no such file or directory\n", 28);
+				write(2, ": no such file or directory\n", 29);
 				return (ERROR);
 			}
 		}

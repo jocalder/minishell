@@ -2,11 +2,17 @@
 
 static char	*absolute_path(t_cmd *cmd)
 {
+	int	i;
+
+	i = 0;
 	if (access(cmd->token->value, F_OK) == 0)
 		return (cmd->token->value);
 	else
 	{
-		printf("minishell: %s: no such file or directory\n", cmd->token->value);
+		write(2, "minishell: ", 11);
+		while (cmd->token->value[i])
+			write(2, &cmd->token->value[i++], 1);
+		write(2, ": no such file or directory\n", 28);
 		return (cmd->token->value);
 	}
 }
