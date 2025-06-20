@@ -44,17 +44,20 @@
 // 	}
 // }
 
-bool	is_builtin(char *value)
+bool	is_builtin(t_token *token)
 {
-	if (!value)
+	char	*value;
+
+	if (!token || !token->value || token->type != CMD)
 		return (false);
-	if (ft_strncmp(value, "echo", 5) == 0)
-		// || ft_strncmp(value, "cd", 3) == 0
-		// || ft_strncmp(value, "pwd", 4) == 0
-		// || ft_strncmp(value, "export", 7) == 0
-		// || ft_strncmp(value, "unset", 6) == 0
-		// || ft_strncmp(value, "env", 4) == 0
-		// || ft_strncmp(value, "exit", 5) == 0)
+	value = token->value;
+	if (ft_strncmp(value, "echo", 5) == 0
+		|| ft_strncmp(value, "cd", 3) == 0
+		|| ft_strncmp(value, "pwd", 4) == 0
+		|| ft_strncmp(value, "export", 7) == 0
+		|| ft_strncmp(value, "unset", 6) == 0
+		|| ft_strncmp(value, "env", 4) == 0
+		|| ft_strncmp(value, "exit", 5) == 0)
 		return (true);
 	return (false);
 }
@@ -69,8 +72,8 @@ int	execute_builtin(t_mini *data, t_cmd *cmd, char **envp)
 	builtin = cmd->token->value;
 	if (ft_strncmp(builtin, "echo", 5) == 0)
 		return (update_status(ft_echo(cmd)));
-	// else if (ft_strncmp(builtin, "pwd", 4) == 0)
-	// 	return (update_status(ft_pwd(cmd)));
+	else if (ft_strncmp(builtin, "pwd", 4) == 0)
+		return (update_status(ft_pwd(cmd)));
 	// else if (ft_strncmp(builtin, "env", 4) == 0)
 	// 	return (update_status(ft_env(cmd, envp)));
 	// else if (ft_strncmp(builtin, "cd", 3) == 0)

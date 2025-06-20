@@ -39,6 +39,7 @@
 typedef enum e_buffer_type
 {
 	IS_MINI,
+	IS_ENVP,
 	IS_PROMPT,
 	IS_INPUT,
 }	t_buffer_type;
@@ -64,14 +65,14 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
-typedef struct s_cmd
+typedef struct s_command
 {
-	char			*value;
-	t_token			*token;
-	int				fd_in;
-	int				fd_out;
-	int				pipe_fd[2];
-	struct s_cmd	*next;
+	char				*value;
+	t_token				*token;
+	int					fd_in;
+	int					fd_out;
+	int					pipe_fd[2];
+	struct s_command	*next;
 }	t_cmd;
 
 typedef struct s_input
@@ -90,8 +91,17 @@ typedef struct s_prompt
 	int		len;
 }	t_prompt;
 
+typedef struct s_environment
+{
+	char	**value;
+	char	*pwd;
+	char	*oldpwd;
+}	t_envp;
+
+
 typedef struct minishell
 {
+	t_envp		*environment;
 	t_prompt	*prompt;
 	t_input		*input;
 	pid_t		pid;
@@ -113,6 +123,10 @@ void	init_data(t_mini *data);
 void	wait_signal(int i);
 void	interactive_mode(t_mini *data, char **envp);
 void	command_mode(t_mini *data, char **argv, int argc, char **envp);
+
+/*init_environment*/
+void	handler_envp(t_envp *environment);
+char	**envpdup(char **envp);
 
 /*set_structs*/
 int		set_prompt(t_prompt *promt);
@@ -160,7 +174,7 @@ bool	is_redir(char *str);
 bool	is_special(char *str);
 bool	is_supported(char *str);
 bool	is_validate_bracket(char *str);
-bool	is_builtin(char *value);
+bool	is_builtin(t_token *token);
 
 /*write_utils*/
 void	w_openquote(unsigned char quote);
@@ -168,6 +182,7 @@ void	w_unsupported(char *str);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
+void	free_envp(t_envp *environment, bool check);
 void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
 

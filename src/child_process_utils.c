@@ -50,8 +50,7 @@ int	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 		exit(cmd->fd_out); // same
 	handler_redir(data, &cmd);
 	close_all_fds(data, &cmd);
-	if ((cmd->token && cmd->token->value && cmd->token->type == CMD)
-		&& is_builtin(cmd->token->value))
+	if ((is_builtin(cmd->token)))
 		status = execute_builtin(data, cmd, envp);
 	else
 		status = execute_command(cmd, envp);

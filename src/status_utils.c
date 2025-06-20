@@ -6,6 +6,8 @@ void	exit_free(void *buffer, int status, bool check, t_buffer_type type)
 		exit(status);
 	if (type == IS_MINI)
 		free_all(buffer, check);
+	else if (type == IS_ENVP)
+		free_envp(buffer, check);
 	else if (type == IS_PROMPT)
 		free_prompt(buffer, check);
 	else if (type == IS_INPUT)

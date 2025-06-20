@@ -17,6 +17,7 @@ LIBFT = libft/libft.a
 
 SRCS = 	src/main.c						\
 		src/init_data.c					\
+		src/init_environment.c			\
 		src/wait_signal.c				\
 		src/modes.c						\
 		src/set_prompt.c				\
@@ -30,6 +31,7 @@ SRCS = 	src/main.c						\
 		src/execute_command_utils.c		\
 		src/builtins.c					\
 		src/ft_echo.c					\
+		src/ft_pwd.c					\
 		src/heredoc_proccess.c			\
 		src/bools_utils.c				\
 		src/write_utils.c				\
