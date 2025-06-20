@@ -1,17 +1,17 @@
 #include "minishell.h"
 
-void	exit_free(void *buffer, int status, bool check, t_buffer_type type)
+void	exit_free(void *buffer, int status, t_buffer_type type)
 {
 	if (!buffer)
 		exit(status);
 	if (type == IS_MINI)
-		free_all(buffer, check);
+		free_all(buffer, true);
 	else if (type == IS_ENVP)
-		free_envp(buffer, check);
+		free_envp(buffer, true);
 	else if (type == IS_PROMPT)
-		free_prompt(buffer, check);
+		free_prompt(buffer, true);
 	else if (type == IS_INPUT)
-		free_input(buffer, check);
+		free_input(buffer, true);
 	rl_clear_history();
 	exit(status);
 }

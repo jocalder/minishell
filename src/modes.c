@@ -21,22 +21,22 @@ static void	command_mode_one(t_mini *data, char **envp)
 	free_prompt(data->prompt, true);
 	line = get_next_line(STDIN_FILENO);
 	if (!line)
-		exit_free(data->input, ERROR, true, IS_INPUT);
+		exit_free(data, ERROR, IS_MINI);
 	data->input->value = ft_strdup("");
 	if (!data->input->value)
-		exit_free(data->input, ERROR, true, IS_INPUT);
+		exit_free(data, ERROR, IS_MINI);
 	while (line)
 	{
 		data->input->value = ft_strjoin(data->input->value, line);
 		free(line);
 		if (!data->input->value)
-			exit_free(data->input, ERROR, true, IS_INPUT);
+			exit_free(data, ERROR, IS_MINI);
 		line = get_next_line(STDIN_FILENO);
 	}
 	if (ft_strncmp(data->input->value, "\n", 2) == 0)
-		exit_free(data->input, OK, true, IS_MINI);
+		exit_free(data, OK, IS_MINI);
 	if (split_input(data->input) == ERROR)
-		exit_free(data->input, ERROR, true, IS_INPUT);
+		exit_free(data, ERROR, IS_MINI);
 	handler_execution(data, envp);
 	free_input(data->input, true);
 }
@@ -46,9 +46,9 @@ static void	command_mode_two(t_mini *data, char *arg, char **envp)
 	free_prompt(data->prompt, true);
 	data->input->value = ft_strdup(arg);
 	if (!data->input->value)
-		exit_free(data->input, ERROR, true, IS_INPUT);
+		exit_free(data, ERROR, IS_MINI);
 	if (split_input(data->input) == ERROR)
-		exit_free(data->input, ERROR, true, IS_INPUT);
+		exit_free(data, ERROR, IS_MINI);
 	handler_execution(data, envp);
 	free_input(data->input, true);
 }

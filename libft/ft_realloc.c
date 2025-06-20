@@ -1,22 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_array.c                                    :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/09 00:34:15 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/06/20 15:53:43 by vgoyzuet         ###   ########.fr       */
+/*   Created: 2025/06/20 14:06:22 by vgoyzuet          #+#    #+#             */
+/*   Updated: 2025/06/20 14:11:34 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	free_array(char **arr, int i)
+char	**ft_realloc(char **array, int size)
 {
-	if (!arr || !*arr)
-		return ;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
+	char	**new;
+	int		i;
+
+	i = 0;
+	new = ft_calloc(sizeof(char *), (size + 1));
+	if (new == NULL)
+		return (free_array(array, -1), NULL);
+	while (array && array[i] != NULL && array[i][0] != '\0')
+	{
+		new[i] = ft_strdup(array[i]);
+		if (new[i] == NULL)
+			return (free_array(array, -1), free_array(new, -1), NULL);
+		i++;
+	}
+	new[i] = NULL;
+	i = 0;
+	free_array(array, -1);
+	return (new);
 }

@@ -84,19 +84,11 @@ void	free_input(t_input *input, bool check)
 	}
 }
 
-void	free_envp(t_envp *environment, bool check)
+void	free_all(t_mini *data, bool check)
 {
-	if (!environment || !check)
+	if (!data)
 		return ;
-	if (environment->value)
-		free_array(environment->value, -1);
-	if (environment->pwd)
-		free(environment->pwd);
-	if (environment->oldpwd)
-		free(environment->oldpwd);
-	environment->value = NULL;
-	environment->pwd = NULL;
-	environment->oldpwd = NULL;
-	free(environment);
-	environment = NULL;
+	free_envp(data->environment, check);
+	free_prompt(data->prompt, check);
+	free_input(data->input, check);
 }

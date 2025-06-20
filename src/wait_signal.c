@@ -29,8 +29,7 @@ static void	here_doc_handler(int signum)
 	{
 		g_status = CTRC;
 		write(1, "\n", 1);
-		if (kill(getpid(), SIGKILL) == -1)
-			write(STDERR_FILENO, "Error: kill\n", 13);
+		kill(getpid(), SIGKILL);
 	}
 	return ;
 }

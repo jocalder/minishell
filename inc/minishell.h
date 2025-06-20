@@ -91,9 +91,18 @@ typedef struct s_prompt
 	int		len;
 }	t_prompt;
 
+typedef struct s_variables
+{
+	char	*name;
+	char	*value;
+	t_vars	*next;
+}	t_vars;
+
+
 typedef struct s_environment
 {
 	char	**value;
+	t_vars	*vars;
 	char	*pwd;
 	char	*oldpwd;
 }	t_envp;
@@ -127,6 +136,7 @@ void	command_mode(t_mini *data, char **argv, int argc, char **envp);
 /*init_environment*/
 void	handler_envp(t_envp *environment);
 char	**envpdup(char **envp);
+void	update_envp(t_envp *environment);
 
 /*set_structs*/
 int		set_prompt(t_prompt *promt);
@@ -141,6 +151,8 @@ int		open_heredoc(char *delimiter);
 
 /*built-ins*/
 int		ft_echo(t_cmd * cmd);
+int		ft_pwd(t_cmd *cmd, char *pwd);
+int		ft_exit(t_mini *data, t_cmd *cmd);
 
 /*split_input*/
 int		split_input(t_input *input);
@@ -165,7 +177,7 @@ char	*get_redir(char **str, size_t *len);
 /*status_utils*/
 int		update_status(int new_status);
 void	check_exit_status(int status, t_mini *data);
-void	exit_free(void *buffer, int status, bool check, t_buffer_type type);
+void	exit_free(void *buffer, int status, t_buffer_type type);
 
 /*bools utils*/
 bool	is_spacetab(int c);

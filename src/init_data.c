@@ -1,38 +1,35 @@
 #include "minishell.h"
 
-void	free_all(t_mini *data, bool check)
+static void	sort_list(t_vars **head, t_vars *cur)
 {
-	if (!data)
-		return ;
-	free_envp(data->environment, check);
-	free_prompt(data->prompt, check);
-	free_input(data->input, check);
+	//
 }
 
-static void	init_environment(t_envp *environment, char **envp)
+static void	init_environment(t_mini *data, char **envp)
 {
-	if (!environment)
+	if (!data->environment)
 		return ;
-	environment->value = NULL;
+	data->environment->value = NULL;
+	data->environment->vars = NULL;
 	if (!envp || !*envp || !**envp)
-		handler_envp(environment);
+		handler_envp(&data->environment);
 	else
 	{
-		environment->value = envpdup(envp);
-		if (!environment->value)
-			exit_free(environment, ERROR, true, IS_ENVP);
+		data->environment->value = envpdup(envp);
+		if (!data->environment->value)
+			exit_free(data->environment, ERROR, IS_ENVP);
+		udpate_envp(&data->environment);
+		create_exp_vars();
 	}
-	environment->pwd = NULL;
-	environment->oldpwd = NULL;
-	environment->pwd = getcwd(NULL, 0);
-	if (!environment->pwd)
-		exit_free(environment, ERROR, true, IS_ENVP);
-	environment->oldpwd = getcwd(NULL, 0);
-	if (!environment->oldpwd)
-	{
-		free(environment->pwd);
-		exit_free(environment, ERROR, true, IS_ENVP);
-	}
+	sort_list(&(data->environment)->vars, data->environment->vars);
+	data->environment->pwd = NULL;
+	data->environment->oldpwd = NULL;
+	data->environment->pwd = getcwd(NULL, 0);
+	if (!data->environment->pwd)
+		exit_free(data->environment, ERROR, IS_ENVP);
+	data->environment->oldpwd = getcwd(NULL, 0);
+	if (!data->environment->oldpwd)
+		exit_free(data->environment, ERROR, IS_ENVP);
 }
 
 static void	init_prompt(t_prompt *prompt)
@@ -66,7 +63,7 @@ void	init_data(t_mini *data, char **envp)
 	data->environment = ft_calloc(1, sizeof(t_envp));
 	if (!data->environment)
 		exit(ERROR);
-	init_environment(data->environment, envp);
+	init_environment(data, envp);
 	data->prompt = ft_calloc(1, sizeof(t_prompt));
 	if (!data->prompt)
 	{
@@ -77,8 +74,7 @@ void	init_data(t_mini *data, char **envp)
 	if (!data->input)
 	{
 		free_envp(data->environment, true);
-		free_prompt(data->prompt, true);
-		exit(ERROR);
+		exit_free(data->prompt, ERROR, IS_PROMPT);
 	}
 	init_prompt(data->prompt);
 	init_input(data->input);

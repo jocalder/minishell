@@ -73,7 +73,7 @@ int	execute_builtin(t_mini *data, t_cmd *cmd, char **envp)
 	if (ft_strncmp(builtin, "echo", 5) == 0)
 		return (update_status(ft_echo(cmd)));
 	else if (ft_strncmp(builtin, "pwd", 4) == 0)
-		return (update_status(ft_pwd(cmd)));
+		return (update_status(ft_pwd(cmd, data->environment->pwd)));
 	// else if (ft_strncmp(builtin, "env", 4) == 0)
 	// 	return (update_status(ft_env(cmd, envp)));
 	// else if (ft_strncmp(builtin, "cd", 3) == 0)
@@ -82,7 +82,7 @@ int	execute_builtin(t_mini *data, t_cmd *cmd, char **envp)
 	// 	return (update_status(ft_export(cmd, envp)));
 	// else if (ft_strncmp(builtin, "unset", 6) == 0)
 	// 	return (update_status(ft_unset(cmd, envp)));
-	// else if(ft_strncmp(builtin, "exit", 5) == 0)
-	// 	return (update_status(ft_exit(cmd)));
+	else if(ft_strncmp(builtin, "exit", 5) == 0)
+		return (update_status(ft_exit(data, cmd)));
 	return (OK);
 }
