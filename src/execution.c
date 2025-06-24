@@ -108,8 +108,10 @@ static int	redir_out(t_token *token)
 int	handler_execution(t_mini *data, char **envp)
 {
     t_cmd	*cmd;
+	t_cmd	*last;
 
 	cmd = data->input->cmd;
+	last = NULL;
 	wait_signal(1);
 	while (cmd)
 	{
@@ -128,11 +130,19 @@ int	handler_execution(t_mini *data, char **envp)
 		data->pid = fork();
 		if (data->pid == 0)
 			child_proccess(data, cmd, envp); // prototype return int, but isn't used
-		// fds were closed in child_process, need close then here too?
+		if (cmd->pipe_fd[1] != -1)
+			close(cmd->pipe_fd[1]);
+		if (cmd->pipe_fd[0] != -1)
+			close(cmd->pipe_fd[0]);
 		data->prev_fd = cmd->pipe_fd[0];
+		cmd->pipe_fd[0] = -1;
+		cmd->pipe_fd[1] = -1;
+		last = cmd;
 		cmd = cmd->next;
 	}
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
+	if (last->pipe_fd[0] != -1)
+		close(last->pipe_fd[0]);
 	return (wait_all());
 }
