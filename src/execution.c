@@ -53,6 +53,7 @@ int	handle_execution(t_mini *data, char **envp)
 			child_proccess(pipe_fd, prev_fd, cmd, envp);
 		//close_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
 		close(pipe_fd[1]);
+		//printf("pipe_fd[0]: %d\n", pipe_fd[0]);
 		prev_fd = pipe_fd[0];
 		cmd = cmd->next;
 	}
@@ -66,10 +67,6 @@ int	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 {
 	int	status;
 
-	// if (cmd->fd_in == SINTAX || cmd->fd_in == ERROR)
-	// 	exit(cmd->fd_in);
-	// if (cmd->fd_out == SINTAX || cmd->fd_out == ERROR)
-	// 	exit(cmd->fd_out);
 	handler_redirections(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
 	close_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
 	status = execute_command(cmd, envp);
@@ -109,6 +106,7 @@ int	redir_in(t_token *token)
 				return (ERROR);
 			}
 		}
+		//printf("fd_in: %d\n", fd);
 		token = token->next;
 	}
 	return (fd);
@@ -136,6 +134,7 @@ int	redir_out(t_token *token)
 				fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
 				return (ERROR);
+			printf("fd_out: %d\n", fd);
 		}
 		token = token->next;
 	}

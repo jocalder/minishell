@@ -12,10 +12,7 @@ int	wait_all(void)
 	while ((pid = wait(&status)) > 0)
 	{
 		if (WIFEXITED(status))
-		{
-
 			last_status = WEXITSTATUS(status);
-		}
 		else if (WIFSIGNALED(status))
 			last_status = 128 + WTERMSIG(status);
 	}
@@ -27,7 +24,11 @@ void	create_pipes(t_cmd *cmd, int pipe_fd[2])
 	if (cmd->next)
 	{
 		if (pipe(pipe_fd) != 0)
+		{
+			close(pipe_fd[0]);
+			close(pipe_fd[1]);
 			exit(ERROR);
+		}
 	}
 	else
 	{
@@ -38,6 +39,8 @@ void	create_pipes(t_cmd *cmd, int pipe_fd[2])
 
 void	handler_redirections(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
 {
+	if (pipe_fd[0] != -1)
+		close(pipe_fd[0]);
 	if (fd_in != -1)
 	{
 		dup2(fd_in, STDIN_FILENO);

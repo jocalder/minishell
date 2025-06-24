@@ -6,7 +6,7 @@ static void	core_heredoc(char *line, char *delimiter, int large, int pipe_fd[2])
 	while (1)
 	{
 		write(1, "> ", 2);
-		line = get_next_line(0);
+		line = get_next_line(STDIN_FILENO);
 		if ((!line || ft_strncmp(line, delimiter, large) == 0)
 			&& line[ft_strlen(delimiter)] == '\n')
 		{
@@ -34,7 +34,7 @@ int	open_heredoc(char *delimiter)
 	if (!delimiter)
 		return (-1);
 	if (pipe(pipe_fd) < 0)
-		return (update_status(ERROR));
+		return (close(pipe_fd[0]), close(pipe_fd[1]), update_status(ERROR));
 	pid = fork();
 	if (pid < 0)
 		return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
