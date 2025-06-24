@@ -113,6 +113,7 @@ int		set_input(t_mini *data);
 
 /*execution*/
 int		handler_execution(t_mini *data, char **envp);
+void	close_all_fds(t_mini *data, t_cmd **cmd);
 int		child_proccess(t_mini *data, t_cmd *cmd, char **envp);
 int		execute_command(t_cmd *cmd, char **envp);
 int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);

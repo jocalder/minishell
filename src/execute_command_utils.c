@@ -84,8 +84,10 @@ int	execute_command(t_cmd *cmd, char **envp)
 	char	*path;
 	t_token	*cur;
 	int		i;
+	int		fd;
 	
 	i = 0;
+	fd = 3;
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
@@ -109,6 +111,8 @@ int	execute_command(t_cmd *cmd, char **envp)
 	// 	free_array(command, -1);
 	// 	return ((void)update_status(NOTFOUND));
 	// }
+	while(fd < 1024)
+		close(fd++);
 	execve(path, command, envp);
 	free_array(command, -1);
 	return (ERROR);

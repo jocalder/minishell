@@ -108,41 +108,53 @@ static int	redir_out(t_token *token)
 int	handler_execution(t_mini *data, char **envp)
 {
     t_cmd	*cmd;
-	t_cmd	*last;
+	// t_cmd	*last;
 
 	cmd = data->input->cmd;
-	last = NULL;
+	// last = NULL;
 	wait_signal(1);
 	while (cmd)
 	{
 		create_pipes(&cmd);
 		cmd->fd_in = redir_in(cmd->token);
 		cmd->fd_out = redir_out(cmd->token);
-		if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
+		if (cmd->fd_in == ERROR || cmd->fd_out == ERROR
+			|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX)
 		{
-			if (cmd->fd_in != -1)
-				close(cmd->fd_in);
-			if (cmd->fd_out != -1)
-				close(cmd->fd_out);
+			close_all_fds(data, &cmd);
+			data->prev_fd = -1;
+			if (!cmd->next)
+			{
+				if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
+					return (update_status(ERROR));
+				else
+					return (update_status(SYNTAX));
+			}
 			cmd = cmd->next;
 			continue ;
 		}
 		data->pid = fork();
+		printf("PID: %u\n", getpid());
+		if (data->pid == -1)
+		{
+			close_all_fds(data, &cmd);
+			return (update_status(ERROR));
+		}
 		if (data->pid == 0)
 			child_proccess(data, cmd, envp); // prototype return int, but isn't used
 		if (cmd->pipe_fd[1] != -1)
 			close(cmd->pipe_fd[1]);
-		if (cmd->pipe_fd[0] != -1)
-			close(cmd->pipe_fd[0]);
+		if (data->prev_fd != -1)
+			close(data->prev_fd);
 		data->prev_fd = cmd->pipe_fd[0];
 		cmd->pipe_fd[0] = -1;
 		cmd->pipe_fd[1] = -1;
-		last = cmd;
+		// last = cmd;
 		cmd = cmd->next;
 	}
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
-	if (last->pipe_fd[0] != -1)
-		close(last->pipe_fd[0]);
+	// if (last->pipe_fd[0] != -1)
+	// 	close(last->pipe_fd[0]);
 	return (wait_all());
 }
