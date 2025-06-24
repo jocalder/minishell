@@ -2,15 +2,15 @@
 
 static void	close_fds(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
 {
-	if (prev_fd != -1)
+	if (prev_fd != -1 && prev_fd > 2)
 		close(prev_fd);
-	if (pipe_fd[0] != -1)
+	if (pipe_fd[0] != -1 && pipe_fd[0] > 2)
 		close(pipe_fd[0]);
-	if (pipe_fd[1] != -1)
+	if (pipe_fd[1] != -1 && pipe_fd[1] > 2)
 		close(pipe_fd[1]);
-	if (fd_in != -1)
+	if (fd_in != -1 && fd_in > 2)
 		close(fd_in);
-	if (fd_out != -1)
+	if (fd_out != -1 && fd_out > 2)
 		close(fd_out);
 }
 
@@ -51,13 +51,17 @@ int	handle_execution(t_mini *data, char **envp)
 		}
 		if (pid == 0)
 			child_proccess(pipe_fd, prev_fd, cmd, envp);
-		//close_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
-		close(pipe_fd[1]);
-		//printf("pipe_fd[0]: %d\n", pipe_fd[0]);
+		if (pipe_fd[1] != -1)
+			close(pipe_fd[1]);
+		if (prev_fd != -1)
+			close(prev_fd);
 		prev_fd = pipe_fd[0];
+		pipe_fd[0] = -1;
+		pipe_fd[1] = -1;
 		cmd = cmd->next;
 	}
-	close(pipe_fd[0]);
+	if (pipe_fd[0] != -1)
+		close(pipe_fd[0]);
 	if (prev_fd != -1)
 		close(prev_fd);
 	return (wait_all());
@@ -106,7 +110,6 @@ int	redir_in(t_token *token)
 				return (ERROR);
 			}
 		}
-		//printf("fd_in: %d\n", fd);
 		token = token->next;
 	}
 	return (fd);
@@ -134,7 +137,6 @@ int	redir_out(t_token *token)
 				fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
 				return (ERROR);
-			printf("fd_out: %d\n", fd);
 		}
 		token = token->next;
 	}

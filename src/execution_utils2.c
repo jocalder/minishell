@@ -51,14 +51,15 @@ void	handler_redirections(int pipe_fd[2], int prev_fd, int fd_in, int fd_out)
 		dup2(prev_fd, STDIN_FILENO);
 		close(prev_fd);
 	}
-	if (pipe_fd[1] != -1)
-	{
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
-	}
-	else if (fd_out != -1)
+	if (fd_out != -1)
 	{
 		dup2(fd_out, STDOUT_FILENO);
 		close(fd_out);
 	}
+	else if (pipe_fd[1] != -1)
+	{
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[1]);
+	}
 }
+

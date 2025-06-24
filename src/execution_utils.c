@@ -86,8 +86,10 @@ int	execute_command(t_cmd *cmd, char **envp)
 	char	**command;
 	char	*path;
 	int		i;
+	int		fd;
 
 	i = 0;
+	fd = 3;
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
@@ -98,6 +100,11 @@ int	execute_command(t_cmd *cmd, char **envp)
 		write(2, ": command not found\n", 20);
 		free_array(command);
 		return (NOTFOUND);
+	}
+	while (fd < 1024)
+	{
+		close(fd);
+		fd++;
 	}
 	execve(path, command, envp);
 	free_array(command);
