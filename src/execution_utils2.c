@@ -13,7 +13,7 @@ int	wait_all(void)
 	{
 		if (WIFEXITED(status))
 		{
-			printf("status: %d\n", status);
+
 			last_status = WEXITSTATUS(status);
 		}
 		else if (WIFSIGNALED(status))

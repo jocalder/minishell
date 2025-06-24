@@ -11,9 +11,11 @@ static void	core_heredoc(char *line, char *delimiter, int large, int pipe_fd[2])
 			&& line[ft_strlen(delimiter)] == '\n')
 		{
 			free(line);
+			close(pipe_fd[1]);
 			break ;
 		}
 		write(pipe_fd[1], line, ft_strlen(line));
+		close(pipe_fd[1]);
 		free(line);
 	}
 	close(pipe_fd[1]);

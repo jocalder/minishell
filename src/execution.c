@@ -28,7 +28,6 @@ int	handle_execution(t_mini *data, char **envp)
 		create_pipes(cmd, pipe_fd);
 		cmd->fd_in = redir_in(cmd->token);
 		cmd->fd_out = redir_out(cmd->token);
-		printf("fd_in: %d\n", cmd->fd_in);
 		if (cmd->fd_in == ERROR || cmd->fd_out == ERROR
 			|| cmd->fd_in == SINTAX || cmd->fd_out == SINTAX)
 		{
@@ -52,10 +51,12 @@ int	handle_execution(t_mini *data, char **envp)
 		}
 		if (pid == 0)
 			child_proccess(pipe_fd, prev_fd, cmd, envp);
-		close_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
+		//close_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
+		close(pipe_fd[1]);
 		prev_fd = pipe_fd[0];
 		cmd = cmd->next;
 	}
+	close(pipe_fd[0]);
 	if (prev_fd != -1)
 		close(prev_fd);
 	return (wait_all());
@@ -65,10 +66,10 @@ int	child_proccess(int pipe_fd[2], int prev_fd, t_cmd *cmd, char **envp)
 {
 	int	status;
 
-	if (cmd->fd_in == SINTAX || cmd->fd_in == ERROR)
-		exit(cmd->fd_in);
-	if (cmd->fd_out == SINTAX || cmd->fd_out == ERROR)
-		exit(cmd->fd_out);
+	// if (cmd->fd_in == SINTAX || cmd->fd_in == ERROR)
+	// 	exit(cmd->fd_in);
+	// if (cmd->fd_out == SINTAX || cmd->fd_out == ERROR)
+	// 	exit(cmd->fd_out);
 	handler_redirections(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
 	close_fds(pipe_fd, prev_fd, cmd->fd_in, cmd->fd_out);
 	status = execute_command(cmd, envp);
