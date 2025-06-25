@@ -55,7 +55,7 @@ void	command_mode(t_mini *data, char **argv, int argc, char **envp)
 {
 	if (argc == 1)
 		command_mode_one(data, envp);
-	else if (argc > 2 && ft_strncmp(argv[1], "-c", ft_strlen(argv[1])) == 0)
+	else if (argc > 2 && ft_strncmp(argv[1], "-c", 3) == 0)
 		command_mode_two(data, argv[2], envp);
 	else
 	{

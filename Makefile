@@ -5,7 +5,7 @@ CLEAR	=	\r\033[K
 
 NAME = minishell
 
-CC = gcc -g3 -fsanitize=address
+CC = cc #-g3 -fsanitize=address
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -I /opt/homebrew/opt/readline/include
 CFLAGS += -I libft
@@ -17,7 +17,7 @@ LIBFT = libft/libft.a
 
 SRCS = 	src/main.c						\
 		src/init_data.c					\
-		src/init_environment			\
+		src/init_environment.c			\
 		src/wait_signal.c				\
 		src/modes.c						\
 		src/set_prompt.c				\
@@ -32,8 +32,6 @@ SRCS = 	src/main.c						\
 		src/heredoc_proccess.c			\
 		src/builtins.c					\
 		src/ft_echo.c					\
-		src/ft_pwd.c					\
-		src/ft_exit.c					\
 		src/bools_utils.c				\
 		src/write_utils.c				\
 		src/status_utils.c				\

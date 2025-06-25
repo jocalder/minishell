@@ -59,10 +59,10 @@ int	execute_builtin(t_mini *data, t_cmd *cmd)
 	if (!data || !cmd)
 		return (update_status(ERROR));
 	builtin = cmd->token->value;
-	if (ft_strncmp(builtin, "echo" 5) == 0)
+	if (ft_strncmp(builtin, "echo", 5) == 0)
 		return (update_status(ft_echo(cmd->next)));
-	else if (ft_strncmp(builtin, "pwd", 4) == 0)
-		return (update_status(ft_pwd(data, cmd->next)));
+	// else if (ft_strncmp(builtin, "pwd", 4) == 0)
+	// 	return (update_status(ft_pwd(data, cmd->next)));
 	// else if (ft_strncmp(builtin, "env", 4) == 0)
 	// 	return (update_status(ft_env(cmd)));
 	// else if (ft_strncmp(builtin, "cd", 3) == 0)
@@ -71,6 +71,7 @@ int	execute_builtin(t_mini *data, t_cmd *cmd)
 	// 	return (update_status(ft_export(cmd)));
 	// else if (ft_strncmp(builtin, "unset", 6) == 0)
 	// 	return (update_status(ft_unset(cmd)));
-	else if (ft_strncmp(builtin, "exit", 5) == 0)
-		return (update_status(ft_exit(cmd)));
+	// else if (ft_strncmp(builtin, "exit", 5) == 0)
+	// 	return (update_status(ft_exit(cmd)));
+	return (OK);
 }

@@ -65,7 +65,7 @@ static int	redir_in(t_token *token)
 				while (token->next->value[i])
 					write(STDERR_FILENO, &token->next->value[i++], 1);
 				write(STDERR_FILENO, ": no such file or directory\n", 29);
-				return (ERROR);
+				return (ERROR_FD);
 			}
 		}
 		token = token->next;
@@ -97,7 +97,7 @@ static int	redir_out(t_token *token)
 			else
 				fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (fd < 0)
-				return (ERROR);
+				return (ERROR_FD);
 		}
 		token = token->next;
 	}
@@ -118,14 +118,14 @@ int	handler_execution(t_mini *data, char **envp)
 		create_pipes(&cmd);
 		cmd->fd_in = redir_in(cmd->token);
 		cmd->fd_out = redir_out(cmd->token);
-		if (cmd->fd_in == ERROR || cmd->fd_out == ERROR
+		if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD
 			|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX)
 		{
 			close_all_fds(data, &cmd);
 			data->prev_fd = -1;
 			if (!cmd->next)
 			{
-				if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
+				if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD)
 					return (update_status(ERROR));
 				else
 					return (update_status(SYNTAX));
@@ -154,7 +154,7 @@ int	handler_execution(t_mini *data, char **envp)
 	}
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
-	// if (last->pipe_fd[0] != -1)
-	// 	close(last->pipe_fd[0]);
+	// if (cmd->pipe_fd[0]!= -1)check open fds
+	// 	close(pipe_fd[0]);
 	return (wait_all());
 }

@@ -41,7 +41,7 @@ static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 			return (free_array(directories, i), full_path);
 		free(full_path);
 	}
-	free_array(directories, i);
+	free_array(directories, i - 1);
 	return (NULL);
 }
 
@@ -67,7 +67,7 @@ static char	**build_full_command(t_token *token)
 
 	i = 0;
 	count = count_args(token);
-	args = malloc(sizeof(char *) * (count + 1));
+	args = ft_calloc(count + 1, sizeof(char *));
 	while (token)
 	{
 		if (token->type == CMD || token->type == ARG)

@@ -34,7 +34,7 @@
 # define ERROR10	"minishell: unsupported token '\\'\n"
 
 # define OK		0
-# define END	-1
+# define END	-3
 
 typedef enum e_token_type
 {
@@ -97,7 +97,8 @@ typedef struct minishell
 enum	e_status
 {
 	ERROR = 1,
-	SYNTAX	= 2,
+	ERROR_FD = -2,
+	SYNTAX	= 258,
 	NOTEXEC = 126,
 	NOTFOUND = 127,
 	CTRC	= 130,
@@ -109,6 +110,9 @@ void	init_data(t_mini *data, char **envp);
 void	wait_signal(int i);
 void	interactive_mode(t_mini *data, char **envp);
 void	command_mode(t_mini *data, char **argv, int argc, char **envp);
+
+/*init_environment*/
+char	**envpdup(char **envp);
 
 /*set_structs*/
 int		set_prompt(t_prompt *promt);
@@ -124,7 +128,7 @@ int		open_heredoc(char *delimiter);
 
 /*built-ins*/
 int		ft_echo(t_cmd *cmd);
-int		ft_pwd(t_mini *data, t_cmd *cmd);
+// int		ft_pwd(t_mini *data, t_cmd *cmd);
 
 /*split_input*/
 int		split_input(t_input *input);
@@ -158,7 +162,7 @@ bool	is_redir(char *str);
 bool	is_special(char *str);
 bool	is_supported(char *str);
 bool	is_validate_bracket(char *str);
-bool	is_builtin(char *value);
+bool	is_builtin(t_token *token);
 
 /*write_utils*/
 void	w_openquote(unsigned char quote);
