@@ -123,12 +123,13 @@ int		handler_execution(t_mini *data, char **envp);
 void	close_all_fds(t_mini *data, t_cmd **cmd);
 int		child_proccess(t_mini *data, t_cmd *cmd, char **envp);
 int		execute_command(t_cmd *cmd, char **envp);
-int		execute_builtin(t_mini *data, t_cmd *cmd);
+int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
 int		open_heredoc(char *delimiter);
 
 /*built-ins*/
 int		ft_echo(t_cmd *cmd);
-// int		ft_pwd(t_mini *data, t_cmd *cmd);
+int		ft_pwd(t_cmd *cmd, char *pwd);
+int		ft_exit(t_mini *data, t_cmd *cmd);
 
 /*split_input*/
 int		split_input(t_input *input);

@@ -104,7 +104,6 @@ static int	redir_out(t_token *token)
 	return (fd);
 }
 
-// prototype return int, but isn't used
 int	handler_execution(t_mini *data, char **envp)
 {
     t_cmd	*cmd;
@@ -131,6 +130,10 @@ int	handler_execution(t_mini *data, char **envp)
 			cmd = cmd->next;
 			continue ;
 		}
+		// if ((is_builtin() || is_redir()) && !cmd->next)
+		// {
+		// 	if(is_builtin())
+		// }
 		data->pid = fork();
 		if (data->pid == -1)
 		{
@@ -138,7 +141,7 @@ int	handler_execution(t_mini *data, char **envp)
 			return (update_status(ERROR));
 		}
 		if (data->pid == 0)
-			child_proccess(data, cmd, envp); // prototype return int, but isn't used
+			child_proccess(data, cmd, envp);
 		if (cmd->pipe_fd[1] != -1)
 			close(cmd->pipe_fd[1]);
 		if (data->prev_fd != -1)

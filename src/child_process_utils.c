@@ -44,17 +44,12 @@ int	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 {
 		int	status;
 
-		// if (cmd->fd_in == ERROR || cmd->fd_out == ERROR)
-		// 	exit(ERROR); // leaks?
-		// if (cmd->fd_in == 2 || cmd->fd_in == 1)
-		// 	exit(cmd->fd_in); // ?? fd return like status; leaks?
-		// if (cmd->fd_out == 2 || cmd->fd_out == 1)
-		// 	exit(cmd->fd_out); // same
+		
 		handler_redir(data, &cmd);
 		close_all_fds(data, &cmd);
-		// if (is_builtin(cmd->token->value))
-		// 	status = execute_builtin(data, cmd, envp);
-		// else
-		status = execute_command(cmd, envp);
+		if (is_builtin(cmd->token))
+			status = execute_builtin(data, cmd, envp);
+		else
+			status = execute_command(cmd, envp);
 		exit(update_status(status));
 }

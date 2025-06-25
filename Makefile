@@ -32,6 +32,8 @@ SRCS = 	src/main.c						\
 		src/heredoc_proccess.c			\
 		src/builtins.c					\
 		src/ft_echo.c					\
+		src/ft_pwd.c					\
+		src/ft_exit.c					\
 		src/bools_utils.c				\
 		src/write_utils.c				\
 		src/status_utils.c				\
