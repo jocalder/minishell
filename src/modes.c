@@ -4,6 +4,7 @@ void	interactive_mode(t_mini *data, char **envp)
 {
 	while (1)
 	{
+		wait_signal(0);
 		if (set_prompt((data)->prompt) != OK)
 			check_exit_status(g_status, data);
 		if (set_input(data) != OK)
