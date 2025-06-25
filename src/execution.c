@@ -134,7 +134,7 @@ int	handler_execution(t_mini *data, char **envp)
 			continue ;
 		}
 		data->pid = fork();
-		printf("PID: %u\n", getpid());
+		// printf("PID: %u\n", getpid());
 		if (data->pid == -1)
 		{
 			close_all_fds(data, &cmd);

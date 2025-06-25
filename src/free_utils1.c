@@ -88,6 +88,7 @@ void	free_all(t_mini *data, bool check)
 {
 	if (!data)
 		return ;
+	free_envp(data, check);
 	free_prompt(data->prompt, check);
 	free_input(data->input, check);
 }

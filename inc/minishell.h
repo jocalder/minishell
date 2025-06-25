@@ -87,6 +87,9 @@ typedef struct minishell
 {
 	t_prompt	*prompt;
 	t_input		*input;
+	char		**cpy_envp;
+	char		*pwd;
+	char		*oldpwd;
 	pid_t		pid;
 	int			prev_fd;
 }	t_mini;
@@ -102,7 +105,7 @@ enum	e_status
 
 extern int	g_status;
 
-void	init_data(t_mini *data);
+void	init_data(t_mini *data, char **envp);
 void	wait_signal(int i);
 void	interactive_mode(t_mini *data, char **envp);
 void	command_mode(t_mini *data, char **argv, int argc, char **envp);
@@ -116,8 +119,12 @@ int		handler_execution(t_mini *data, char **envp);
 void	close_all_fds(t_mini *data, t_cmd **cmd);
 int		child_proccess(t_mini *data, t_cmd *cmd, char **envp);
 int		execute_command(t_cmd *cmd, char **envp);
-int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
+int		execute_builtin(t_mini *data, t_cmd *cmd);
 int		open_heredoc(char *delimiter);
+
+/*built-ins*/
+int		ft_echo(t_cmd *cmd);
+int		ft_pwd(t_mini *data, t_cmd *cmd);
 
 /*split_input*/
 int		split_input(t_input *input);
@@ -159,6 +166,7 @@ void	w_unsupported(char *str);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
+void	free_envp(t_mini *data, bool check);
 void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
 

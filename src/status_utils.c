@@ -3,6 +3,7 @@
 void	exit_free(t_mini *data, int status, bool check)
 {
 	free_all(data, check);
+	rl_clear_history();
 	exit(status);
 }
 

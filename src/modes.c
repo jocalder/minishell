@@ -36,6 +36,7 @@ static void	command_mode_one(t_mini *data, char **envp)
 	if (split_input(data->input) == ERROR)
 		exit_free(data, ERROR, true);
 	handler_execution(data, envp);
+	free_envp(data, true);
 	free_input(data->input, true);
 }
 
@@ -46,6 +47,7 @@ static void	command_mode_two(t_mini *data, char *arg, char **envp)
 	if (split_input(data->input) == ERROR)
 		exit_free(data, ERROR, true);
 	handler_execution(data, envp);
+	free_envp(data, true);
 	free_input(data->input, true);
 }
 
