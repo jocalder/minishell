@@ -96,9 +96,9 @@ typedef struct minishell
 
 enum	e_status
 {
-	ERROR = 1,
 	ERROR_FD = -2,
-	SYNTAX	= 258,
+	ERROR = -1,
+	SYNTAX	= 2,
 	NOTEXEC = 126,
 	NOTFOUND = 127,
 	CTRC	= 130,

@@ -55,7 +55,7 @@ int	split_input(t_input *input)
 			return (g_status);
 		start += len;
 	}
-	return (OK);
+	return (update_status(OK));
 }
 
 int	set_input(t_mini *data)

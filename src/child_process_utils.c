@@ -56,5 +56,5 @@ int	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 		// 	status = execute_builtin(data, cmd, envp);
 		// else
 		status = execute_command(cmd, envp);
-		exit(status);
+		exit(update_status(status));
 }

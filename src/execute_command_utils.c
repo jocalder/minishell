@@ -106,14 +106,12 @@ int	execute_command(t_cmd *cmd, char **envp)
 			return (w_unsupported(cur->value), update_status(SYNTAX));
 		cur = cur->next;
 	}
-	// if (execve(path, command, envp) != 0)
-	// {
-	// 	free_array(command, -1);
-	// 	return ((void)update_status(NOTFOUND));
-	// }
 	while(fd < 1024)
 		close(fd++);
-	execve(path, command, envp);
-	free_array(command, -1);
-	return (ERROR);
+	if (execve(path, command, envp) != 0)
+	{
+		free_array(command, -1);
+		return (ERROR_FD);
+	}
+	return (OK);
 }

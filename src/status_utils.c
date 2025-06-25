@@ -22,8 +22,12 @@ void	check_exit_status(int status, t_mini *data)
 			printf("exit\n");
 			g_status = 0;
 		}
+		else
+			g_status = 1;
 		free_all(data, true);
 		rl_clear_history();
 		exit (g_status);
 	}
+	if (status == ERROR_FD)
+		g_status = 1;
 }

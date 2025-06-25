@@ -108,10 +108,8 @@ static int	redir_out(t_token *token)
 int	handler_execution(t_mini *data, char **envp)
 {
     t_cmd	*cmd;
-	// t_cmd	*last;
 
 	cmd = data->input->cmd;
-	// last = NULL;
 	wait_signal(1);
 	while (cmd)
 	{
@@ -126,7 +124,7 @@ int	handler_execution(t_mini *data, char **envp)
 			if (!cmd->next)
 			{
 				if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD)
-					return (update_status(ERROR));
+					return (update_status(ERROR_FD));
 				else
 					return (update_status(SYNTAX));
 			}
@@ -134,7 +132,6 @@ int	handler_execution(t_mini *data, char **envp)
 			continue ;
 		}
 		data->pid = fork();
-		// printf("PID: %u\n", getpid());
 		if (data->pid == -1)
 		{
 			close_all_fds(data, &cmd);

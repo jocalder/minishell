@@ -7,10 +7,13 @@ void	interactive_mode(t_mini *data, char **envp)
 		wait_signal(0);
 		if (set_prompt((data)->prompt) != OK)
 			check_exit_status(g_status, data);
-		if (set_input(data) != OK)
+		if (set_input(data) == OK)
+		{
+			if  (handler_execution(data, envp) != OK)
+				check_exit_status(g_status, data);
+		}
+		else
 			check_exit_status(g_status, data);
-		handler_execution(data, envp);
-			// check_exit_status(g_status, data);
 		free_all(data, false);
 	}
 }
