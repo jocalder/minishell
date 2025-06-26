@@ -47,6 +47,7 @@ static void	set_exit_code(t_token *token)
 	update_status(num);
 }
 
+/*Must be in parent process*/
 int	ft_exit(t_mini *data, t_cmd *cmd)
 {
 	write(STDOUT_FILENO, "exit\n", 6);
@@ -67,6 +68,7 @@ int	ft_exit(t_mini *data, t_cmd *cmd)
 	free_all(data, true);
 	rl_clear_history();
 	update_status(g_status);
-	kill(data->pid, SIGKILL);
-	return (g_status);
+	exit(g_status);
+	// kill(data->pid, SIGKILL);
+	// return (g_status);
 }

@@ -11,6 +11,7 @@
 # include <sys/time.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
+# include <termios.h>
 
 /*colors*/
 # define RED		"\001\033[0;34m\002"
@@ -34,7 +35,6 @@
 # define ERROR10	"minishell: unsupported token '\\'\n"
 
 # define OK		0
-# define END	-3
 
 typedef enum e_token_type
 {
@@ -154,7 +154,7 @@ char	*get_redir(char **str, size_t *len);
 /*status_utils*/
 int		update_status(int new_status);
 void	check_exit_status(int status, t_mini *data);
-void	exit_free(t_mini *data, int status, bool check);
+void	exit_free(t_mini *data, int status);
 
 /*bools utils*/
 bool	is_spacetab(int c);

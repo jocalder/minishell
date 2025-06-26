@@ -1,8 +1,10 @@
 #include "minishell.h"
 
-void	exit_free(t_mini *data, int status, bool check)
+void	exit_free(t_mini *data, int status)
 {
-	free_all(data, check);
+	if (status == ERROR || status == ERROR_FD)
+		status = 1;
+	free_all(data, true);
 	rl_clear_history();
 	exit(status);
 }
@@ -15,19 +17,13 @@ int	update_status(int new_status)
 
 void	check_exit_status(int status, t_mini *data)
 {
-	if (status == END || status == ERROR)
+	if (status == ERROR_FD)
+		g_status = 1;
+	else if (status == ERROR)
 	{
-		if (status == END)
-		{
-			printf("exit\n");
-			g_status = 0;
-		}
-		else
-			g_status = 1;
+		g_status = 1;
 		free_all(data, true);
 		rl_clear_history();
 		exit (g_status);
 	}
-	if (status == ERROR_FD)
-		g_status = 1;
 }

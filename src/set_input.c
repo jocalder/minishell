@@ -23,9 +23,8 @@ int	split_cmd(t_cmd **cmd)
 			return (free(new->value), free(new), g_status);
 		type = get_type((*cmd)->token, new->value, new->flag);
 		append_token(*cmd, &new, type);
-		// Here or at execution?
-		// if (!is_supported(new->value))
-		// 	return (w_unsupported(new->value), update_status(SYNTAX));
+		if (!is_supported(new->value))
+			return (w_unsupported(new->value), update_status(SYNTAX));
 	}
 	return (OK);
 }
@@ -64,7 +63,10 @@ int	set_input(t_mini *data)
 		return (update_status(ERROR));
 	data->input->value = readline(data->prompt->value);
 	if (!data->input->value)
-		return (update_status(END));
+	{
+		write(STDOUT_FILENO, "exit\n", 6);
+		exit_free(data, g_status);
+	}
 	else if (!*(data->input->value))
 		return (OK);
 	add_history(data->input->value);

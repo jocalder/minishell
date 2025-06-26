@@ -82,7 +82,6 @@ int	execute_command(t_cmd *cmd, char **envp)
 {
 	char	**command;
 	char	*path;
-	t_token	*cur;
 	int		i;
 	int		fd;
 	
@@ -99,19 +98,9 @@ int	execute_command(t_cmd *cmd, char **envp)
 		free_array(command, -1);
 		return (NOTFOUND);
 	}
-	cur = cmd->token;
-	while (path && cur)
-	{
-		if (cur->type == ARG && !cur->flag && !is_supported(cur->value))
-			return (w_unsupported(cur->value), update_status(SYNTAX));
-		cur = cur->next;
-	}
 	while(fd < 1024)
 		close(fd++);
 	if (execve(path, command, envp) != 0)
-	{
-		free_array(command, -1);
-		return (ERROR_FD);
-	}
+		return (free_array(command, -1), ERROR_FD);
 	return (OK);
 }
