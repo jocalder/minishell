@@ -1,43 +1,23 @@
 #include "minishell.h"
 
-static void	w_pwd_usage(char *invalid_opt)
-{
-	int	c;
-
-	while (invalid_opt && ft_strncmp(invalid_opt, "-", 1) == 0)
-		invalid_opt++;
-	c = *invalid_opt;
-	write(STDERR_FILENO, "minishell: pwd: -", 18);
-	write(STDERR_FILENO, &c, 1);
-	write(STDERR_FILENO, ": invalid option\npwd: usage: pwd\n", 34);
-}
-
-static bool	is_invalid(char *option)
-{
-	if (ft_strncmp(option++, "-", 1) == 0)
-	{
-		if (!option)
-			return (false);
-		return (true);
-	}
-	return (false);
-}
-
 int	ft_pwd(t_cmd *cmd, char *pwd)
 {
-	char	*option;
+	char	*value;
+	char	*builtin;
 	
-	option = NULL;
+	value = NULL;
+	builtin = cmd->token->value;
 	cmd->token = cmd->token->next;
+	while (cmd->token && cmd->token->type != ARG)
+		cmd->token = cmd->token->next;
 	if (cmd->token && cmd->token->type == ARG)
 	{
-		option = cmd->token->value;
-		if (is_invalid(option))
+		value = cmd->token->value;
+		if (is_option(value))
 		{
-			w_pwd_usage(option);
+			w_builtin_usage(builtin, value);
 			return (update_status(SYNTAX));
 		}
-
 	}
 	if (!pwd)
 	{

@@ -164,10 +164,12 @@ bool	is_special(char *str);
 bool	is_supported(char *str);
 bool	is_validate_bracket(char *str);
 bool	is_builtin(t_token *token);
+bool	is_option(char *value);
 
 /*write_utils*/
 void	w_openquote(unsigned char quote);
 void	w_unsupported(char *str);
+void	w_builtin_usage(char *builtin, char *invalid_opt);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
