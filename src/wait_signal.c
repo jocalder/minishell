@@ -5,8 +5,8 @@ static void	sigint_handler(int signum)
 	if (signum == SIGINT)
 	{
 		g_status = CTRC;
-		rl_replace_line("", 0);
 		write(STDIN_FILENO, "\n", 1);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
@@ -35,11 +35,23 @@ static void	here_doc_handler(int signum)
 	return ;
 }
 
+static void	disable_echoctl(void)
+{
+	struct termios	term;
+
+	if (tcgetattr(STDIN_FILENO, &term) == 0)
+	{
+		term.c_lflag &= ~ECHOCTL;
+		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	}
+}
+
 void	wait_signal(int i)
 {
 	struct sigaction	sa;
 
 	ft_memset(&sa, 0, sizeof(sa));
+	disable_echoctl();
 	signal(SIGQUIT, SIG_IGN);
 	if (i == 0)
 		sa.sa_handler = &sigint_handler;
