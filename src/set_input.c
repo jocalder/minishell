@@ -64,7 +64,10 @@ int	set_input(t_mini *data)
 		return (update_status(ERROR));
 	data->input->value = readline(data->prompt->value);
 	if (!data->input->value)
-		return (update_status(END));
+	{
+		write(STDOUT_FILENO, "exit\n", 6);
+		exit_free(data, g_status);
+	}
 	else if (!*(data->input->value))
 		return (OK);
 	add_history(data->input->value);
