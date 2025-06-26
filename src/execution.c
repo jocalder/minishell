@@ -108,8 +108,8 @@ int	handler_execution(t_mini *data, char **envp)
 {
     t_cmd	*cmd;
 
-	// if (!data->input->cmd)
-	// 	return (g_status);
+	if (!data->input->cmd)
+		return (g_status);
 	cmd = data->input->cmd;
 	wait_signal(1);
 	while (cmd)
