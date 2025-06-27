@@ -113,6 +113,7 @@ void	command_mode(t_mini *data, char **argv, int argc, char **envp);
 
 /*init_environment*/
 char	**envpdup(char **envp);
+int		update_envp(t_mini *data);
 
 /*set_structs*/
 int		set_prompt(t_prompt *promt);
@@ -123,13 +124,14 @@ int		handler_execution(t_mini *data, char **envp);
 void	close_all_fds(t_mini *data, t_cmd **cmd);
 int		child_proccess(t_mini *data, t_cmd *cmd, char **envp);
 int		execute_command(t_cmd *cmd, char **envp);
-int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
+int		execute_builtin(t_mini *data, t_cmd *cmd);
 int		open_heredoc(char *delimiter);
 
 /*built-ins*/
 int		ft_echo(t_cmd *cmd);
 int		ft_pwd(t_cmd *cmd, char *pwd);
 int		ft_cd(t_mini *data, t_cmd *cmd);
+int		ft_env(char **envp);
 int		ft_exit(t_mini *data, t_cmd *cmd);
 
 /*split_input*/

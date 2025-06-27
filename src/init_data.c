@@ -8,6 +8,11 @@ static void	init_environment(t_mini *data, char **envp)
 	data->cpy_envp = envpdup(envp);
 	if (!data->cpy_envp)
 		exit(ERROR);
+	if (update_envp(data) != OK)
+	{
+		free_array(data->cpy_envp, -1);
+		exit(ERROR);
+	}
 	data->pwd = getcwd(NULL, 0);
 	if (!data->pwd)
 	{

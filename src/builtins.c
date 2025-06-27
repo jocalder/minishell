@@ -46,13 +46,12 @@ bool	is_builtin(t_token *token)
 	return (false);
 }
 
-int	execute_builtin(t_mini *data, t_cmd *cmd, char **envp)
+int	execute_builtin(t_mini *data, t_cmd *cmd)
 {
 	char	*builtin;
 
 	if (!data || !cmd)
 		return (update_status(ERROR));
-	(void)envp;
 	builtin = cmd->token->value;
 	if (ft_strncmp(builtin, "echo", 5) == 0)
 		return (update_status(ft_echo(cmd)));
@@ -60,8 +59,8 @@ int	execute_builtin(t_mini *data, t_cmd *cmd, char **envp)
 		return (update_status(ft_pwd(cmd, data->pwd)));
 	else if (ft_strncmp(builtin, "cd", 3) == 0)
 			return (update_status(ft_cd(data, cmd)));
-	// else if (ft_strncmp(builtin, "env", 4) == 0)
-	// 	return (update_status(ft_env(cmd)));
+	else if (ft_strncmp(builtin, "env", 4) == 0)
+		return (update_status(ft_env(data->cpy_envp)));
 	// else if (ft_strncmp(builtin, "export", 7) == 0)
 	// 	return (update_status(ft_export(cmd)));
 	// else if (ft_strncmp(builtin, "unset", 6) == 0)
