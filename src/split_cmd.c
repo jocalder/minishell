@@ -69,7 +69,13 @@ void	append_token(t_cmd *cmd, t_token **new, int type)
 	if (!cmd || !new || !*new || !(*new)->value)
 		return ;
 	if (ft_strncmp((*new)->value, "", ft_strlen((*new)->value)) == 0)
-		return (free((*new)->value), free(*new));
+	{
+		free((*new)->value);
+		(*new)->value = NULL;
+		free(*new);
+		*new = NULL;
+		return ;
+	}
 	(*new)->type = type;
 	(*new)->next = NULL;
 	(*new)->prev = NULL;
