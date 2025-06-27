@@ -1,16 +1,36 @@
 #include "minishell.h"
 
-static int	switch_to_root(void)
+static int	make_switch(char *path)
 {
-	//
+	printf("cwd: %s\n", getcwd(NULL, 0));
+	printf("Path: %s\n", path);
+	if (chdir(path) == -1)
+		return (ERROR);
+	printf("new_cwd: %s\n", getcwd(NULL, 0));
+	return (OK);
 }
 
-static int	handler_path(char *builtin, char *arg)
+static int	handler_switch(t_mini *data, char *arg)
 {
-	if (!arg || !*arg)
-		return(update_status(switch_to_root()));
-	//
-	return (OK);
+	char	*path;
+
+	path = NULL;
+	if ((!arg || !*arg) || (arg && *arg =='~'))
+	{
+		path = getenv("HOME"); //leak?
+		if (!path)
+			return (update_status(ERROR));
+		if ((!arg || !*arg) || (arg && (*arg == '~' && ft_strlen(arg) == 1)))
+			return (update_status(make_switch(path)));
+		path = ft_strjoin(path, ++arg);
+		if (!path)
+			return (update_status(ERROR));
+		return (update_status(make_switch(path)));
+	}
+	else if (ft_strncmp(arg, "-", 2) == 0)
+		return(update_status(make_switch(data->oldpwd)));
+	else
+		return (update_status(make_switch(arg)));
 }
 
 static int	update_pwd_oldpwd(t_mini *data)
@@ -27,12 +47,11 @@ static int	update_pwd_oldpwd(t_mini *data)
 	return (update_status(OK));
 }
 
+/*Must be in parent process*/
 int	ft_cd(t_mini *data, t_cmd *cmd)
 {
-	char	*builtin;
 	char	*arg;
 
-	builtin = cmd->token->value;
 	arg = NULL;
 	cmd->token = cmd->token->next;
 	while (cmd->token && cmd->token->type != ARG)
@@ -44,7 +63,7 @@ int	ft_cd(t_mini *data, t_cmd *cmd)
 		write(STDERR_FILENO, "minishell: cd: too many arguments\n", 30);
 		return (update_status(ERROR));
 	}
-	if (handler_path(builtin, arg) != OK)
+	if (handler_switch(data, arg) != OK)
 		return (g_status);
 	return (update_pwd_oldpwd(data));
 }
