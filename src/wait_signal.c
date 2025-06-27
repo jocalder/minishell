@@ -5,7 +5,7 @@ static void	sigint_handler(int signum)
 	if (signum == SIGINT)
 	{
 		g_status = CTRC;
-		write(STDIN_FILENO, "\n", 1);
+		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();

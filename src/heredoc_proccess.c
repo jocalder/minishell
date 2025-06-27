@@ -27,25 +27,40 @@ int open_heredoc(char *delimiter)
     char	*line;
     int		large;
     pid_t	pid;
+	int		status;
+	void	(*sig)(int);
 
+	status = 0;
 	line = NULL;
 	large = ft_strlen(delimiter);
 	if (pipe(pipe_fd) < 0)
-		return (update_status(ERROR));
+		return (close(pipe_fd[0]), close(pipe_fd[1]), update_status(ERROR));
+	sig = signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid < 0)
 	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		return (-1);
+		signal(SIGINT, sig);
+		return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
 	}
 	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
 		core_heredoc(line, delimiter, large, pipe_fd);
-	else
+	}
+	else if (pid > 0)
 	{
 		close(pipe_fd[1]);
-		waitpid(pid, NULL, 0);
+		waitpid(-1, &status, 0);
+		signal(SIGINT, sig);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+    		close(pipe_fd[0]);
+    		write(1, "\n", 2);
+    		return (HEREDOC_CTRLC);
+		}
+		else if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+			return (close(pipe_fd[0]), -1);
 		return (pipe_fd[0]);
 	}
-	return (0);
+	return (-1);
 }

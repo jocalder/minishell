@@ -96,6 +96,7 @@ typedef struct minishell
 
 enum	e_status
 {
+	HEREDOC_CTRLC = -3,
 	ERROR_FD = -2,
 	ERROR = -1,
 	SYNTAX	= 2,

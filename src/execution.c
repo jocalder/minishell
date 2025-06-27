@@ -9,7 +9,7 @@ static int    wait_all(void)
     status = 0;
 	last_status = 0;
 	pid = -1;
-    while ((pid = wait(&status) > 0))
+    while ((pid = wait(&status)) > 0)
 	{
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
@@ -24,7 +24,11 @@ static void	create_pipes(t_cmd **cmd)
     if ((*cmd)->next)
 	{
 		if (pipe((*cmd)->pipe_fd) != 0)
-			exit(ERROR); //leaks?
+		{
+			close((*cmd)->pipe_fd[0]);
+			close((*cmd)->pipe_fd[1]);
+			exit(ERROR);
+		}
 	}
 	else
 	{
@@ -56,10 +60,14 @@ static int	redir_in(t_token *token)
 			if (fd != -1)
 				close(fd);
 			if (token->type == HEREDOC)
+			{
 				fd = open_heredoc(token->next->value);
+			}
 			else
 				fd = open((token->next->value), O_RDONLY);
-			if (fd < 0)
+			if (fd == HEREDOC_CTRLC)
+				return (CTRC);
+			else if (fd < 0)
 			{
 				write(STDERR_FILENO, "minishell: ", 12);
 				while (token->next->value[i])
@@ -111,31 +119,35 @@ int	handler_execution(t_mini *data, char **envp)
 	if (!data->input->cmd)
 		return (g_status);
 	cmd = data->input->cmd;
-	wait_signal(1);
 	while (cmd)
 	{
-		create_pipes(&cmd);
+		wait_signal(1);
 		cmd->fd_in = redir_in(cmd->token);
+		printf("pipe_fd[0]: %d\n", cmd->pipe_fd[0]);
+		printf("pipe_fd[1]: %d\n", cmd->pipe_fd[1]);
+		printf("fd_in: %d\n", cmd->fd_in);
+		printf("fd_out: %d\n", cmd->fd_out);
 		cmd->fd_out = redir_out(cmd->token);
 		if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD
 			|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX)
 		{
-			close_all_fds(data, &cmd);
-			data->prev_fd = -1;
+				close_all_fds(data, &cmd);
+				if (cmd->pipe_fd[0] != -1)
+				close(cmd->pipe_fd[0]);
+				if (cmd->pipe_fd[1] != -1)
+				close(cmd->pipe_fd[1]);
+				data->prev_fd = -1;
 			if (!cmd->next)
 			{
-				if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD)
-					return (update_status(ERROR_FD));
+					if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD)
+						return (update_status(ERROR_FD));
 				else
 					return (update_status(SYNTAX));
 			}
 			cmd = cmd->next;
 			continue ;
 		}
-		// if ((is_builtin() || is_redir()) && !cmd->next)
-		// {
-		// 	if(is_builtin())
-		// }
+		create_pipes(&cmd);
 		data->pid = fork();
 		if (data->pid == -1)
 		{
@@ -144,6 +156,10 @@ int	handler_execution(t_mini *data, char **envp)
 		}
 		if (data->pid == 0)
 			child_proccess(data, cmd, envp);
+		if (cmd->fd_in != -1)
+			close(cmd->fd_in);
+		if (cmd->fd_out != -1)
+			close(cmd->fd_out);
 		if (cmd->pipe_fd[1] != -1)
 			close(cmd->pipe_fd[1]);
 		if (data->prev_fd != -1)
@@ -151,12 +167,11 @@ int	handler_execution(t_mini *data, char **envp)
 		data->prev_fd = cmd->pipe_fd[0];
 		cmd->pipe_fd[0] = -1;
 		cmd->pipe_fd[1] = -1;
-		// last = cmd;
 		cmd = cmd->next;
 	}
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
-	// if (cmd->pipe_fd[0]!= -1)check open fds
-	// 	close(pipe_fd[0]);
+	//if (cmd->pipe_fd[0]!= -1)
+	//	close(cmd->pipe_fd[0]);
 	return (wait_all());
 }
