@@ -23,7 +23,7 @@ int	split_cmd(t_cmd **cmd)
 			return (free(new->value), free(new), g_status);
 		type = get_type((*cmd)->token, new->value, new->flag);
 		append_token(*cmd, &new, type);
-		if ((new && new->value)&& !is_supported(new->value))
+		if ((new && new->value) && !is_supported(new->value))
 			return (w_unsupported(new->value), update_status(SYNTAX));
 	}
 	return (OK);
