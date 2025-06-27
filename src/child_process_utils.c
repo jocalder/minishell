@@ -42,14 +42,14 @@ static void	handler_redir(t_mini *data, t_cmd **cmd)
 
 int	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 {
-		int	status;
+	int	status;
 
-		
-		handler_redir(data, &cmd);
-		close_all_fds(data, &cmd);
-		if (is_builtin(cmd->token))
-			status = execute_builtin(data, cmd);
-		else
-			status = execute_command(cmd, envp);
-		exit(update_status(status));
+	
+	handler_redir(data, &cmd);
+	close_all_fds(data, &cmd);
+	if (is_builtin(cmd->token))
+		status = execute_builtin(data, cmd);
+	else
+		status = execute_command(cmd, envp);
+	exit(update_status(status));
 }
