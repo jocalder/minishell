@@ -33,6 +33,7 @@ SRCS = 	src/main.c						\
 		src/builtins.c					\
 		src/ft_echo.c					\
 		src/ft_pwd.c					\
+		src/ft_cd.c						\
 		src/ft_exit.c					\
 		src/bools_utils.c				\
 		src/write_utils.c				\

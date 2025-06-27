@@ -129,6 +129,7 @@ int		open_heredoc(char *delimiter);
 /*built-ins*/
 int		ft_echo(t_cmd *cmd);
 int		ft_pwd(t_cmd *cmd, char *pwd);
+int		ft_cd(t_mini *data, t_cmd *cmd);
 int		ft_exit(t_mini *data, t_cmd *cmd);
 
 /*split_input*/
