@@ -52,7 +52,7 @@ static int	redir_in(t_token *token)
 		{
 			if (!token->next || !token->next->value)
 			{
-				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
+				write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
 				if (fd != -1)
 					close(fd);
 				return (SYNTAX);
@@ -95,7 +95,7 @@ static int	redir_out(t_token *token)
 		{
 			if (!token->next || !token->next->value)
 			{
-				write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
+				write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
 				return (SYNTAX);
 			}
 			if (fd != -1)
@@ -123,19 +123,15 @@ int	handler_execution(t_mini *data, char **envp)
 	{
 		wait_signal(1);
 		cmd->fd_in = redir_in(cmd->token);
-		printf("pipe_fd[0]: %d\n", cmd->pipe_fd[0]);
-		printf("pipe_fd[1]: %d\n", cmd->pipe_fd[1]);
-		printf("fd_in: %d\n", cmd->fd_in);
-		printf("fd_out: %d\n", cmd->fd_out);
 		cmd->fd_out = redir_out(cmd->token);
 		if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD
 			|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX)
 		{
 				close_all_fds(data, &cmd);
 				if (cmd->pipe_fd[0] != -1)
-				close(cmd->pipe_fd[0]);
+					close(cmd->pipe_fd[0]);
 				if (cmd->pipe_fd[1] != -1)
-				close(cmd->pipe_fd[1]);
+					close(cmd->pipe_fd[1]);
 				data->prev_fd = -1;
 			if (!cmd->next)
 			{
@@ -171,7 +167,5 @@ int	handler_execution(t_mini *data, char **envp)
 	}
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
-	//if (cmd->pipe_fd[0]!= -1)
-	//	close(cmd->pipe_fd[0]);
 	return (wait_all());
 }
