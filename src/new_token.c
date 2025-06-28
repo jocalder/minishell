@@ -26,7 +26,7 @@ char	*get_redir(char **str, size_t *len)
 	{
 		redir = ft_substr(str[0], 0, 1);
 		str[0][0] = ' ';
-		//write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
+		//write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));//whit this in the parser should works like bash
 		//return ((void)update_status(SYNTAX), NULL);
 	}
 	if (redir)
