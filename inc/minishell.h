@@ -161,7 +161,7 @@ bool	is_spacetab(int c);
 bool	is_quote(int c);
 bool	is_redir(char *str);
 bool	is_special(char *str);
-bool	is_supported(char *str);
+bool	is_supported(char *str, bool flag);
 bool	is_validate_bracket(char *str);
 bool	is_builtin(t_token *token);
 
