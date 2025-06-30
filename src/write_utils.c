@@ -15,7 +15,7 @@ static void	w_wildcard(int c)
 	write(STDERR_FILENO, "' is not supported\n", 20);
 }
 
-static void	w_unexpected(int c)
+void	w_unexpected(int c)
 {
 	write(STDERR_FILENO, "minishell: ", 12);
 	write(STDERR_FILENO, "syntax error near unexpected token `", 37);

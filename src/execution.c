@@ -9,7 +9,7 @@ static int    wait_all(void)
     status = 0;
 	last_status = 0;
 	pid = -1;
-    while ((pid = wait(&status) > 0))
+    while (((pid = wait(&status)) > 0))
 	{
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
@@ -114,7 +114,6 @@ int	handler_execution(t_mini *data, char **envp)
 	wait_signal(1);
 	while (cmd)
 	{
-		create_pipes(&cmd);
 		cmd->fd_in = redir_in(cmd->token);
 		cmd->fd_out = redir_out(cmd->token);
 		if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD
@@ -132,10 +131,7 @@ int	handler_execution(t_mini *data, char **envp)
 			cmd = cmd->next;
 			continue ;
 		}
-		// if ((is_builtin() || is_redir()) && !cmd->next)
-		// {
-		// 	if(is_builtin())
-		// }
+		create_pipes(&cmd);
 		data->pid = fork();
 		if (data->pid == -1)
 		{
@@ -144,6 +140,10 @@ int	handler_execution(t_mini *data, char **envp)
 		}
 		if (data->pid == 0)
 			child_proccess(data, cmd, envp);
+		if (cmd->fd_in != -1)
+			close(cmd->fd_in);
+		if (cmd->fd_out != -1)
+			close(cmd->fd_out);
 		if (cmd->pipe_fd[1] != -1)
 			close(cmd->pipe_fd[1]);
 		if (data->prev_fd != -1)
@@ -151,12 +151,9 @@ int	handler_execution(t_mini *data, char **envp)
 		data->prev_fd = cmd->pipe_fd[0];
 		cmd->pipe_fd[0] = -1;
 		cmd->pipe_fd[1] = -1;
-		// last = cmd;
 		cmd = cmd->next;
 	}
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
-	// if (cmd->pipe_fd[0]!= -1)check open fds
-	// 	close(pipe_fd[0]);
 	return (wait_all());
 }

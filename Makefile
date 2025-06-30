@@ -39,7 +39,7 @@ SRCS = 	src/main.c						\
 		src/status_utils.c				\
 		src/free_utils1.c				\
 		src/free_utils2.c				\
-		
+
 
 OBJS = $(SRCS:%.c=objs/%.o)
 

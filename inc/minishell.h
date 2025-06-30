@@ -149,7 +149,7 @@ char	*check_cases(t_cmd *cmd, t_token *new, char **start, size_t *len);
 char	*quote_case(t_cmd *cmd, char *start, size_t *len);
 char	*special_case(t_cmd *cmd, char *start, size_t *len);
 char	*expand_content(char *value, t_token *last);
-char	*get_redir(char **str, size_t *len);
+char	*get_redir(char **s, size_t *len);
 
 /*status_utils*/
 int		update_status(int new_status);
@@ -168,15 +168,12 @@ bool	is_builtin(t_token *token);
 /*write_utils*/
 void	w_openquote(unsigned char quote);
 void	w_unsupported(char *str);
+void	w_unexpected(int c);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
 void	free_envp(t_mini *data, bool check);
 void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
-
-/*delete*/
-void	printf_input(t_input *input);
-void	invented_input(t_input *input);
 
 #endif
