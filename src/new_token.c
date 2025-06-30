@@ -7,13 +7,12 @@ char	*get_redir(char **str, size_t *len)
 	redir = NULL;
 	if (ft_strncmp(str[0], "<<<", 3) == 0)
 	{
-		write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));//whit this works like bash
+		write(STDERR_FILENO, ERROR11, 51);
 		return ((void)update_status(SYNTAX), NULL);
-		//return ((void)update_status(ERROR), NULL);//before victor´s code
 	}
 	else if (ft_strncmp(str[0], ">>>", 3) == 0)
 	{
-		write(STDERR_FILENO, ERROR3, 50);
+		write(STDERR_FILENO, ERROR3, 51);
 		return ((void)update_status(SYNTAX), NULL);
 	}
 	else if (ft_strncmp(str[0], "<<", 2) == 0

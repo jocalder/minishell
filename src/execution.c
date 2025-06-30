@@ -37,8 +37,6 @@ static void	create_pipes(t_cmd **cmd)
 	}
 }
 
-// Maybe could change prototype to static int redir_in(t_token *token, int *fd)
-// Used int *fd to get de current fd, and int return of the funtion to return status
 static int	redir_in(t_token *token)
 {
 	int		fd;
@@ -65,9 +63,7 @@ static int	redir_in(t_token *token)
 			}
 			else
 				fd = open((token->next->value), O_RDONLY);
-			if (fd == HEREDOC_CTRLC)
-				return (CTRC);
-			else if (fd < 0)
+			if (fd < 0)
 			{
 				write(STDERR_FILENO, "minishell: ", 12);
 				while (token->next->value[i])
@@ -81,9 +77,6 @@ static int	redir_in(t_token *token)
 	return (fd);
 }
 
-
-// Maybe could change prototype to static int redir_out(t_token *token, int *fd)
-// Used int *fd to get de current fd, and int return of the funtion to return status
 static int	redir_out(t_token *token)
 {
 	int		fd;
@@ -127,12 +120,8 @@ int	handler_execution(t_mini *data, char **envp)
 		if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD
 			|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX)
 		{
-				close_all_fds(data, &cmd);
-				if (cmd->pipe_fd[0] != -1)
-					close(cmd->pipe_fd[0]);
-				if (cmd->pipe_fd[1] != -1)
-					close(cmd->pipe_fd[1]);
-				data->prev_fd = -1;
+			close_all_fds(data, &cmd);
+			data->prev_fd = -1;
 			if (!cmd->next)
 			{
 					if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD)
@@ -152,14 +141,7 @@ int	handler_execution(t_mini *data, char **envp)
 		}
 		if (data->pid == 0)
 			child_proccess(data, cmd, envp);
-		if (cmd->fd_in != -1)
-			close(cmd->fd_in);
-		if (cmd->fd_out != -1)
-			close(cmd->fd_out);
-		if (cmd->pipe_fd[1] != -1)
-			close(cmd->pipe_fd[1]);
-		if (data->prev_fd != -1)
-			close(data->prev_fd);
+		close_father_fds(data, cmd);
 		data->prev_fd = cmd->pipe_fd[0];
 		cmd->pipe_fd[0] = -1;
 		cmd->pipe_fd[1] = -1;
