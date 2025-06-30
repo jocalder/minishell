@@ -70,6 +70,4 @@ int	ft_exit(t_mini *data, t_cmd *cmd)
 	rl_clear_history();
 	update_status(g_status);
 	exit(g_status);
-	// kill(data->pid, SIGKILL);
-	// return (g_status);
 }

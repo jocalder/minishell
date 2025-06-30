@@ -17,7 +17,7 @@ static int	handler_switch(t_mini *data, char *arg)
 	path = NULL;
 	if ((!arg || !*arg) || (arg && *arg =='~'))
 	{
-		path = getenv("HOME"); //leak?
+		path = getenv("HOME");
 		if (!path)
 			return (update_status(ERROR));
 		if ((!arg || !*arg) || (arg && (*arg == '~' && ft_strlen(arg) == 1)))
@@ -37,11 +37,15 @@ static int	update_pwd_oldpwd(t_mini *data)
 {
 	char *cur_pwd;
 
+	cur_pwd = NULL;
 	cur_pwd = getcwd(NULL, 0);
 	if (!cur_pwd)
 		return (update_status(ERROR));
 	if (data->oldpwd)
+	{
 		free(data->oldpwd);
+		data->oldpwd = NULL;
+	}
 	data->oldpwd = data->pwd;
 	data->pwd = cur_pwd;
 	return (update_status(OK));
