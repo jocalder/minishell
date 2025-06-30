@@ -84,7 +84,7 @@ static void	input_two(t_input *input)
 	cur->token->value = ft_strdup("echo");
 	if (!cur->token->value)
 		return ((void)printf("5.Alloc error\n"));
-	cur->token->type = BUILTIN;
+	cur->token->type = CMD;
 	cur->token->next = ft_calloc(1, sizeof(t_token));
 	if (!cur->token->next)
 		return ((void)printf("6.Alloc error\n"));
@@ -491,8 +491,6 @@ static char	*token_type_str(int type)
 {
 	if (type == 0)
 		return ("CMD");
-	else if (type == BUILTIN)
-		return ("BUILTIN");
 	else if (type == ARG)
 		return ("ARG");
 	else if (type == REDIR_IN)
