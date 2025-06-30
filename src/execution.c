@@ -37,7 +37,7 @@ static void	create_pipes(t_cmd **cmd)
 	}
 }
 
-static int	redir_in(t_token *token)
+int	redir_in(t_token *token)
 {
 	int		fd;
 	int		i;
@@ -77,7 +77,7 @@ static int	redir_in(t_token *token)
 	return (fd);
 }
 
-static int	redir_out(t_token *token)
+int	redir_out(t_token *token)
 {
 	int		fd;
 
@@ -115,20 +115,13 @@ int	handler_execution(t_mini *data, char **envp)
 	while (cmd)
 	{
 		wait_signal(1);
-		cmd->fd_in = redir_in(cmd->token);
-		cmd->fd_out = redir_out(cmd->token);
-		if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD
-			|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX)
+		handle_redirections(&cmd);
+		if(check_fd_errors(cmd))
 		{
 			close_all_fds(data, &cmd);
 			data->prev_fd = -1;
 			if (!cmd->next)
-			{
-					if (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD)
-						return (update_status(ERROR_FD));
-				else
-					return (update_status(SYNTAX));
-			}
+				return (handle_fd_errors(&cmd));
 			cmd = cmd->next;
 			continue ;
 		}
@@ -141,11 +134,7 @@ int	handler_execution(t_mini *data, char **envp)
 		}
 		if (data->pid == 0)
 			child_proccess(data, cmd, envp);
-		close_father_fds(data, cmd);
-		data->prev_fd = cmd->pipe_fd[0];
-		cmd->pipe_fd[0] = -1;
-		cmd->pipe_fd[1] = -1;
-		cmd = cmd->next;
+		clean_and_close(data, &cmd);
 	}
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
