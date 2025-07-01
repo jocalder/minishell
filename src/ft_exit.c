@@ -49,22 +49,22 @@ static void	set_exit_code(t_token *token)
 
 /*Must be in parent process*/
 /*Do not kill the parent process from a child process*/
-int	ft_exit(t_mini *data, t_cmd *cmd)
+int	ft_exit(t_mini *data, t_token *token)
 {
 	write(STDOUT_FILENO, "exit\n", 6);
-	cmd->token = cmd->token->next;
-	if (cmd->token && cmd->token->type == ARG)
+	token = token->next;
+	if (token && token->type == ARG)
 	{
-		if (validate_numeric_argument(cmd->token) != OK)
+		if (validate_numeric_argument(token) != OK)
 			return (g_status);
-		if (check_numeric_limits(cmd->token->value) != OK)
+		if (check_numeric_limits(token->value) != OK)
 			return (g_status);
-		if (cmd->token->next && cmd->token->next->type == ARG)
+		if (token->next && token->next->type == ARG)
 		{
 			write(STDERR_FILENO, "minishell: exit: too many arguments\n", 37);
 			return (update_status(SYNTAX));
 		}
-		set_exit_code(cmd->token);
+		set_exit_code(token);
 	}
 	free_all(data, true);
 	rl_clear_history();

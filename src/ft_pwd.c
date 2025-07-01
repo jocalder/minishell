@@ -1,18 +1,18 @@
 #include "minishell.h"
 
-int	ft_pwd(t_cmd *cmd, char *pwd)
+int	ft_pwd(t_token *token, char *pwd)
 {
 	char	*value;
 	char	*builtin;
 
 	value = NULL;
-	builtin = cmd->token->value;
-	cmd->token = cmd->token->next;
-	while (cmd->token && cmd->token->type != ARG)
-		cmd->token = cmd->token->next;
-	if (cmd->token && cmd->token->type == ARG)
+	builtin = token->value;
+	token = token->next;
+	while (token && token->type != ARG)
+		token = token->next;
+	if (token && token->type == ARG)
 	{
-		value = cmd->token->value;
+		value = token->value;
 		if (is_option(value))
 		{
 			w_builtin_usage(builtin, value);

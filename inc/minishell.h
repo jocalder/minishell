@@ -128,11 +128,11 @@ int		execute_builtin(t_mini *data, t_cmd *cmd);
 int		open_heredoc(char *delimiter);
 
 /*built-ins*/
-int		ft_echo(t_cmd *cmd);
-int		ft_pwd(t_cmd *cmd, char *pwd);
-int		ft_cd(t_mini *data, t_cmd *cmd);
-int		ft_env(char **envp);
-int		ft_exit(t_mini *data, t_cmd *cmd);
+int		ft_echo(t_token *token);
+int		ft_pwd(t_token *token, char *pwd);
+int		ft_cd(t_mini *data, t_token *token);
+int		ft_env(t_token *token, char **envp);
+int		ft_exit(t_mini *data, t_token *token);
 
 /*split_input*/
 int		split_input(t_input *input);

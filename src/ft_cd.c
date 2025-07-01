@@ -53,19 +53,19 @@ static int	update_pwd_oldpwd(t_mini *data)
 
 /*Must be in parent process*/
 /*chdir changes the directory only in the child process*/
-int	ft_cd(t_mini *data, t_cmd *cmd)
+int	ft_cd(t_mini *data, t_token *token)
 {
 	char	*arg;
 
 	arg = NULL;
-	cmd->token = cmd->token->next;
-	while (cmd->token && cmd->token->type != ARG)
-		cmd->token = cmd->token->next;
-	if (cmd->token && cmd->token->type == ARG)
-		arg	= cmd->token->value;
-	if (cmd->token && (cmd->token->next && cmd->token->next->type == ARG))
+	token = token->next;
+	while (token && token->type != ARG)
+		token = token->next;
+	if (token && token->type == ARG)
+		arg	= token->value;
+	if (token && (token->next && token->next->type == ARG))
 	{
-		write(STDERR_FILENO, "minishell: cd: too many arguments\n", 30);
+		write(STDERR_FILENO, "minishell: cd: too many arguments\n", 35);
 		return (update_status(ERROR));
 	}
 	if (handler_switch(data, arg) != OK)
