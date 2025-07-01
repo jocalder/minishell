@@ -1,13 +1,5 @@
 #include "minishell.h"
 
-bool	is_option(char *value)
-{
-	if ((ft_strncmp(value, "--", 2) == 0 && ft_strlen(value) > 2)
-		|| (ft_strncmp(value, "-", 1) == 0 && ft_strlen(value) > 1))
-		return (true);
-	return (false);
-}
-
 bool	is_builtin(t_token *token)
 {
 	char	*value;
@@ -26,21 +18,43 @@ bool	is_builtin(t_token *token)
 	return (false);
 }
 
+bool	is_option(char *value)
+{
+	if ((ft_strncmp(value, "--", 2) == 0 && ft_strlen(value) > 2)
+		|| (ft_strncmp(value, "-", 1) == 0 && ft_strlen(value) > 1))
+		return (true);
+	return (false);
+}
+
 bool	is_validate_id(char *id)
 {
 	int	i;
 
 	if (!id || !*id)
-		return (false);
+		return (update_status(ERROR_FD), false);
 	i = 0;
-	if (!ft_isalpha(id[i] || id[i] != '_'))
-		return (false);
+	if (!ft_isalpha(id[i]) && id[i] != '_')
+		return (update_status(ERROR_FD), false);
 	i = 1;
 	while (id[i] && id[i] != '=')
 	{
 		if (!ft_isalnum(id[i]) && id[i] != '_')
-			return (false);
+			return (update_status(ERROR_FD), false);
 		i++;
+	}
+	return (true);
+}
+
+bool	is_new_var(char **envp, char *var)
+{
+	char	*tmp;
+	size_t	len;
+
+	tmp = ft_strchr(var)
+	while (*envp)
+	{
+		//
+		envp++;
 	}
 	return (true);
 }

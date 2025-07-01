@@ -71,12 +71,8 @@ static void	print_exported_vars(char **envp)
 /*Must be in parent process*/
 /*Variables are being updated only in the child process*/
 /*VAR without assigned value, must be printed like VAR*/
-int	ft_export(t_mini *data, t_token *token)
+int	ft_export(t_mini *data, t_token *token, char *builtin)
 {
-	char	*builtin;
-	int		status;
-
-	builtin = token->value;
 	token = token->next;
 	while (token && token->type != ARG)
 		token = token->next;
@@ -84,16 +80,20 @@ int	ft_export(t_mini *data, t_token *token)
 		return (w_builtin_usage(builtin, token->value), update_status(SYNTAX));
 	if (!token)
 		return ((print_exported_vars(data->cpy_envp)), OK);
-	status = 0;
+	update_status(OK);
 	while (token && token->type == ARG)
 	{
 		if (!is_validate_id(token->value))
 		{
-			status = ERROR_FD;
 			w_invalid_identifier(builtin, token->value);
 			token = token->next;
 			continue ;
 		}
+		if (is_new_var(data->cpy_envp, token->value))
+			//
+		else
+			//
+		token = token->next;
 	}
-	return (update_status(status));
+	return (g_status);
 }

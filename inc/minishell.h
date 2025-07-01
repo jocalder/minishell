@@ -132,7 +132,7 @@ int		ft_echo(t_token *token);
 int		ft_pwd(t_token *token, char *pwd);
 int		ft_cd(t_mini *data, t_token *token);
 int		ft_env(t_token *token, char **envp);
-int		ft_export(t_mini *data, t_token *token);
+int		ft_export(t_mini *data, t_token *token, char *builtin);
 int		ft_exit(t_mini *data, t_token *token);
 
 /*split_input*/
@@ -170,6 +170,7 @@ bool	is_validate_bracket(char *str);
 bool	is_builtin(t_token *token);
 bool	is_option(char *value);
 bool	is_validate_id(char *id);
+bool	is_new_var(char **envp, char *var);
 
 /*write_utils*/
 void	w_openquote(unsigned char quote);
