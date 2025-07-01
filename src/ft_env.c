@@ -5,7 +5,6 @@
 int	ft_env(t_token *token, char **envp)
 {
 	char	*builtin;
-	int		i;
 
 	builtin = token->value;
 	while (token && token->type != ARG)
@@ -18,15 +17,14 @@ int	ft_env(t_token *token, char **envp)
 			write(STDERR_FILENO, "minishell: env: too many arguments\n", 36);
 		return (update_status(SYNTAX));
 	}
-	i = 0;
-	while (envp[i])
+	while (*envp)
 	{
-		if (ft_strchr(envp[i], '='))
+		if (ft_strchr(*envp, '='))
 		{
-			write(STDOUT_FILENO, envp[i], ft_strlen(envp[i]));
+			write(STDOUT_FILENO, *envp, ft_strlen(*envp));
 			write(STDOUT_FILENO, "\n", 1);
 		}
-		i++;
+		envp++;
 	}
 	return (update_status(OK));
 }

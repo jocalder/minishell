@@ -1,5 +1,34 @@
 #include "minishell.h"
 
+void	w_builtin_usage(char *builtin, char *invalid_opt)
+{
+	write(STDERR_FILENO, "minishell: ", 12);
+	write(STDERR_FILENO, builtin, ft_strlen(builtin));
+	write(STDERR_FILENO, ": ", 3);
+	if (ft_strncmp(invalid_opt, "--", 2) == 0 && ft_strlen(invalid_opt) > 2)
+		write(STDERR_FILENO, "--", 2);
+	else
+	{
+		write(STDERR_FILENO, "-", 1);
+		invalid_opt++;
+		write(STDERR_FILENO, invalid_opt, 1);
+	}
+	write(STDERR_FILENO, ": invalid option\n", 18);
+	write(STDERR_FILENO, builtin, ft_strlen(builtin));
+	write(STDERR_FILENO, ": usage: ", 10);
+	write(STDERR_FILENO, builtin, ft_strlen(builtin));
+	write(STDERR_FILENO, "\n", 1);
+}
+
+void	w_invalid_identifier(char *builtin, char *invalid_id)
+{
+	write(STDERR_FILENO, "minishell: ", 12);
+	write(STDERR_FILENO, builtin, ft_strlen(builtin));
+	write(STDERR_FILENO, ": `", 4);
+	write(STDERR_FILENO, invalid_id, ft_strlen(invalid_id));
+	write(STDERR_FILENO, "': not a valid identifier\n", 27);
+}
+
 void	w_openquote(unsigned char quote)
 {
 	write(STDERR_FILENO, ERROR5, 55);

@@ -37,7 +37,8 @@ SRCS = 	src/main.c						\
 		src/ft_env.c					\
 		src/ft_export.c					\
 		src/ft_exit.c					\
-		src/bools_utils.c				\
+		src/bools_utils1.c				\
+		src/bools_utils2.c				\
 		src/write_utils.c				\
 		src/status_utils.c				\
 		src/free_utils1.c				\
