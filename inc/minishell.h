@@ -132,6 +132,7 @@ int		ft_echo(t_token *token);
 int		ft_pwd(t_token *token, char *pwd);
 int		ft_cd(t_mini *data, t_token *token);
 int		ft_env(t_token *token, char **envp);
+int		ft_export(t_mini *data, t_token *token);
 int		ft_exit(t_mini *data, t_token *token);
 
 /*split_input*/
