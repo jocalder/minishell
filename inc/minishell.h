@@ -126,6 +126,7 @@ void	close_all_fds(t_mini *data, t_cmd **cmd);
 void	close_father_fds(t_mini *data, t_cmd *cmd);
 void    handle_redirections(t_cmd **cmd);
 void    clean_and_close(t_mini *data, t_cmd **cmd);
+void	write_error(t_token *token);
 int		redir_in(t_token *token);
 int		redir_out(t_token *token);
 int 	check_fd_errors(t_cmd *cmd);

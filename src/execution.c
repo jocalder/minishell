@@ -19,7 +19,7 @@ static int    wait_all(void)
     return (update_status(last_status));
 }
 
-static void	create_pipes(t_cmd **cmd)
+static void	create_pipes_and_fork(t_mini *data, t_cmd **cmd)
 {
     if ((*cmd)->next)
 	{
@@ -35,42 +35,32 @@ static void	create_pipes(t_cmd **cmd)
 		(*cmd)->pipe_fd[0] = -1;
 		(*cmd)->pipe_fd[1] = -1;
 	}
+	data->pid =fork();
 }
 
 int	redir_in(t_token *token)
 {
 	int		fd;
-	int		i;
 
 	fd = -1;
-	i = 0;
 	while (token)
 	{
 		if (token->type == HEREDOC || token->type == REDIR_IN)
 		{
 			if (!token->next || !token->next->value)
 			{
-				write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
 				if (fd != -1)
 					close(fd);
-				return (SYNTAX);
+				return (write(2, ERROR4, ft_strlen(ERROR4)), SYNTAX);
 			}
 			if (fd != -1)
 				close(fd);
 			if (token->type == HEREDOC)
-			{
 				fd = open_heredoc(token->next->value);
-			}
 			else
 				fd = open((token->next->value), O_RDONLY);
 			if (fd < 0)
-			{
-				write(STDERR_FILENO, "minishell: ", 12);
-				while (token->next->value[i])
-					write(STDERR_FILENO, &token->next->value[i++], 1);
-				write(STDERR_FILENO, ": no such file or directory\n", 29);
-				return (ERROR_FD);
-			}
+				return (write_error(token), ERROR_FD);
 		}
 		token = token->next;
 	}
@@ -125,13 +115,9 @@ int	handler_execution(t_mini *data, char **envp)
 			cmd = cmd->next;
 			continue ;
 		}
-		create_pipes(&cmd);
-		data->pid = fork();
+		create_pipes_and_fork(data, &cmd);
 		if (data->pid == -1)
-		{
-			close_all_fds(data, &cmd);
 			return (update_status(ERROR));
-		}
 		if (data->pid == 0)
 			child_proccess(data, cmd, envp);
 		clean_and_close(data, &cmd);
