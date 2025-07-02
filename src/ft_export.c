@@ -89,10 +89,11 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 			token = token->next;
 			continue ;
 		}
-		if (is_new_var(data->cpy_envp, token->value))
-			//
-		else
-			//
+		// if (is_new_var(data->cpy_envp, token->value))
+		// 	//
+		// else
+		// 	//
+		is_new_var(data->cpy_envp, token->value);
 		token = token->next;
 	}
 	return (g_status);

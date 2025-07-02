@@ -48,13 +48,47 @@ bool	is_validate_id(char *id)
 bool	is_new_var(char **envp, char *var)
 {
 	char	*tmp;
+	size_t	cur;
 	size_t	len;
 
-	tmp = ft_strchr(var)
+	tmp = ft_strchr(var, '=');
+	len = ft_strlen(var) - ft_strlen(tmp);
 	while (*envp)
 	{
-		//
+		tmp = NULL;
+		tmp = ft_strchr(*envp, '=');
+		if (len < (ft_strlen(*envp) - ft_strlen(tmp)))
+			cur = (ft_strlen(*envp) - ft_strlen(tmp));
+		else
+			cur = len;
+		if (ft_strncmp(*envp, var, cur) == 0)
+			return (false);
 		envp++;
 	}
 	return (true);
 }
+
+/*test with printf*/
+// bool	is_new_var(char **envp, char *var)
+// {
+// 	char	*tmp;
+// 	size_t	cur;
+// 	size_t	len;
+
+// 	tmp = ft_strchr(var, '=');
+// 	len = ft_strlen(var) - ft_strlen(tmp);
+// 	printf("Arg: %s\n", var);
+// 	while (*envp)
+// 	{
+// 		tmp = NULL;
+// 		tmp = ft_strchr(*envp, '=');
+// 		if (len < (ft_strlen(*envp) - ft_strlen(tmp)))
+// 			cur = (ft_strlen(*envp) - ft_strlen(tmp));
+// 		else
+// 			cur = len;
+// 		if (ft_strncmp(*envp, var, cur) == 0)
+// 			return ((void)printf("Compared: %s -> EXISTE\n", *envp), false);
+// 		envp++;
+// 	}
+// 	return ((void)printf("%s -> IS NEW\n", var), true);
+// }
