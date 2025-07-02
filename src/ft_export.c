@@ -85,6 +85,7 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 	{
 		if (!is_validate_id(token->value))
 		{
+			update_status(ERROR_FD);
 			w_invalid_identifier(builtin, token->value);
 			token = token->next;
 			continue ;

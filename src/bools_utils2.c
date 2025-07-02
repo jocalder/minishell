@@ -31,15 +31,15 @@ bool	is_validate_id(char *id)
 	int	i;
 
 	if (!id || !*id)
-		return (update_status(ERROR_FD), false);
+		return (false);
 	i = 0;
 	if (!ft_isalpha(id[i]) && id[i] != '_')
-		return (update_status(ERROR_FD), false);
+		return (false);
 	i = 1;
 	while (id[i] && id[i] != '=')
 	{
 		if (!ft_isalnum(id[i]) && id[i] != '_')
-			return (update_status(ERROR_FD), false);
+			return (false);
 		i++;
 	}
 	return (true);
