@@ -45,27 +45,40 @@ bool	is_validate_id(char *id)
 	return (true);
 }
 
-bool	is_new_var(char **envp, char *var)
+bool	is_existing_var(char **ptr, char *var)
 {
-	char	*tmp;
-	size_t	cur;
-	size_t	len;
+	int		i;
 
-	tmp = ft_strchr(var, '=');
-	len = ft_strlen(var) - ft_strlen(tmp);
-	while (*envp)
+	i = 0;
+	while (ptr[i])
 	{
-		tmp = NULL;
-		tmp = ft_strchr(*envp, '=');
-		if (len < (ft_strlen(*envp) - ft_strlen(tmp)))
-			cur = (ft_strlen(*envp) - ft_strlen(tmp));
-		else
-			cur = len;
-		if (ft_strncmp(*envp, var, cur) == 0)
-			return (false);
-		envp++;
+		if (is_same_var(ptr[i], var))
+			return (true);
+		i++;
 	}
-	return (true);
+	return (false);
+}
+
+bool	is_same_var(char *compared, char *var)
+{
+	size_t	len_compared;
+	size_t	len_var;
+	size_t	len;
+	char	*tmp;
+
+	tmp = ft_strchr(compared, '=');
+	len_compared = ft_strlen(compared) - ft_strlen(tmp);
+	tmp = NULL;
+	tmp = ft_strchr(var, '=');
+	len_var = ft_strlen(var) - ft_strlen(tmp);
+	if (len_compared < len_var)
+		len = len_var;
+	else
+		len = len_compared;
+	if (ft_strncmp(compared, var, len) == 0)
+		return (true);
+	else
+		return (false);
 }
 
 /*test with printf*/

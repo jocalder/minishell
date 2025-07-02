@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	add_new_var(t_mini *data, char *new_var, bool export)
+int	set_new_var(t_mini *data, char *new_var, bool export)
 {
 	int		i;
 	char	***ptr;
@@ -21,6 +21,56 @@ int	add_new_var(t_mini *data, char *new_var, bool export)
 		return (free_array(ptr[0], -1), update_status(ERROR));
 	ptr[0][i + 1] = NULL;
 	return (OK);
+}
+
+int	set_existing_var(t_mini *data, char *var, bool export)
+{
+	int		i;
+	char	***ptr;
+
+	if (!ft_strchr(var, '='))
+		return (OK);
+	i = 0;
+	ptr = NULL;
+	if (export)
+		ptr = &data->exp_vars;
+	else
+		ptr = &data->vars;
+	while (ptr[0][i])
+	{
+		if (is_same_var(ptr[0][i], var))
+		{
+			free(ptr[0][i]);
+			ptr[0][i] = NULL;
+			ptr[0][i] = ft_strdup(var);
+			if (!ptr[0][i])
+				return (update_status(ERROR));
+			return (OK);
+		}
+		i++;
+	}
+	return (OK);
+}
+
+int	unset_var(t_mini *data, char *var, bool export)
+{
+	int		i;
+	char	***ptr;
+
+	i = 0;
+	ptr = NULL;
+	if (export)
+		ptr = &data->exp_vars;
+	else
+		ptr = &data->vars;
+	while (ptr[0][i])
+	{
+		if (is_same_var(ptr[0][i], var))
+		{
+			//
+		}
+		i++;
+	}
 }
 
 int	update_envp(t_mini *data)
@@ -47,7 +97,7 @@ int	update_envp(t_mini *data)
 		}
 	}
 	if (!data->exp_vars[i])
-		if (add_new_var(data, "SHLVL=1", true) == ERROR)
+		if (set_new_var(data, "SHLVL=1", true) == ERROR)
 			return (ERROR);
 	return (OK);
 }

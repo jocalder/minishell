@@ -91,12 +91,12 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 			token = token->next;
 			continue ;
 		}
-		if (is_new_var(data->exp_vars, token->value))
-			add_new_var(data, token->value, true);
-		// else if (ft_strchr(token->value, '='))
-		// 	//
-		// else
-		// 	//
+		if (!is_existing_var(data->exp_vars, token->value))
+			set_new_var(data, token->value, true);
+		else
+			set_existing_var(data, token->value, true);
+		if (is_existing_var(data->vars, token->value))
+			unset_var(data, token->value, false);
 		token = token->next;
 	}
 	return (g_status);
