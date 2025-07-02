@@ -2,27 +2,28 @@
 
 static void	init_environment(t_mini *data, char **envp)
 {
-	data->cpy_envp = NULL;
+	data->exp_vars = NULL;
+	data->vars = NULL;
 	data->pwd = NULL;
 	data->oldpwd = NULL;
-	data->cpy_envp = envpdup(envp);
-	if (!data->cpy_envp)
+	data->exp_vars = envpdup(envp);
+	if (!data->exp_vars)
 		exit(ERROR);
 	if (update_envp(data) != OK)
 	{
-		free_array(data->cpy_envp, -1);
+		free_array(data->exp_vars, -1);
 		exit(ERROR);
 	}
 	data->pwd = getcwd(NULL, 0);
 	if (!data->pwd)
 	{
-		free_array(data->cpy_envp, -1);
+		free_array(data->exp_vars, -1);
 		exit(ERROR);
 	}
 	data->oldpwd = getcwd(NULL, 0);
 	if (!data->oldpwd)
 	{
-		free_array(data->cpy_envp, -1);
+		free_array(data->exp_vars, -1);
 		free(data->pwd);
 		exit (ERROR);
 	}

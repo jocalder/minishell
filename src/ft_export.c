@@ -1,24 +1,24 @@
 #include "minishell.h"
 
-static int	count_str(char **envp)
+static int	count_str(char **str)
 {
 	int	i;
 
 	i = 0;
-	if (!envp || !*envp)
+	if (!str || !*str)
 		return (0);
-	while (envp[i])
+	while (str[i])
 		i++;
 	return (i);
 }
 
-static void	sort_exported_vars(char ***p, int size)
+static void	sort_exported_vars(char ***ptr, int size)
 {
 	char	*tmp;
 	bool	swapped;
 	int		i;
 
-	if (!p || !*p || !**p || !***p)
+	if (!ptr || !*ptr || !**ptr || !***ptr)
 		return ;
 	tmp = NULL;
 	swapped = true;
@@ -28,11 +28,12 @@ static void	sort_exported_vars(char ***p, int size)
 		i = 0;
 		while (i < (size - 1))
 		{
-			if (ft_strncmp(p[0][i], p[0][i + 1], ft_strlen(p[0][i]) + 1) > 0)
+			if (ft_strncmp(ptr[0][i], ptr[0][i + 1],
+					ft_strlen(ptr[0][i]) + 1) > 0)
 			{
-				tmp = p[0][i];
-				p[0][i] = p[0][i + 1];
-				p[0][i + 1] = tmp;
+				tmp = ptr[0][i];
+				ptr[0][i] = ptr[0][i + 1];
+				ptr[0][i + 1] = tmp;
 				swapped = true;
 			}
 			i++;
@@ -40,31 +41,32 @@ static void	sort_exported_vars(char ***p, int size)
 	}
 }
 
-static void	print_exported_vars(char **envp)
+static void	print_exported_vars(char **exp_vars)
 {
 	char	*tmp;
 
-	if (!envp || !*envp || !**envp)
+	if (!exp_vars || !*exp_vars || !**exp_vars)
 		return ;
-	sort_exported_vars(&envp, count_str(envp));
+	sort_exported_vars(&exp_vars, count_str(exp_vars));
 	tmp = NULL;
-	while (*envp)
+	while (*exp_vars)
 	{
 		write(STDOUT_FILENO, "declare -x ", 11);
-		tmp = ft_strchr(*envp, '=');
+		tmp = ft_strchr(*exp_vars, '=');
 		if (tmp)
 		{
-			write(STDOUT_FILENO, *envp, (ft_strlen(*envp) - ft_strlen(++tmp)));
+			write(STDOUT_FILENO, *exp_vars,
+				(ft_strlen(*exp_vars) - ft_strlen(++tmp)));
 			write(STDOUT_FILENO, "\"", 1);
 			write(STDOUT_FILENO, tmp, ft_strlen(tmp));
 			write(STDOUT_FILENO, "\"\n", 2);
 		}
 		else
 		{
-			write(STDOUT_FILENO, *envp, ft_strlen(*envp));
+			write(STDOUT_FILENO, *exp_vars, ft_strlen(*exp_vars));
 			write(STDOUT_FILENO, "\n", 1);
 		}
-		envp++;
+		exp_vars++;
 	}
 }
 
@@ -73,13 +75,12 @@ static void	print_exported_vars(char **envp)
 /*VAR without assigned value, must be printed like VAR*/
 int	ft_export(t_mini *data, t_token *token, char *builtin)
 {
-	token = token->next;
 	while (token && token->type != ARG)
 		token = token->next;
 	if (token && token->type == ARG && is_option(token->value))
 		return (w_builtin_usage(builtin, token->value), update_status(SYNTAX));
 	if (!token)
-		return ((print_exported_vars(data->cpy_envp)), OK);
+		return ((print_exported_vars(data->exp_vars)), OK);
 	update_status(OK);
 	while (token && token->type == ARG)
 	{
@@ -90,11 +91,12 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 			token = token->next;
 			continue ;
 		}
-		// if (is_new_var(data->cpy_envp, token->value))
+		if (is_new_var(data->exp_vars, token->value))
+			add_new_var(data, token->value, true);
+		// else if (ft_strchr(token->value, '='))
 		// 	//
 		// else
 		// 	//
-		is_new_var(data->cpy_envp, token->value);
 		token = token->next;
 	}
 	return (g_status);

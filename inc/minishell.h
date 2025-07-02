@@ -87,7 +87,8 @@ typedef struct minishell
 {
 	t_prompt	*prompt;
 	t_input		*input;
-	char		**cpy_envp;
+	char		**exp_vars;
+	char		**vars;
 	char		*pwd;
 	char		*oldpwd;
 	pid_t		pid;
@@ -111,9 +112,10 @@ void	wait_signal(int i);
 void	interactive_mode(t_mini *data, char **envp);
 void	command_mode(t_mini *data, char **argv, int argc, char **envp);
 
-/*init_environment*/
+/*environment_utils*/
 char	**envpdup(char **envp);
 int		update_envp(t_mini *data);
+int		add_new_var(t_mini *data, char *var, bool export);
 
 /*set_structs*/
 int		set_prompt(t_prompt *promt);

@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-static char	*get_env_var(char *var)
+static char	*get_env_var(char *name)
 {
-	char	*env;
+	char	*var;
 
-	if (!var)
+	if (!name)
 		return (ft_strdup(""));
-	env = ft_strdup(getenv(var));
-	if (!env)
-		env = ft_strdup("");
-	return (free(var), env);
+	var = ft_strdup(getenv(name));
+	if (!var)
+		var = ft_strdup("");
+	return (free(name), var);
 }
 
 static char	*handler_expand(char *value, size_t *len)

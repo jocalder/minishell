@@ -17,7 +17,7 @@ LIBFT = libft/libft.a
 
 SRCS = 	src/main.c						\
 		src/init_data.c					\
-		src/init_environment.c			\
+		src/environment_utils.c			\
 		src/wait_signal.c				\
 		src/modes.c						\
 		src/set_prompt.c				\

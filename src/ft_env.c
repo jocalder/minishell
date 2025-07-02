@@ -2,11 +2,12 @@
 
 /*Must be in parent process*/
 /*Variables are being updated only in the child process*/
-int	ft_env(t_token *token, char **envp)
+int	ft_env(t_token *token, char **exp_vars)
 {
 	char	*builtin;
 
 	builtin = token->value;
+	token = token->next;
 	while (token && token->type != ARG)
 		token = token->next;
 	if (token && token->type == ARG)
@@ -17,14 +18,14 @@ int	ft_env(t_token *token, char **envp)
 			write(STDERR_FILENO, "minishell: env: too many arguments\n", 36);
 		return (update_status(SYNTAX));
 	}
-	while (*envp)
+	while (*exp_vars)
 	{
-		if (ft_strchr(*envp, '='))
+		if (ft_strchr(*exp_vars, '='))
 		{
-			write(STDOUT_FILENO, *envp, ft_strlen(*envp));
+			write(STDOUT_FILENO, *exp_vars, ft_strlen(*exp_vars));
 			write(STDOUT_FILENO, "\n", 1);
 		}
-		envp++;
+		exp_vars++;
 	}
 	return (update_status(OK));
 }
