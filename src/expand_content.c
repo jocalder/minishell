@@ -57,7 +57,7 @@ char	*expand_content(char *value, t_token *last)
 		tmp = NULL;
 		len = 0;
 		if (*start == '$' && (start[len + 1]
-			&& !is_spacetab(start[len + 1]) && start[len + 1] != '='))
+			&& (!is_spacetab(start[len + 1]) && start[len + 1] != '=')))
 			tmp = handler_expand(++start, &len);
 		else
 			tmp = ft_substr(start, 0, ++len);
