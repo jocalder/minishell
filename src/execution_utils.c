@@ -39,3 +39,4 @@ void    clean_and_close(t_mini *data, t_cmd **cmd)
 	(*cmd)->pipe_fd[1] = -1;
 	(*cmd) = (*cmd)->next;
 }
+

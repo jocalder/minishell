@@ -83,10 +83,7 @@ int	redir_out(t_token *token)
 			}
 			if (fd != -1)
 				close(fd);
-			if (token->type == APPEND)
-				fd = open(token->next->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
-			else
-				fd = open(token->next->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			fd = open_fd(token);
 			if (fd < 0)
 				return (ERROR_FD);
 		}
@@ -95,13 +92,10 @@ int	redir_out(t_token *token)
 	return (fd);
 }
 
-int	handler_execution(t_mini *data, char **envp)
+int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 {
-    t_cmd	*cmd;
-
-	if (!data->input->cmd)
+	if (!cmd)
 		return (g_status);
-	cmd = data->input->cmd;
 	while (cmd)
 	{
 		wait_signal(1);
@@ -116,13 +110,8 @@ int	handler_execution(t_mini *data, char **envp)
 			continue ;
 		}
 		create_pipes_and_fork(data, &cmd);
-		if (data->pid == -1)
-			return (update_status(ERROR));
-		if (data->pid == 0)
-			child_proccess(data, cmd, envp);
+		check_pid(data, cmd, envp);
 		clean_and_close(data, &cmd);
 	}
-	if (data->prev_fd != -1)
-		close(data->prev_fd);
 	return (wait_all());
 }
