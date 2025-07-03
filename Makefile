@@ -27,6 +27,8 @@ SRCS = 	src/main.c						\
 		src/new_token.c					\
 		src/expand_content.c			\
 		src/execution.c					\
+		src/execution_utils.c			\
+		src/execution_utils2.c			\
 		src/child_process_utils.c		\
 		src/execute_command_utils.c		\
 		src/heredoc_proccess.c			\

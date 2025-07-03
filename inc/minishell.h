@@ -25,6 +25,7 @@
 # define ERROR2		"minishell: syntax error near unexpected token `||'\n"
 # define ERROR3		"minishell: syntax error near unexpected token `>'\n"
 # define ERROR4		"minishell: syntax error near unexpected token `newline'\n"
+# define ERROR11    "minishell: syntax error near unexpected token `<'\n"
 
 # define ERROR5		"minishell: unexpected EOF while looking for matching `"
 # define ERROR6		"minishell: syntax error: unexpected end of file \n"
@@ -97,6 +98,7 @@ typedef struct minishell
 
 enum	e_status
 {
+	HEREDOC_CTRLC = -3,
 	ERROR_FD = -2,
 	ERROR = -1,
 	SYNTAX	= 2,
@@ -121,12 +123,22 @@ int		set_prompt(t_prompt *promt);
 int		set_input(t_mini *data);
 
 /*execution*/
-int		handler_execution(t_mini *data, char **envp);
+int		handler_execution(t_mini *data, t_cmd *cmd, char **envp);
 void	close_all_fds(t_mini *data, t_cmd **cmd);
+void	close_father_fds(t_mini *data, t_cmd *cmd);
+void    handle_redirections(t_cmd **cmd);
+void    clean_and_close(t_mini *data, t_cmd **cmd);
+void	check_pid(t_mini *data, t_cmd *cmd, char **envp);
+void	write_error(t_token *token);
+int		redir_in(t_token *token);
+int		redir_out(t_token *token);
+int 	check_fd_errors(t_cmd *cmd);
+int		handle_fd_errors(t_cmd **cmd);
 int		child_proccess(t_mini *data, t_cmd *cmd, char **envp);
 int		execute_command(t_cmd *cmd, char **envp);
 int		execute_builtin(t_mini *data, t_cmd *cmd);
 int		open_heredoc(char *delimiter);
+int		open_fd(t_token *token);
 
 /*built-ins*/
 int		ft_echo(t_token *token);
