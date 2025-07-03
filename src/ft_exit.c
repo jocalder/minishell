@@ -7,7 +7,7 @@ static int	validate_numeric_argument(t_token *token)
 
 	value = token->value;
 	i = 0;
-	while(value[i])
+	while (value[i])
 	{
 		if (!ft_isdigit(value[i]) && value[i] != '-' && value[i] != '+')
 		{
@@ -24,9 +24,9 @@ static int	validate_numeric_argument(t_token *token)
 static int	check_numeric_limits(char *value)
 {
 	if ((ft_strlen(value) == 19
-		&& ft_strncmp(value, "9223372036854775807", 19) > 0)
+			&& ft_strncmp(value, "9223372036854775807", 19) > 0)
 		|| (ft_strlen(value) == 20
-		&& ft_strncmp(value, "-9223372036854775808", 20) > 0)
+			&& ft_strncmp(value, "-9223372036854775808", 20) > 0)
 		|| ft_strlen(value) > 21)
 	{
 		write(STDERR_FILENO, "minishell: exit: ", 18);

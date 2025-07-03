@@ -86,8 +86,5 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 		// 	unset_var(data, token->value, false);
 		token = token->next;
 	}
-	/*test*/
-	// print_exported_vars(data->exp_vars);
-	/*end-test*/
 	return (g_status);
 }

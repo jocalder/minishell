@@ -15,7 +15,7 @@ static int	handler_switch(t_mini *data, char *arg)
 	char	*path;
 
 	path = NULL;
-	if ((!arg || !*arg) || (arg && *arg =='~'))
+	if ((!arg || !*arg) || (arg && *arg == '~'))
 	{
 		path = getenv("HOME");
 		if (!path)
@@ -28,14 +28,14 @@ static int	handler_switch(t_mini *data, char *arg)
 		return (update_status(make_switch(path)));
 	}
 	else if (ft_strncmp(arg, "-", 2) == 0)
-		return(update_status(make_switch(data->oldpwd)));
+		return (update_status(make_switch(data->oldpwd)));
 	else
 		return (update_status(make_switch(arg)));
 }
 
 static int	update_pwd_oldpwd(t_mini *data)
 {
-	char *cur_pwd;
+	char	*cur_pwd;
 
 	cur_pwd = NULL;
 	cur_pwd = getcwd(NULL, 0);
@@ -62,7 +62,7 @@ int	ft_cd(t_mini *data, t_token *token)
 	while (token && token->type != ARG)
 		token = token->next;
 	if (token && token->type == ARG)
-		arg	= token->value;
+		arg = token->value;
 	if (token && (token->next && token->next->type == ARG))
 	{
 		write(STDERR_FILENO, "minishell: cd: too many arguments\n", 35);
