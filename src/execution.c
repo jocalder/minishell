@@ -21,7 +21,7 @@ static int	wait_all(void)
 	return (update_status(last_status));
 }
 
-static void	create_pipes_and_fork(t_mini *data, t_cmd **cmd)
+static void	create_pipes(t_cmd **cmd)
 {
 	if ((*cmd)->next)
 	{
@@ -37,7 +37,6 @@ static void	create_pipes_and_fork(t_mini *data, t_cmd **cmd)
 		(*cmd)->pipe_fd[0] = -1;
 		(*cmd)->pipe_fd[1] = -1;
 	}
-	data->pid = fork();
 }
 
 int	redir_in(t_token *token)
@@ -111,9 +110,21 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 			cmd = cmd->next;
 			continue ;
 		}
-		create_pipes_and_fork(data, &cmd);
-		check_pid(data, cmd, envp);
-		clean_and_close(data, &cmd);
+		create_pipes(&cmd);
+		if (is_builtin(cmd->token))
+		{
+			execute_builtin(data, cmd);
+			handler_redir(data, &cmd);
+			close_all_fds(data, &cmd);
+			close_father_fds(data, cmd);
+			cmd = cmd->next;
+		}
+		else
+		{
+			data->pid = fork();
+			check_pid(data, cmd, envp);
+			clean_and_close(data, &cmd);
+		}
 	}
 	return (wait_all());
 }
