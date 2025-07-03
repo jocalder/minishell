@@ -58,8 +58,6 @@ static void	print_exported_vars(char **exp_vars)
 	}
 }
 
-/*Must be in parent process*/
-/*Variables are being updated only in the child process*/
 int	ft_export(t_mini *data, t_token *token, char *builtin)
 {
 	while (token && token->type != ARG)

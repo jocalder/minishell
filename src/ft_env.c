@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-/*Must be in parent process*/
-/*Variables are being updated only in the child process*/
 int	ft_env(t_token *token, char **exp_vars)
 {
 	char	*builtin;

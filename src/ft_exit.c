@@ -47,8 +47,6 @@ static void	set_exit_code(t_token *token)
 	update_status(num);
 }
 
-/*Must be in parent process*/
-/*Do not kill the parent process from a child process*/
 int	ft_exit(t_mini *data, t_token *token)
 {
 	write(STDOUT_FILENO, "exit\n", 6);

@@ -51,8 +51,6 @@ static int	update_pwd_oldpwd(t_mini *data)
 	return (update_status(OK));
 }
 
-/*Must be in parent process*/
-/*chdir changes the directory only in the child process*/
 int	ft_cd(t_mini *data, t_token *token)
 {
 	char	*arg;
