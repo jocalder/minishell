@@ -92,18 +92,12 @@ int	set_existing_var(t_mini *data, char *var, bool export)
 	return (ERROR);
 }
 
-int	unset_var(t_mini *data, char *var, int len, bool export)
+int	unset_var(char ***ptr, char *var, int len)
 {
 	int		i;
 	int		j;
-	char	***ptr;
 	char	**tmp;
 
-	ptr = NULL;
-	if (export)
-		ptr = &data->exp_vars;
-	else
-		ptr = &data->vars;
 	tmp = ft_calloc(len, sizeof(char *));
 	if (!tmp)
 		return (update_status(ERROR));
@@ -122,4 +116,3 @@ int	unset_var(t_mini *data, char *var, int len, bool export)
 	ptr[0] = tmp;
 	return (OK);
 }
-

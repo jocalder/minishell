@@ -36,6 +36,7 @@ SRCS = 	src/main.c						\
 		src/ft_cd.c						\
 		src/ft_env.c					\
 		src/ft_export.c					\
+		src/ft_unset.c					\
 		src/ft_exit.c					\
 		src/vars_utils.c				\
 		src/bools_utils1.c				\

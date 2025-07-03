@@ -19,9 +19,10 @@ int	ft_unset(t_mini *data, t_token *token)
 			continue ;
 		}
 		if (is_existing_var(data->exp_vars, token->value))
-			unset_var(data, token->value, count_str(data->exp_vars), true);
+			unset_var(&data->exp_vars, token->value,
+				count_str(data->exp_vars));
 		if (is_existing_var(data->vars, token->value))
-			unset_var(data, token->value, count_str(data->vars), false);
+			unset_var(&data->vars, token->value, count_str(data->vars));
 		token = token->next;
 	}
 	return (g_status);

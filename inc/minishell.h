@@ -134,6 +134,7 @@ int		ft_pwd(t_token *token, char *pwd);
 int		ft_cd(t_mini *data, t_token *token);
 int		ft_env(t_token *token, char **envp);
 int		ft_export(t_mini *data, t_token *token, char *builtin);
+int		ft_unset(t_mini *data, t_token *token);
 int		ft_exit(t_mini *data, t_token *token);
 
 /*split_input*/
@@ -161,6 +162,12 @@ int		update_status(int new_status);
 void	check_exit_status(int status, t_mini *data);
 void	exit_free(t_mini *data, int status);
 
+/*vars_utils*/
+int		count_str(char **str);
+int		set_new_var(t_mini *data, char *var, int i, bool export);
+int		set_existing_var(t_mini *data, char *var, bool export);
+int		unset_var(char ***ptr, char *var, int len);
+
 /*bools utils*/
 bool	is_spacetab(int c);
 bool	is_quote(int c);
@@ -185,11 +192,5 @@ void	free_all(t_mini *data, bool check);
 void	free_envp(t_mini *data, bool check);
 void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
-
-/*vars_utils*/
-int		count_str(char **str);
-int		set_new_var(t_mini *data, char *var, int i, bool export);
-int		set_existing_var(t_mini *data, char *var, bool export);
-int		unset_var(t_mini *data, char *var, int len, bool export);
 
 #endif
