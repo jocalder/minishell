@@ -1,17 +1,5 @@
 #include "minishell.h"
 
-static int	count_str(char **str)
-{
-	int	i;
-
-	i = 0;
-	if (!str || !*str)
-		return (0);
-	while (str[i])
-		i++;
-	return (i);
-}
-
 static void	sort_exported_vars(char ***ptr, int size)
 {
 	char	*tmp;
@@ -72,7 +60,6 @@ static void	print_exported_vars(char **exp_vars)
 
 /*Must be in parent process*/
 /*Variables are being updated only in the child process*/
-/*VAR without assigned value, must be printed like VAR*/
 int	ft_export(t_mini *data, t_token *token, char *builtin)
 {
 	while (token && token->type != ARG)
@@ -92,12 +79,15 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 			continue ;
 		}
 		if (!is_existing_var(data->exp_vars, token->value))
-			set_new_var(data, token->value, true);
+			set_new_var(data, token->value, count_str(data->exp_vars), true);
 		else
 			set_existing_var(data, token->value, true);
-		if (is_existing_var(data->vars, token->value))
-			unset_var(data, token->value, false);
+		// if (is_existing_var(data->vars, token->value))
+		// 	unset_var(data, token->value, false);
 		token = token->next;
 	}
+	/*test*/
+	// print_exported_vars(data->exp_vars);
+	/*end-test*/
 	return (g_status);
 }

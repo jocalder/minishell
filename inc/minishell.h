@@ -115,7 +115,7 @@ void	command_mode(t_mini *data, char **argv, int argc, char **envp);
 /*environment_utils*/
 char	**envpdup(char **envp);
 int		update_envp(t_mini *data);
-int		set_new_var(t_mini *data, char *var, bool export);
+int		set_new_var(t_mini *data, char *var, int i, bool export);
 int		set_existing_var(t_mini *data, char *var, bool export);
 int		unset_var(t_mini *data, char *var, bool export);
 
@@ -189,5 +189,8 @@ void	free_all(t_mini *data, bool check);
 void	free_envp(t_mini *data, bool check);
 void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
+
+/*utils*/
+int		count_str(char **str);
 
 #endif
