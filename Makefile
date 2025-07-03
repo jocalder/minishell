@@ -17,7 +17,7 @@ LIBFT = libft/libft.a
 
 SRCS = 	src/main.c						\
 		src/init_data.c					\
-		src/environment_utils.c			\
+		src/init_environment.c			\
 		src/wait_signal.c				\
 		src/modes.c						\
 		src/set_prompt.c				\
@@ -37,13 +37,13 @@ SRCS = 	src/main.c						\
 		src/ft_env.c					\
 		src/ft_export.c					\
 		src/ft_exit.c					\
+		src/vars_utils.c				\
 		src/bools_utils1.c				\
 		src/bools_utils2.c				\
 		src/write_utils.c				\
 		src/status_utils.c				\
 		src/free_utils1.c				\
 		src/free_utils2.c				\
-		src/utils.c						\
 
 
 OBJS = $(SRCS:%.c=objs/%.o)
