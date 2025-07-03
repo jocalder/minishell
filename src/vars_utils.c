@@ -89,26 +89,37 @@ int	set_existing_var(t_mini *data, char *var, bool export)
 		}
 		i++;
 	}
+	return (ERROR);
+}
+
+int	unset_var(t_mini *data, char *var, int len, bool export)
+{
+	int		i;
+	int		j;
+	char	***ptr;
+	char	**tmp;
+
+	ptr = NULL;
+	if (export)
+		ptr = &data->exp_vars;
+	else
+		ptr = &data->vars;
+	tmp = ft_calloc(len, sizeof(char *));
+	if (!tmp)
+		return (update_status(ERROR));
+	i = 0;
+	j = 0;
+	while (ptr[0][i])
+	{
+		if (is_same_var(ptr[0][i], var) == true)
+			free(ptr[0][i]);
+		else
+			tmp[j++] = ptr[0][i];
+		i++;
+	}
+	tmp[j] = NULL;
+	free_array(ptr[0], -1);
+	ptr[0] = tmp;
 	return (OK);
 }
 
-// int	unset_var(t_mini *data, char *var, bool export)
-// {
-// 	int		i;
-// 	char	***ptr;
-
-// 	i = 0;
-// 	ptr = NULL;
-// 	if (export)
-// 		ptr = &data->exp_vars;
-// 	else
-// 		ptr = &data->vars;
-// 	while (ptr[0][i])
-// 	{
-// 		if (is_same_var(ptr[0][i], var))
-// 		{
-// 			//
-// 		}
-// 		i++;
-// 	}
-// }

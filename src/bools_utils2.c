@@ -50,6 +50,8 @@ bool	is_existing_var(char **ptr, char *var)
 {
 	int		i;
 
+	if (!ptr || !*ptr)
+		return (false);
 	i = 0;
 	while (ptr[i])
 	{

@@ -82,8 +82,8 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 			set_new_var(data, token->value, count_str(data->exp_vars), true);
 		else
 			set_existing_var(data, token->value, true);
-		// if (is_existing_var(data->vars, token->value))
-		// 	unset_var(data, token->value, false);
+		if (is_existing_var(data->vars, token->value))
+			unset_var(data, token->value, count_str(data->vars), false);
 		token = token->next;
 	}
 	return (g_status);
