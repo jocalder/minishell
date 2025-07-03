@@ -26,8 +26,7 @@ int	open_fd(t_token *token)
 void	check_pid(t_mini *data, t_cmd *cmd, char **envp)
 {
 	if (data->pid == -1)
-		return ((void)update_status(ERROR));
+		update_status(ERROR);
 	if (data->pid == 0)
-		return ((void)child_proccess(data, cmd, envp));
-	return ;
+		child_proccess(data, cmd, envp);
 }

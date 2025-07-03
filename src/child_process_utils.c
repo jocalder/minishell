@@ -40,7 +40,7 @@ static void	handler_redir(t_mini *data, t_cmd **cmd)
 	}
 }
 
-int	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
+void	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 {
 	int	status;
 
@@ -52,5 +52,4 @@ int	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 	else
 		status = execute_command(cmd, envp);
 	exit_free(data, update_status(status));
-	exit(0);
 }
