@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-static char	*get_env_var(char *var)
+static char	*get_env_var(char *name)
 {
-	char	*env;
+	char	*var;
 
-	if (!var)
+	if (!name)
 		return (ft_strdup(""));
-	env = ft_strdup(getenv(var));
-	if (!env)
-		env = ft_strdup("");
-	return (free(var), env);
+	var = ft_strdup(getenv(name));
+	if (!var)
+		var = ft_strdup("");
+	return (free(name), var);
 }
 
 static char	*handler_expand(char *value, size_t *len)
@@ -27,7 +27,8 @@ static char	*handler_expand(char *value, size_t *len)
 	else if (ft_isalpha(value[*len]) || value[*len] == '_')
 	{
 		while (value[*len]
-			&& (value[*len] != '$' && !is_spacetab(value[*len])))
+			&& (value[*len] != '$' && value[*len] != '='
+				&& !is_spacetab(value[*len])))
 			(*len)++;
 		new_value = get_env_var(ft_substr(value, 0, *len));
 	}
@@ -56,7 +57,8 @@ char	*expand_content(char *value, t_token *last)
 	{
 		tmp = NULL;
 		len = 0;
-		if (*start == '$' && (start[len + 1] && !is_spacetab(start[len + 1])))
+		if (*start == '$' && (start[len + 1]
+				&& (!is_spacetab(start[len + 1]) && start[len + 1] != '=')))
 			tmp = handler_expand(++start, &len);
 		else
 			tmp = ft_substr(start, 0, ++len);

@@ -5,14 +5,9 @@ char	*get_redir(char **str, size_t *len)
 	char	*redir;
 
 	redir = NULL;
-	if (ft_strncmp(str[0], "<<<", 3) == 0)
+	if (ft_strncmp(str[0], "<<<", 3) == 0 || ft_strncmp(str[0], ">>>", 3) == 0)
 	{
-		write(STDERR_FILENO, ERROR11, 51);
-		return ((void)update_status(SYNTAX), NULL);
-	}
-	else if (ft_strncmp(str[0], ">>>", 3) == 0)
-	{
-		write(STDERR_FILENO, ERROR3, 51);
+		w_unexpected(str[0][0]);
 		return ((void)update_status(SYNTAX), NULL);
 	}
 	else if (ft_strncmp(str[0], "<<", 2) == 0

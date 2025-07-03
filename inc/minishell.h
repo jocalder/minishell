@@ -88,7 +88,8 @@ typedef struct minishell
 {
 	t_prompt	*prompt;
 	t_input		*input;
-	char		**cpy_envp;
+	char		**exp_vars;
+	char		**vars;
 	char		*pwd;
 	char		*oldpwd;
 	pid_t		pid;
@@ -113,8 +114,9 @@ void	wait_signal(int i);
 void	interactive_mode(t_mini *data, char **envp);
 void	command_mode(t_mini *data, char **argv, int argc, char **envp);
 
-/*init_environment*/
+/*environment_utils*/
 char	**envpdup(char **envp);
+int		update_envp(t_mini *data);
 
 /*set_structs*/
 int		set_prompt(t_prompt *promt);
@@ -134,14 +136,18 @@ int 	check_fd_errors(t_cmd *cmd);
 int		handle_fd_errors(t_cmd **cmd);
 int		child_proccess(t_mini *data, t_cmd *cmd, char **envp);
 int		execute_command(t_cmd *cmd, char **envp);
-int		execute_builtin(t_mini *data, t_cmd *cmd, char **envp);
+int		execute_builtin(t_mini *data, t_cmd *cmd);
 int		open_heredoc(char *delimiter);
 int		open_fd(t_token *token);
 
 /*built-ins*/
-int		ft_echo(t_cmd *cmd);
-int		ft_pwd(t_cmd *cmd, char *pwd);
-int		ft_exit(t_mini *data, t_cmd *cmd);
+int		ft_echo(t_token *token);
+int		ft_pwd(t_token *token, char *pwd);
+int		ft_cd(t_mini *data, t_token *token);
+int		ft_env(t_token *token, char **envp);
+int		ft_export(t_mini *data, t_token *token, char *builtin);
+int		ft_unset(t_mini *data, t_token *token);
+int		ft_exit(t_mini *data, t_token *token);
 
 /*split_input*/
 int		split_input(t_input *input);
@@ -161,34 +167,42 @@ char	*check_cases(t_cmd *cmd, t_token *new, char **start, size_t *len);
 char	*quote_case(t_cmd *cmd, char *start, size_t *len);
 char	*special_case(t_cmd *cmd, char *start, size_t *len);
 char	*expand_content(char *value, t_token *last);
-char	*get_redir(char **str, size_t *len);
+char	*get_redir(char **s, size_t *len);
 
 /*status_utils*/
 int		update_status(int new_status);
 void	check_exit_status(int status, t_mini *data);
 void	exit_free(t_mini *data, int status);
 
+/*vars_utils*/
+int		count_str(char **str);
+int		set_new_var(t_mini *data, char *var, int i, bool export);
+int		set_existing_var(t_mini *data, char *var, bool export);
+int		unset_var(char ***ptr, char *var, int len);
+
 /*bools utils*/
 bool	is_spacetab(int c);
 bool	is_quote(int c);
 bool	is_redir(char *str);
 bool	is_special(char *str);
-bool	is_supported(char *str);
-bool	is_validate_bracket(char *str);
+bool	is_supported(char *str, bool flag);
 bool	is_builtin(t_token *token);
+bool	is_option(char *value);
+bool	is_validate_id(char *id);
+bool	is_existing_var(char **ptr, char *var);
+bool	is_same_var(char *compared, char *var);
 
 /*write_utils*/
 void	w_openquote(unsigned char quote);
 void	w_unsupported(char *str);
+void	w_unexpected(int c);
+void	w_builtin_usage(char *builtin, char *invalid_opt);
+void	w_invalid_identifier(char *builtin, char *invalid_id);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
 void	free_envp(t_mini *data, bool check);
 void	free_prompt(t_prompt *prompt, bool check);
 void	free_input(t_input *input, bool check);
-
-/*delete*/
-void	printf_input(t_input *input);
-void	invented_input(t_input *input);
 
 #endif

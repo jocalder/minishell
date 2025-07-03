@@ -38,12 +38,12 @@ bool	is_special(char *str)
 	return (false);
 }
 
-bool	is_supported(char *start)
+bool	is_supported(char *start, bool flag)
 {
 	size_t	end;
 	char	c;
 
-	if (!start)
+	if (!start || flag)
 		return (true);
 	c = start[0];
 	end = ft_strlen(start) - 1;
@@ -52,7 +52,6 @@ bool	is_supported(char *start)
 	if ((ft_strncmp(start, "&&", 2) == 0) || (ft_strncmp(start, "||", 2) == 0)
 		|| c == ';' || c == '&' || c == '\\' || c == '`'
 		|| c == '(' || c == ')' || start[end] == '(' || start[end] == ')'
-		|| c == '*' || c == '?' // || c == '.'
 		|| (c == '[' && (end > 0 && !is_spacetab(start[1]))))
 		return (false);
 	return (true);
