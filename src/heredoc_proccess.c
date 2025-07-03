@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-static void	core_heredoc(char *line,char *delimiter,int large,int pipe_fd[2])
+static void	core_heredoc(char *line, char *delimiter, int large, int pipe_fd[2])
 {
 	wait_signal(2);
 	close(pipe_fd[0]);
-	while(1)
+	while (1)
 	{
 		write(1, "> ", 2);
 		line = get_next_line(0);
@@ -21,12 +21,12 @@ static void	core_heredoc(char *line,char *delimiter,int large,int pipe_fd[2])
 	exit (0);
 }
 
-int open_heredoc(char *delimiter)
+int	open_heredoc(char *delimiter)
 {
-    int		pipe_fd[2];
-    char	*line;
-    int		large;
-    pid_t	pid;
+	int		pipe_fd[2];
+	char	*line;
+	int		large;
+	pid_t	pid;
 	int		status;
 
 	status = 0;

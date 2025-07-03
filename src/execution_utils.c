@@ -1,7 +1,8 @@
 #include "minishell.h"
-void    close_father_fds(t_mini *data, t_cmd *cmd)
+
+void	close_father_fds(t_mini *data, t_cmd *cmd)
 {
-    if (cmd->fd_in != -1 && cmd->fd_in > 2)
+	if (cmd->fd_in != -1 && cmd->fd_in > 2)
 		close(cmd->fd_in);
 	if (cmd->fd_out != -1 && cmd->fd_out > 2)
 		close(cmd->fd_out);
@@ -11,32 +12,31 @@ void    close_father_fds(t_mini *data, t_cmd *cmd)
 		close(data->prev_fd);
 }
 
-void    handle_redirections(t_cmd **cmd)
+void	handle_redirections(t_cmd **cmd)
 {
 	(*cmd)->fd_in = redir_in((*cmd)->token);
 	(*cmd)->fd_out = redir_out((*cmd)->token);
 }
 
-int check_fd_errors(t_cmd *cmd)
+int	check_fd_errors(t_cmd *cmd)
 {
-    return (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD
-			|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX);
+	return (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD
+		|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX);
 }
 
-int handle_fd_errors(t_cmd **cmd)
+int	handle_fd_errors(t_cmd **cmd)
 {
-		if ((*cmd)->fd_in == ERROR_FD || (*cmd)->fd_out == ERROR_FD)
-			return (update_status(ERROR_FD));
-		else
-			return (update_status(SYNTAX));
+	if ((*cmd)->fd_in == ERROR_FD || (*cmd)->fd_out == ERROR_FD)
+		return (update_status(ERROR_FD));
+	else
+		return (update_status(SYNTAX));
 }
 
-void    clean_and_close(t_mini *data, t_cmd **cmd)
+void	clean_and_close(t_mini *data, t_cmd **cmd)
 {
-    close_father_fds(data, *cmd);
+	close_father_fds(data, *cmd);
 	data->prev_fd = (*cmd)->pipe_fd[0];
 	(*cmd)->pipe_fd[0] = -1;
 	(*cmd)->pipe_fd[1] = -1;
 	(*cmd) = (*cmd)->next;
 }
-

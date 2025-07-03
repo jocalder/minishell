@@ -1,27 +1,29 @@
 #include "minishell.h"
 
-static int    wait_all(void)
+static int	wait_all(void)
 {
-    int 	status;
+	int		status;
 	int		last_status;
 	pid_t	pid;
 
-    status = 0;
+	status = 0;
 	last_status = 0;
 	pid = -1;
-    while ((pid = wait(&status)) > 0)
+	pid = wait(&status);
+	while (pid > 0)
 	{
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			last_status = 128 + WTERMSIG(status);
+		pid = wait(&status);
 	}
-    return (update_status(last_status));
+	return (update_status(last_status));
 }
 
 static void	create_pipes_and_fork(t_mini *data, t_cmd **cmd)
 {
-    if ((*cmd)->next)
+	if ((*cmd)->next)
 	{
 		if (pipe((*cmd)->pipe_fd) != 0)
 		{
@@ -35,12 +37,12 @@ static void	create_pipes_and_fork(t_mini *data, t_cmd **cmd)
 		(*cmd)->pipe_fd[0] = -1;
 		(*cmd)->pipe_fd[1] = -1;
 	}
-	data->pid =fork();
+	data->pid = fork();
 }
 
 int	redir_in(t_token *token)
 {
-	int		fd;
+	int	fd;
 
 	fd = -1;
 	while (token)
@@ -69,7 +71,7 @@ int	redir_in(t_token *token)
 
 int	redir_out(t_token *token)
 {
-	int		fd;
+	int	fd;
 
 	fd = -1;
 	while (token)
@@ -100,7 +102,7 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 	{
 		wait_signal(1);
 		handle_redirections(&cmd);
-		if(check_fd_errors(cmd))
+		if (check_fd_errors(cmd))
 		{
 			close_all_fds(data, &cmd);
 			data->prev_fd = -1;

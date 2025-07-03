@@ -27,7 +27,7 @@ static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 	i = 0;
 	if (cmd && cmd->token && cmd->token->value
 		&& (ft_strncmp(cmd->token->value, "/bin/", 5) == 0
-		|| ft_strncmp(cmd->token->value, "./", 2) == 0))
+			|| ft_strncmp(cmd->token->value, "./", 2) == 0))
 		return (absolute_path(cmd));
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
@@ -84,7 +84,7 @@ int	execute_command(t_cmd *cmd, char **envp)
 	char	*path;
 	int		i;
 	int		fd;
-	
+
 	i = 0;
 	fd = 3;
 	command = build_full_command(cmd->token);
@@ -92,13 +92,13 @@ int	execute_command(t_cmd *cmd, char **envp)
 	if (!path)
 	{
 		write(STDERR_FILENO, "minishell: ", 12);
-		while(command[0][i])
+		while (command[0][i])
 			write(STDERR_FILENO, &command[0][i++], 1);
 		write(STDERR_FILENO, ": command not found\n", 21);
 		free_array(command, -1);
 		return (NOTFOUND);
 	}
-	while(fd < 1024)
+	while (fd < 1024)
 		close(fd++);
 	if (execve(path, command, envp) != 0)
 		return (free_array(command, -1), ERROR_FD);
