@@ -37,6 +37,7 @@ t_token	*last_token(t_token *token)
 	return (last);
 }
 
+/*Might need a new type for VAR*/
 int	get_type(t_token *token, char *value, bool check)
 {
 	t_token	*last;

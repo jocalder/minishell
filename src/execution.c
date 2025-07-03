@@ -111,7 +111,6 @@ int	handler_execution(t_mini *data, char **envp)
 	if (!data->input->cmd)
 		return (g_status);
 	cmd = data->input->cmd;
-	wait_signal(1);
 	while (cmd)
 	{
 		cmd->fd_in = redir_in(cmd->token);
