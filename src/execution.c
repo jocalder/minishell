@@ -116,7 +116,7 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 			execute_builtin(data, cmd);
 			handler_redir(data, &cmd);
 			close_all_fds(data, &cmd);
-			close_father_fds(data, cmd);
+			close_father_fds(data, &cmd);
 			cmd = cmd->next;
 		}
 		else
