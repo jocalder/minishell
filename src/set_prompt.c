@@ -96,7 +96,7 @@ int	set_prompt(t_prompt *prompt, char **envp)
 	if (!prompt->display)
 		return (update_status(ERROR));
 	prompt->len = ft_strlen(RED) + ft_strlen(prompt->user)
-		+ ft_strlen("@minishell")+ ft_strlen(WHITE)+ ft_strlen(":")
+		+ ft_strlen("@minishell") + ft_strlen(WHITE)+ ft_strlen(":")
 		+ ft_strlen(BLUE) + ft_strlen(prompt->display) + ft_strlen(WHITE)
 		+ ft_strlen("$ ") + 1;
 	prompt->value = ft_calloc(prompt->len, sizeof(char));
