@@ -11,7 +11,7 @@ int	ft_unset(t_mini *data, t_token *token)
 	update_status(OK);
 	while (token && token->type == ARG)
 	{
-		if (!is_validate_id(token->value))
+		if (!is_validate_id(token->value) || ft_strchr(token->value, '='))
 		{
 			update_status(ERROR_FD);
 			w_invalid_identifier(builtin, token->value);
