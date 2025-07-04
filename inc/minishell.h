@@ -205,7 +205,7 @@ void	w_invalid_identifier(char *builtin, char *invalid_id);
 /*free_utils*/
 void	free_all(t_mini *data, bool check);
 void	free_envp(t_mini *data, bool check);
-void	free_prompt(t_prompt *prompt, bool check);
-void	free_input(t_input *input, bool check);
+void	free_prompt(t_prompt **prompt, bool check);
+void	free_input(t_input **input, bool check);
 
 #endif

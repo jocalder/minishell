@@ -22,7 +22,7 @@ static void	command_mode_one(t_mini *data, char **envp)
 {
 	char	*line;
 
-	free_prompt(data->prompt, true);
+	free_prompt(&data->prompt, true);
 	line = get_next_line(STDIN_FILENO);
 	if (!line)
 		exit_free(data, ERROR);
@@ -43,7 +43,7 @@ static void	command_mode_one(t_mini *data, char **envp)
 
 static void	command_mode_two(t_mini *data, char *arg, char **envp)
 {
-	free_prompt(data->prompt, true);
+	free_prompt(&data->prompt, true);
 	data->input->value = ft_strdup(arg);
 	if (split_input(data->input) == OK)
 		handler_execution(data, data->input->cmd, envp);

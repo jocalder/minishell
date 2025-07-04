@@ -67,7 +67,7 @@ void	init_data(t_mini *data, char **envp)
 	if (!data->input)
 	{
 		free_envp(data, true);
-		free_prompt(data->prompt, true);
+		free_prompt(&data->prompt, true);
 		exit (ERROR);
 	}
 	init_prompt(data->prompt);
