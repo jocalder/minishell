@@ -16,7 +16,6 @@ char	*mini_getenv(char *name, char **envp)
 			return (envp[i] + j + 1);
 		i++;
 	}
-	write(STDOUT_FILENO, "chucha\n", 8);
 	return (NULL);
 }
 

@@ -1,37 +1,11 @@
 #include "minishell.h"
 
-static char	*get_last_command(int argc, char **argv)
-{
-	char	*str;
-	char	*tmp;
-
-	if (!argv || !*argv)
-		return (NULL);
-	str = ft_strdup("_=");
-	if (!str)
-		return (NULL);
-	if (argc < 2)
-		return (str);
-	argc--;
-	while (argc >= 2)
-	{
-		while (is_option(argv[argc - 1]))
-			argc--;
-	}
-	tmp = ft_strdup(argv[argc - 1]);
-	if (!tmp)
-		return (free(str), NULL);
-	str = ft_strjoin(str, tmp);
-	free(tmp);
-	return (str);
-}
-
-char	**mini_envp(int argc, char **argv)
+char	**mini_envp(char **argv)
 {
 	char	**new;
 	char	*tmp;
 
-	new = ft_calloc(5, sizeof(char *));
+	new = ft_calloc(4, sizeof(char *));
 	if (!new)
 		return (NULL);
 	new[0] = ft_strdup("OLDPWD");
@@ -44,13 +18,14 @@ char	**mini_envp(int argc, char **argv)
 	if (!tmp)
 		return (free(new[0]), free(new[1]), free(new), NULL);
 	new[1] = ft_strjoin(new[1], tmp);
-	free(tmp);
 	if (!new[1])
 		return (free(new[0]), free(new), NULL);
-	new[2] = get_last_command(argc, argv);
+	tmp = ft_strjoin(tmp, "/");
+	new[2] = ft_strjoin((ft_strjoin(ft_strdup("_="), tmp)), argv[0]);
 	if (!new[2])
-		return (free(new[0]), free(new[1]), free(new), NULL);
-	new[4] = NULL;
+		return (free(new[0]), free(new[1]), free(tmp), free(new), NULL);
+	free(tmp);
+	new[3] = NULL;
 	return (new);
 }
 

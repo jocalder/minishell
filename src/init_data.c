@@ -1,14 +1,14 @@
 #include "minishell.h"
 
-static void	init_export_vars(t_mini *data, int argc, char **argv, char **envp)
+static void	init_export_vars(t_mini *data, char **argv, char **envp)
 {
 	if (!data)
 		exit (ERROR);
 	if (!envp || !*envp || !**envp)
 	{
-		data->exp_vars = mini_envp(argc, argv);
-		if (!mini_getenv("PATH", envp))
-			set_new_var(data, "PATH=/usr/local/bin:/usr/bin:/bin", 5, true);
+		data->exp_vars = mini_envp(argv);
+		set_new_var(data, "PATH=/usr/local/bin:/usr/bin:/bin",
+			count_str(data->exp_vars), true);
 	}
 	else
 		data->exp_vars = envpdup(envp);
@@ -16,13 +16,13 @@ static void	init_export_vars(t_mini *data, int argc, char **argv, char **envp)
 		exit(ERROR);
 }
 
-static void	init_environment(t_mini *data, int argc, char **argv, char **envp)
+static void	init_environment(t_mini *data, char **argv, char **envp)
 {
 	data->exp_vars = NULL;
 	data->vars = NULL;
 	data->pwd = NULL;
 	data->oldpwd = NULL;
-	init_export_vars(data, argc, argv, envp);
+	init_export_vars(data, argv, envp);
 	if (update_envp(data) != OK)
 	{
 		free_array(data->exp_vars, -1);
@@ -63,14 +63,14 @@ static void	init_input(t_input *input)
 	input->pipes = 0;
 }
 
-void	init_data(t_mini *data, int argc, char **argv, char **envp)
+void	init_data(t_mini *data, char **argv, char **envp)
 {
 	g_status = 0;
 	data->prev_fd = -1;
 	data->pid = getpid();
 	data->prompt = NULL;
 	data->input = NULL;
-	init_environment(data, argc, argv, envp);
+	init_environment(data, argv, envp);
 	data->prompt = ft_calloc(1, sizeof(t_prompt));
 	if (!data->prompt)
 	{

@@ -109,13 +109,13 @@ enum	e_status
 
 extern int	g_status;
 
-void	init_data(t_mini *data, int argc, char **argv, char **envp);
+void	init_data(t_mini *data, char **argv, char **envp);
 void	wait_signal(int i);
 void	interactive_mode(t_mini *data);
 void	command_mode(t_mini *data, char **argv, int argc);
 
 /*init_environment*/
-char	**mini_envp(int argc, char **argv);
+char	**mini_envp(char **argv);
 char	**envpdup(char **envp);
 int		update_envp(t_mini *data);
 
