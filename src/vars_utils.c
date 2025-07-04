@@ -98,21 +98,23 @@ int	unset_var(char ***ptr, char *var, int len)
 	int		j;
 	char	**tmp;
 
+	if (!ptr || !*ptr || !var)
+		return (update_status(ERROR));
 	tmp = ft_calloc(len, sizeof(char *));
 	if (!tmp)
 		return (update_status(ERROR));
 	i = 0;
 	j = 0;
-	while (ptr[0][i])
+	while ((*ptr)[i])
 	{
-		if (is_same_var(ptr[0][i], var) == true)
-			free(ptr[0][i]);
+		if (is_same_var((*ptr)[i], var) == true)
+			free((*ptr)[i]);
 		else
-			tmp[j++] = ptr[0][i];
+			tmp[j++] = (*ptr)[i];
 		i++;
 	}
 	tmp[j] = NULL;
-	free_array(ptr[0], -1);
-	ptr[0] = tmp;
+	free((*ptr));
+	(*ptr) = tmp;
 	return (OK);
 }
