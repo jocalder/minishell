@@ -2,12 +2,16 @@
 
 static int	make_switch(char *path)
 {
-	printf("cwd: %s\n", getcwd(NULL, 0));
-	printf("Path: %s\n", path);
-	if (chdir(path) == -1)
+	if (!path)
 		return (ERROR);
-	printf("new_cwd: %s\n", getcwd(NULL, 0));
-	return (OK);
+	if (chdir(path) == -1)
+	{
+		write(STDERR_FILENO, "minishell: cd: ", 16);
+		write(STDERR_FILENO, path, ft_strlen(path));
+		write(STDERR_FILENO, ": No such file or directory\n", 29);
+		return (free(path), ERROR_FD);
+	}
+	return (free(path), OK);
 }
 
 static int	handler_switch(t_mini *data, char *arg)
@@ -21,16 +25,16 @@ static int	handler_switch(t_mini *data, char *arg)
 		if (!path)
 			return (update_status(ERROR));
 		if ((!arg || !*arg) || (arg && (*arg == '~' && ft_strlen(arg) == 1)))
-			return (update_status(make_switch(path)));
-		path = ft_strjoin(path, ++arg);
+			return (update_status(make_switch(ft_strdup(path))));
+		path = ft_strjoin(ft_strdup(path), ++arg);
 		if (!path)
 			return (update_status(ERROR));
-		return (update_status(make_switch(path)));
+		return (update_status(make_switch(ft_strdup(path))));
 	}
 	else if (ft_strncmp(arg, "-", 2) == 0)
-		return (update_status(make_switch(data->oldpwd)));
+		return (update_status(make_switch(ft_strdup(data->oldpwd))));
 	else
-		return (update_status(make_switch(arg)));
+		return (update_status(make_switch(ft_strdup(arg))));
 }
 
 static int	update_pwd_oldpwd(t_mini *data)
