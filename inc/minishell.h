@@ -109,17 +109,18 @@ enum	e_status
 
 extern int	g_status;
 
-void	init_data(t_mini *data, char **envp);
+void	init_data(t_mini *data, int argc, char **argv, char **envp);
 void	wait_signal(int i);
-void	interactive_mode(t_mini *data, char **envp);
-void	command_mode(t_mini *data, char **argv, int argc, char **envp);
+void	interactive_mode(t_mini *data);
+void	command_mode(t_mini *data, char **argv, int argc);
 
-/*environment_utils*/
+/*init_environment*/
+char	**mini_envp(int argc, char **argv);
 char	**envpdup(char **envp);
 int		update_envp(t_mini *data);
 
 /*set_structs*/
-int		set_prompt(t_prompt *promt);
+int		set_prompt(t_prompt *promt, char **envp);
 int		set_input(t_mini *data);
 
 /*execution*/
@@ -178,6 +179,7 @@ void	check_exit_status(int status, t_mini *data);
 void	exit_free(t_mini *data, int status);
 
 /*vars_utils*/
+char	*mini_getenv(char *name, char **envp);
 int		count_str(char **str);
 int		set_new_var(t_mini *data, char *var, int i, bool export);
 int		set_existing_var(t_mini *data, char *var, bool export);

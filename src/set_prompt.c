@@ -16,12 +16,12 @@ static char	*path_empty(char *path, char *home)
 	return (new_path);
 }
 
-static char	*replace_home(char *cwd)
+static char	*replace_home(char *cwd, char **envp)
 {
 	char	*home;
 	char	*nwd;
 
-	home = getenv("HOME");
+	home = mini_getenv("HOME", envp);
 	if (!home)
 		return (ft_strdup(cwd));
 	if (home && ft_strncmp(cwd, home, ft_strlen(home)) == 0)
@@ -62,17 +62,17 @@ static void	join_prompt(char *prompt, char *user, char *display)
 	ft_strcpy(prompt, "$ ");
 }
 
-int	set_prompt(t_prompt *prompt)
+int	set_prompt(t_prompt *prompt, char **envp)
 {
 	if (!prompt)
 		return (update_status(ERROR));
-	prompt->user = getenv("USER");
+	prompt->user = mini_getenv("USER", envp);
 	if (!prompt->user)
 		return (update_status(ERROR));
 	prompt->cwd = getcwd(NULL, 0);
 	if (!prompt->cwd)
 		return (update_status(ERROR));
-	prompt->display = replace_home(prompt->cwd);
+	prompt->display = replace_home(prompt->cwd, envp);
 	if (!prompt->display)
 		return (update_status(ERROR));
 	prompt->len = ft_strlen(RED) + ft_strlen(prompt->user)
