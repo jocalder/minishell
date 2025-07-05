@@ -47,6 +47,8 @@ void	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 	status = 0;
 	handler_redir(data, &cmd);
 	close_all_fds(data, &cmd);
+	if (is_builtin(cmd->token))
+		execute_builtin(data, cmd);
 	status = execute_command(cmd, envp);
 	exit_free(data, update_status(status));
 }

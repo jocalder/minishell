@@ -111,7 +111,7 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 			continue ;
 		}
 		create_pipes(&cmd);
-		if (is_builtin(cmd->token))
+		if (is_builtin(cmd->token) && !cmd->next)
 		{
 			execute_builtin(data, cmd);
 			handler_redir(data, &cmd);
