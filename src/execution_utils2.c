@@ -33,8 +33,8 @@ void	check_pid(t_mini *data, t_cmd *cmd, char **envp)
 
 void	close_fds_builtin(t_mini *data, t_cmd **cmd)
 {
-	if ((*cmd)->next && (*cmd)->next->token && is_builtin((*cmd)->next->token))
-		close((*cmd)->pipe_fd[0]);
+	if (!(*cmd)->next)
+	 	close((*cmd)->pipe_fd[0]);
 	if (data->prev_fd != -1 && data->prev_fd > 2)
 		close(data->prev_fd);
 	if ((*cmd)->pipe_fd[0] != -1 && (*cmd)->pipe_fd[0] > 2)
