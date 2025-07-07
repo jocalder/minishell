@@ -3,10 +3,10 @@
 void	exit_free(t_mini *data, int status)
 {
 	if (status == ERROR || status == ERROR_FD)
-		status = 1;
+		g_status = 1;
 	free_all(data, true);
 	rl_clear_history();
-	exit(status);
+	exit(g_status);
 }
 
 int	update_status(int new_status)
