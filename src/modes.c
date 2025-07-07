@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-void	interactive_mode(t_mini *data, char **envp)
+void	interactive_mode(t_mini *data)
 {
 	while (1)
 	{
 		wait_signal(0);
-		if (set_prompt((data)->prompt) != OK)
+		if (set_prompt((data)->prompt, data->exp_vars) != OK)
 			check_exit_status(g_status, data);
 		if (set_input(data) == OK)
 		{
-			if (handler_execution(data, data->input->cmd, envp) != OK)
+			if (handler_execution(data, data->input->cmd, data->exp_vars) != OK)
 				check_exit_status(g_status, data);
 		}
 		else
@@ -18,7 +18,7 @@ void	interactive_mode(t_mini *data, char **envp)
 	}
 }
 
-static void	command_mode_one(t_mini *data, char **envp)
+static void	command_mode_one(t_mini *data)
 {
 	char	*line;
 
@@ -37,25 +37,25 @@ static void	command_mode_one(t_mini *data, char **envp)
 			ft_strlen(data->input->value)) == 0)
 		exit_free(data, OK);
 	if (split_input(data->input) == OK)
-		handler_execution(data, data->input->cmd, envp);
+		handler_execution(data, data->input->cmd, data->exp_vars);
 	exit_free(data, g_status);
 }
 
-static void	command_mode_two(t_mini *data, char *arg, char **envp)
+static void	command_mode_two(t_mini *data, char *arg)
 {
 	free_prompt(&data->prompt, true);
 	data->input->value = ft_strdup(arg);
 	if (split_input(data->input) == OK)
-		handler_execution(data, data->input->cmd, envp);
+		handler_execution(data, data->input->cmd, data->exp_vars);
 	exit_free(data, g_status);
 }
 
-void	command_mode(t_mini *data, char **argv, int argc, char **envp)
+void	command_mode(t_mini *data, char **argv, int argc)
 {
 	if (argc == 1)
-		command_mode_one(data, envp);
+		command_mode_one(data);
 	else if (argc > 2 && ft_strncmp(argv[1], "-c", 3) == 0)
-		command_mode_two(data, argv[2], envp);
+		command_mode_two(data, argv[2]);
 	else
 	{
 		free_all(data, true);

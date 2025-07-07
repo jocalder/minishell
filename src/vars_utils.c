@@ -1,5 +1,24 @@
 #include "minishell.h"
 
+char	*mini_getenv(char *name, char **envp)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (envp[i])
+	{
+		j = 0;
+		while (envp[i][j] && envp[i][j] == name[j] && envp[i][j] != '=')
+			j++;
+		if (envp[i][j] == '=' && name[j] == '\0')
+			return (envp[i] + j + 1);
+		i++;
+	}
+	return (NULL);
+}
+
 int	count_str(char **str)
 {
 	int	i;
@@ -11,36 +30,6 @@ int	count_str(char **str)
 		i++;
 	return (i);
 }
-
-/*In case that bash add '=' if export VAR (without '=')*/
-// int	set_new_var(t_mini *data, char *new_var, int i, bool export)
-// {
-// 	char	***ptr;
-// 	char	**tmp;
-
-// 	ptr = NULL;
-// 	if (export)
-// 		ptr = &data->exp_vars;
-// 	else
-// 		ptr = &data->vars;
-// 	tmp = ft_realloc(ptr[0], sizeof(char *) * (i + 2));
-// 	if (!tmp)
-// 		return (update_status(ERROR));
-// 	ptr[0] = tmp;
-// 	if (ft_strchr(new_var, '='))
-// 		ptr[0][i] = ft_calloc(ft_strlen(new_var) + 1,
-// 				sizeof(char));
-// 	else
-// 		ptr[0][i] = ft_calloc((ft_strlen(new_var) + 2),
-// 				sizeof(char));
-// 	if (!ptr[0][i])
-// 		return (update_status(ERROR));
-// 	ft_strcpy(ptr[0][i], new_var);
-// 	if (!ft_strchr(new_var, '='))
-// 		ft_strlcat(ptr[0][i], "=", (ft_strlen(new_var) + 2));
-// 	ptr[0][i + 1] = NULL;
-// 	return (OK);
-// }
 
 int	set_new_var(t_mini *data, char *new_var, int i, bool export)
 {
