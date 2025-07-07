@@ -5,6 +5,7 @@ CLEAR	=	\r\033[K
 
 NAME = minishell
 
+
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -I /opt/homebrew/opt/readline/include

@@ -2,6 +2,8 @@
 
 void	close_all_fds(t_mini *data, t_cmd **cmd)
 {
+	if ((*cmd)->next && (*cmd)->next->token && is_builtin((*cmd)->next->token))
+	 	close((*cmd)->pipe_fd[0]);
 	if (data->prev_fd != -1 && data->prev_fd > 2)
 		close(data->prev_fd);
 	if ((*cmd)->pipe_fd[0] != -1 && (*cmd)->pipe_fd[0] > 2)
@@ -14,9 +16,9 @@ void	close_all_fds(t_mini *data, t_cmd **cmd)
 		close((*cmd)->fd_out);
 }
 
-static void	handler_redir(t_mini *data, t_cmd **cmd)
+void	handler_redir(t_mini *data, t_cmd **cmd)
 {
-	if ((*cmd)->pipe_fd[0] != -1)
+	if ((*cmd)->pipe_fd[0] != -1 && (*cmd)->pipe_fd[0] > 2)
 		close((*cmd)->pipe_fd[0]);
 	if ((*cmd)->fd_in != -1)
 	{
@@ -48,8 +50,14 @@ void	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 	handler_redir(data, &cmd);
 	close_all_fds(data, &cmd);
 	if (is_builtin(cmd->token))
+	{
 		status = execute_builtin(data, cmd);
+		printf("pipe_fd[0] builtin: %d\n", cmd->pipe_fd[0]);
+	}
 	else
+	{
 		status = execute_command(cmd, envp);
+		printf("pipe_fd[0] command: %d\n", cmd->pipe_fd[0]);
+	}
 	exit_free(data, update_status(status));
 }
