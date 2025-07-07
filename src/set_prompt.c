@@ -16,12 +16,12 @@ static char	*path_empty(char *path, char *home)
 	return (new_path);
 }
 
-static char	*replace_home(char *cwd)
+static char	*replace_home(char *cwd, char **envp)
 {
 	char	*home;
 	char	*nwd;
 
-	home = getenv("HOME");
+	home = mini_getenv("HOME", envp);
 	if (!home)
 		return (ft_strdup(cwd));
 	if (home && ft_strncmp(cwd, home, ft_strlen(home)) == 0)
@@ -62,21 +62,39 @@ static void	join_prompt(char *prompt, char *user, char *display)
 	ft_strcpy(prompt, "$ ");
 }
 
-int	set_prompt(t_prompt *prompt)
+static void	mini_user(t_prompt **prompt)
+{
+	char	*tmp;
+	size_t	len;
+
+	if (!prompt || !*prompt)
+		return ;
+	tmp = (*prompt)->cwd;
+	tmp++;
+	while (*tmp && *tmp != '/')
+		tmp++;
+	tmp++;
+	len = 1;
+	while (tmp[len] && tmp[len] != '/')
+		len++;
+	(*prompt)->user = ft_substr(tmp, 0, len);
+}
+
+int	set_prompt(t_prompt *prompt, char **envp)
 {
 	if (!prompt)
-		return (update_status(ERROR));
-	prompt->user = getenv("USER");
-	if (!prompt->user)
 		return (update_status(ERROR));
 	prompt->cwd = getcwd(NULL, 0);
 	if (!prompt->cwd)
 		return (update_status(ERROR));
-	prompt->display = replace_home(prompt->cwd);
+	mini_user(&prompt);
+	if (!prompt->user)
+		return (update_status(ERROR));
+	prompt->display = replace_home(prompt->cwd, envp);
 	if (!prompt->display)
 		return (update_status(ERROR));
 	prompt->len = ft_strlen(RED) + ft_strlen(prompt->user)
-		+ ft_strlen("@minishell") + ft_strlen(WHITE) + ft_strlen(":")
+		+ ft_strlen("@minishell") + ft_strlen(WHITE)+ ft_strlen(":")
 		+ ft_strlen(BLUE) + ft_strlen(prompt->display) + ft_strlen(WHITE)
 		+ ft_strlen("$ ") + 1;
 	prompt->value = ft_calloc(prompt->len, sizeof(char));

@@ -1,5 +1,24 @@
 #include "minishell.h"
 
+char	*mini_getenv(char *name, char **envp)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (envp[i])
+	{
+		j = 0;
+		while (envp[i][j] && envp[i][j] == name[j] && envp[i][j] != '=')
+			j++;
+		if (envp[i][j] == '=' && name[j] == '\0')
+			return (envp[i] + j + 1);
+		i++;
+	}
+	return (NULL);
+}
+
 int	count_str(char **str)
 {
 	int	i;
