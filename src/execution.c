@@ -113,11 +113,11 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 		create_pipes(&cmd);
 		if (is_builtin(cmd->token) && !cmd->next)
 		{
-			execute_builtin(data, cmd);
 			handler_redir(data, &cmd);
-			close_all_fds(data, &cmd);
-			close_father_fds(data, &cmd);
-			cmd = cmd->next;
+			close_fds_builtin(data, &cmd);
+			//close_father_fds(data, &cmd);
+			execute_builtin(data, cmd);
+			return (g_status);
 		}
 		else
 		{

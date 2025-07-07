@@ -130,6 +130,7 @@ int		redir_out(t_token *token);
 int		open_fd(t_token *token);
 int		check_fd_errors(t_cmd *cmd);
 void	close_all_fds(t_mini *data, t_cmd **cmd);
+void	close_fds_builtin(t_mini *data, t_cmd **cmd);
 int		handle_fd_errors(t_cmd **cmd);
 void	check_pid(t_mini *data, t_cmd *cmd, char **envp);
 void	clean_and_close(t_mini *data, t_cmd **cmd);

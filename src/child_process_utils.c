@@ -2,6 +2,8 @@
 
 void	close_all_fds(t_mini *data, t_cmd **cmd)
 {
+	// if ((*cmd)->next && (*cmd)->next->token && is_builtin((*cmd)->next->token))
+	// 	close((*cmd)->pipe_fd[0]);
 	if (data->prev_fd != -1 && data->prev_fd > 2)
 		close(data->prev_fd);
 	if ((*cmd)->pipe_fd[0] != -1 && (*cmd)->pipe_fd[0] > 2)
@@ -48,7 +50,7 @@ void	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 	handler_redir(data, &cmd);
 	close_all_fds(data, &cmd);
 	if (is_builtin(cmd->token))
-		execute_builtin(data, cmd);
+		status = execute_builtin(data, cmd);
 	else
 		status = execute_command(cmd, envp);
 	exit_free(data, update_status(status));

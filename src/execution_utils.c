@@ -2,6 +2,8 @@
 
 void	close_father_fds(t_mini *data, t_cmd **cmd)
 {
+	if ((*cmd)->next && (*cmd)->next->token && is_builtin((*cmd)->next->token))
+		close((*cmd)->pipe_fd[0]);
 	if ((*cmd)->fd_in != -1 && (*cmd)->fd_in > 2)
 		close((*cmd)->fd_in);
 	if ((*cmd)->fd_out != -1 && (*cmd)->fd_out > 2)
