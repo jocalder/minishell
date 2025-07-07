@@ -8,6 +8,8 @@ void	free_prompt(t_prompt **prompt, bool check)
 		free((*prompt)->value);
 	if ((*prompt)->cwd)
 		free((*prompt)->cwd);
+	if ((*prompt)->user)
+		free((*prompt)->user);
 	if ((*prompt)->display)
 		free((*prompt)->display);
 	(*prompt)->value = NULL;
