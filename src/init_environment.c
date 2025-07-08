@@ -13,13 +13,10 @@ int	mini_envp(t_mini *data, char **argv)
 	if (set_new_var(&data->envp, ft_strjoin(ft_strdup("PWD="), tmp),
 			count_str(data->envp)) != OK)
 		return (ERROR);
-	tmp = ft_strjoin(tmp, "/minishell");
-	if (!tmp)
-		return (ERROR);
-	if (set_new_var(&data->envp, ft_strjoin(ft_strdup("_="), tmp),
+	free(tmp);
+	if (set_new_var(&data->envp, ft_strjoin(ft_strdup("_="), "/usr/bin/env"),
 			count_str(data->envp)) != OK)
 		return (ERROR);
-	free(tmp);
 	return (OK);
 }
 
