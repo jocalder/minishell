@@ -9,7 +9,7 @@ int	ft_echo(t_token *token)
 	while (token && token->type != ARG)
 		token = token->next;
 	while (token && (token->type == ARG
-			&& ft_strncmp(token->value, "-n", 3) == 0))
+			&& ft_strncmp(token->value, "-n", 2) == 0))
 	{
 		suppress_newline = true;
 		token = token->next;

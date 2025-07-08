@@ -38,6 +38,8 @@ void	clean_and_close(t_mini *data, t_cmd **cmd)
 {
 	close_father_fds(data, cmd);
 	data->prev_fd = (*cmd)->pipe_fd[0];
+	// if (is_builtin((*cmd)->token))
+	// 	close(data->prev_fd);
 	(*cmd)->pipe_fd[0] = -1;
 	(*cmd)->pipe_fd[1] = -1;
 	(*cmd) = (*cmd)->next;

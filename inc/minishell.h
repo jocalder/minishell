@@ -137,6 +137,8 @@ int		handle_fd_errors(t_cmd **cmd);
 void	check_pid(t_mini *data, t_cmd *cmd, char **envp);
 void	clean_and_close(t_mini *data, t_cmd **cmd);
 int		execute_command(t_cmd *cmd, char **envp);
+int		builtin_does_not_use_stdin(t_token *token);
+int		builtin_does_not_use_stdout(t_token *token);
 
 void	child_proccess(t_mini *data, t_cmd *cmd, char **envp);
 void	close_father_fds(t_mini *data, t_cmd **cmd);

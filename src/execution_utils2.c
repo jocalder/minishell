@@ -33,8 +33,6 @@ void	check_pid(t_mini *data, t_cmd *cmd, char **envp)
 
 void	close_fds_builtin(t_mini *data, t_cmd **cmd)
 {
-	if (!(*cmd)->next)
-	 	close((*cmd)->pipe_fd[0]);
 	if (data->prev_fd != -1 && data->prev_fd > 2)
 		close(data->prev_fd);
 	if ((*cmd)->pipe_fd[0] != -1 && (*cmd)->pipe_fd[0] > 2)
@@ -45,4 +43,26 @@ void	close_fds_builtin(t_mini *data, t_cmd **cmd)
 		close((*cmd)->fd_in);
 	if ((*cmd)->fd_out != -1 && (*cmd)->fd_out > 2)
 		close((*cmd)->fd_out);
+}
+
+int	builtin_does_not_use_stdin(t_token *token)
+{
+	char	*builtin;
+
+	builtin = token->value;
+	return (ft_strncmp(builtin, "export", 7) == 0
+		|| ft_strncmp(builtin, "unset", 6) == 0
+		|| ft_strncmp(builtin, "cd", 3) == 0
+		|| ft_strncmp(builtin, "exit", 5) == 0);
+}
+
+int	builtin_does_not_use_stdout(t_token *token)
+{
+	char	*builtin;
+
+	builtin = token->value;
+	return (ft_strncmp(builtin, "export", 7) == 0
+		|| ft_strncmp(builtin, "unset", 6) == 0
+		|| ft_strncmp(builtin, "cd", 3) == 0
+		|| ft_strncmp(builtin, "exit", 5) == 0);
 }

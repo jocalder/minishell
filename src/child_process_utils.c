@@ -18,7 +18,7 @@ void	close_all_fds(t_mini *data, t_cmd **cmd)
 
 void	handler_redir(t_mini *data, t_cmd **cmd)
 {
-	if ((*cmd)->pipe_fd[0] != -1 && (*cmd)->pipe_fd[0] > 2)
+	if ((*cmd)->pipe_fd[0] != -1)
 		close((*cmd)->pipe_fd[0]);
 	if ((*cmd)->fd_in != -1)
 	{
@@ -35,11 +35,15 @@ void	handler_redir(t_mini *data, t_cmd **cmd)
 		dup2((*cmd)->fd_out, STDOUT_FILENO);
 		close((*cmd)->fd_out);
 	}
-	else if ((*cmd)->pipe_fd[1] != -1)
+	else if ((*cmd)->pipe_fd[1] != -1
+		&& (*cmd)->next && (*cmd)->next->token && !is_builtin((*cmd)->next->token))//hay que comprobar que si el siguiente es un builtin cerrar el pipe_fd[1]
 	{
 		dup2((*cmd)->pipe_fd[1], STDOUT_FILENO);
 		close((*cmd)->pipe_fd[1]);
 	}
+	else if ((*cmd)->pipe_fd[1] != -1
+		&& (*cmd)->next && (*cmd)->next->token && is_builtin((*cmd)->next->token))
+		close((*cmd)->pipe_fd[1]);
 }
 
 void	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
@@ -52,12 +56,9 @@ void	child_proccess(t_mini *data, t_cmd *cmd, char **envp)
 	if (is_builtin(cmd->token))
 	{
 		status = execute_builtin(data, cmd);
-		printf("pipe_fd[0] builtin: %d\n", cmd->pipe_fd[0]);
+		close_fds_builtin(data, &cmd);
 	}
 	else
-	{
 		status = execute_command(cmd, envp);
-		printf("pipe_fd[0] command: %d\n", cmd->pipe_fd[0]);
-	}
 	exit_free(data, update_status(status));
 }
