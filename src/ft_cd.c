@@ -14,6 +14,19 @@ static int	make_switch(char *path)
 	return (free(path), OK);
 }
 
+static int	check_oldpwd(t_mini *data)
+{
+	if (!data)
+		return (update_status(ERROR));
+	if (!ft_strchr(data->oldpwd, '='))
+	{
+		write(STDERR_FILENO, "minishell: cd: OLDPWD not set\n", 31);
+		return (update_status(ERROR_FD));
+	}
+	write(STDOUT_FILENO, data->oldpwd, ft_strlen(data->oldpwd));
+	return (update_status(make_switch(ft_strdup(data->oldpwd))));
+}
+
 static int	handler_switch(t_mini *data, char *arg)
 {
 	char	*path;
@@ -34,11 +47,8 @@ static int	handler_switch(t_mini *data, char *arg)
 			return (update_status(ERROR));
 		return (update_status(make_switch(ft_strdup(path))));
 	}
-	else if (ft_strncmp(arg, "-", 2) == 0 && ft_strchr(data->oldpwd, '='))
-		return (update_status(make_switch(ft_strdup(data->oldpwd))));
-	else if (ft_strncmp(arg, "-", 2) == 0 && !ft_strchr(data->oldpwd, '='))
-		return ((void)write(STDERR_FILENO,
-				"minishell: cd: OLDPWD not set\n", 31), ERROR_FD);
+	else if (ft_strncmp(arg, "-", 2) == 0)
+		return (update_status(check_oldpwd(data)));
 	else
 		return (update_status(make_switch(ft_strdup(arg))));
 }
