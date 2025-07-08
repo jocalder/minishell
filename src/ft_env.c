@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_env(t_token *token, char **exp_vars)
+int	ft_env(t_token *token, char **exp_vs)
 {
 	char	*builtin;
 
@@ -16,14 +16,14 @@ int	ft_env(t_token *token, char **exp_vars)
 			write(STDERR_FILENO, "minishell: env: too many arguments\n", 36);
 		return (update_status(SYNTAX));
 	}
-	while (*exp_vars)
+	while (*exp_vs)
 	{
-		if (ft_strchr(*exp_vars, '='))
+		if (ft_strchr(*exp_vs, '='))
 		{
-			write(STDOUT_FILENO, *exp_vars, ft_strlen(*exp_vars));
+			write(STDOUT_FILENO, *exp_vs, ft_strlen(*exp_vs));
 			write(STDOUT_FILENO, "\n", 1);
 		}
-		exp_vars++;
+		exp_vs++;
 	}
 	return (update_status(OK));
 }

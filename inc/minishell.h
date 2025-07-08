@@ -89,7 +89,7 @@ typedef struct minishell
 	t_prompt	*prompt;
 	t_input		*input;
 	char		**envp;
-	char		**exp_vars;
+	char		**exp_vs;
 	char		**vars;
 	char		*pwd;
 	char		*oldpwd;

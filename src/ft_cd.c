@@ -38,7 +38,7 @@ static int	handler_switch(t_mini *data, char *arg)
 		return (update_status(make_switch(ft_strdup(data->oldpwd))));
 	else if (ft_strncmp(arg, "-", 2) == 0 && !ft_strchr(data->oldpwd, '='))
 		return ((void)write(STDERR_FILENO,
-			"minishell: cd: OLDPWD not set\n", 31), ERROR_FD);
+				"minishell: cd: OLDPWD not set\n", 31), ERROR_FD);
 	else
 		return (update_status(make_switch(ft_strdup(arg))));
 }

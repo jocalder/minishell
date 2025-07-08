@@ -8,9 +8,9 @@ static void	init_export_vars(t_mini *data, char **argv, char **envp)
 	{
 		if (mini_envp(data, argv) == ERROR)
 			exit_free(data, ERROR);
-		data->exp_vars = envpdup(data->envp);
+		data->exp_vs = envpdup(data->envp);
 		if (set_new_var(&data->envp, "PATH=/usr/local/bin:/usr/bin:/bin",
-			count_str(data->envp)) == ERROR)
+				count_str(data->envp)) == ERROR)
 			exit_free(data, ERROR);
 		if (update_envp(data) != OK)
 			exit_free(data, ERROR);
@@ -20,16 +20,16 @@ static void	init_export_vars(t_mini *data, char **argv, char **envp)
 		data->envp = envpdup(envp);
 		if (!data->envp)
 			exit (ERROR);
-		data->exp_vars = envpdup(data->envp);
+		data->exp_vs = envpdup(data->envp);
 	}
-	if (!data->exp_vars)
+	if (!data->exp_vs)
 		exit_free(data, ERROR);
 }
 
 static void	init_environment(t_mini *data, char **argv, char **envp)
 {
 	data->envp = NULL;
-	data->exp_vars = NULL;
+	data->exp_vs = NULL;
 	data->vars = NULL;
 	data->pwd = NULL;
 	data->oldpwd = NULL;

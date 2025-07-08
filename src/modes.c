@@ -5,11 +5,11 @@ void	interactive_mode(t_mini *data)
 	while (1)
 	{
 		wait_signal(0);
-		if (set_prompt((data)->prompt, data->exp_vars) != OK)
+		if (set_prompt((data)->prompt, data->exp_vs) != OK)
 			check_exit_status(g_status, data);
 		if (set_input(data) == OK)
 		{
-			if (handler_execution(data, data->input->cmd, data->exp_vars) != OK)
+			if (handler_execution(data, data->input->cmd, data->exp_vs) != OK)
 				check_exit_status(g_status, data);
 		}
 		else
@@ -37,7 +37,7 @@ static void	command_mode_one(t_mini *data)
 			ft_strlen(data->input->value)) == 0)
 		exit_free(data, OK);
 	if (split_input(data->input) == OK)
-		handler_execution(data, data->input->cmd, data->exp_vars);
+		handler_execution(data, data->input->cmd, data->exp_vs);
 	exit_free(data, g_status);
 }
 
@@ -46,7 +46,7 @@ static void	command_mode_two(t_mini *data, char *arg)
 	free_prompt(&data->prompt, true);
 	data->input->value = ft_strdup(arg);
 	if (split_input(data->input) == OK)
-		handler_execution(data, data->input->cmd, data->exp_vars);
+		handler_execution(data, data->input->cmd, data->exp_vs);
 	exit_free(data, g_status);
 }
 
