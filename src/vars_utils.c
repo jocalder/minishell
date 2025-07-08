@@ -53,7 +53,6 @@ int	set_existing_var(char ***ptr, char *var)
 	if (!ft_strchr(var, '='))
 		return (OK);
 	i = 0;
-	ptr = NULL;
 	while ((*ptr)[i])
 	{
 		if (is_same_var((*ptr)[i], var))

@@ -1,22 +1,25 @@
 #include "minishell.h"
 
-int	mini_envp(t_mini *data, char **argv)
+int	mini_envp(t_mini *data)
 {
 	char	*tmp;
+	char	*pwd;
 
-	(void)argv;
 	if (set_new_var(&data->envp, "OLDPWD", count_str(data->envp)) != 0)
-		return (ERROR);
+		return (update_status(ERROR));
 	tmp = getcwd(NULL, 0);
 	if (!tmp)
-		return (ERROR);
-	if (set_new_var(&data->envp, ft_strjoin(ft_strdup("PWD="), tmp),
-			count_str(data->envp)) != OK)
-		return (ERROR);
+		return (update_status(ERROR));
+	pwd = ft_strjoin(ft_strdup("PWD="), tmp);
+	if (set_new_var(&data->envp, pwd, count_str(data->envp)) != OK)
+		return (update_status(ERROR));
+	free(pwd);
 	free(tmp);
-	if (set_new_var(&data->envp, ft_strjoin(ft_strdup("_="), "/usr/bin/env"),
-			count_str(data->envp)) != OK)
-		return (ERROR);
+	tmp = NULL;
+	tmp = ft_strjoin(ft_strdup("_="), "/usr/bin/env");
+	if (set_new_var(&data->envp, tmp, count_str(data->envp)) != OK)
+		return (update_status(ERROR));
+	free(tmp);
 	return (OK);
 }
 
