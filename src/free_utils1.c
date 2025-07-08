@@ -99,14 +99,14 @@ void	free_all(t_mini *data, bool check)
 		cur_cmd = data->input->cmd;
 		while (cur_cmd->next)
 			cur_cmd = cur_cmd->next;
-		last = last_token(cur_cmd->token);
+		last = cur_cmd->token;
+		while (last->next
+			&& (last->next->type == CMD || last->next->type == ARG))
+			last = last->next;
 		tmp = ft_strjoin(ft_strdup("_="), last->value);
 		if (!tmp)
 			exit_free(data, ERROR);
-		if (is_existing_var(data->envp, tmp))
-			set_existing_var(&data->envp, tmp);
-		else
-			set_new_var(&data->envp, tmp, count_str(data->envp));
+		set_existing_var(&data->exp_vs, tmp);
 		free(tmp);
 	}
 	free_envp(data, check);
