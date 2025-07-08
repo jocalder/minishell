@@ -65,7 +65,7 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 	if (token && token->type == ARG && is_option(token->value))
 		return (w_builtin_usage(builtin, token->value), update_status(SYNTAX));
 	if (!token)
-		return ((print_exported_vars(data->exp_vars)), OK);
+		return ((print_exported_vars(data->exp_vars)), update_status(OK));
 	update_status(OK);
 	while (token && token->type == ARG)
 	{
@@ -77,9 +77,9 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 			continue ;
 		}
 		if (!is_existing_var(data->exp_vars, token->value))
-			set_new_var(data, token->value, count_str(data->exp_vars), true);
+			set_new_var(&data->exp_vars, token->value, count_str(data->exp_vars));
 		else
-			set_existing_var(data, token->value, true);
+			set_existing_var(&data->exp_vars, token->value);
 		if (is_existing_var(data->vars, token->value))
 			unset_var(&data->vars, token->value, count_str(data->vars));
 		token = token->next;

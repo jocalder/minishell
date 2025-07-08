@@ -1,32 +1,26 @@
 #include "minishell.h"
 
-char	**mini_envp(char **argv)
+int	mini_envp(t_mini *data, char **argv)
 {
-	char	**new;
 	char	*tmp;
 
-	new = ft_calloc(4, sizeof(char *));
-	if (!new)
-		return (NULL);
-	new[0] = ft_strdup("OLDPWD");
-	if (!new[0])
-		return (NULL);
-	new[1] = ft_strdup("PWD=");
-	if (!new[1])
-		return (free(new[0]), free(new), NULL);
+	(void)argv;
+	if (set_new_var(&data->envp, "OLDPWD", count_str(data->envp)) != 0)
+		return (ERROR);
 	tmp = getcwd(NULL, 0);
 	if (!tmp)
-		return (free(new[0]), free(new[1]), free(new), NULL);
-	new[1] = ft_strjoin(new[1], tmp);
-	if (!new[1])
-		return (free(new[0]), free(new), NULL);
-	tmp = ft_strjoin(tmp, "/");
-	new[2] = ft_strjoin((ft_strjoin(ft_strdup("_="), tmp)), argv[0]);
-	if (!new[2])
-		return (free(new[0]), free(new[1]), free(tmp), free(new), NULL);
+		return (ERROR);
+	if (set_new_var(&data->envp, ft_strjoin(ft_strdup("PWD="), tmp),
+		count_str(data->envp)) != OK)
+		return (ERROR);
+	tmp = ft_strjoin(tmp, "/minishell");
+	if (!tmp)
+		return (ERROR);
+	if (set_new_var(&data->envp, ft_strjoin(ft_strdup("_="), tmp),
+		count_str(data->envp)) != OK)
+		return (ERROR);
 	free(tmp);
-	new[3] = NULL;
-	return (new);
+	return (OK);
 }
 
 char	**envpdup(char **envp)
@@ -65,23 +59,23 @@ int	update_envp(t_mini *data)
 
 	i = -1;
 	tmp = NULL;
-	while (data->exp_vars[++i])
+	while (data->envp[++i])
 	{
-		if (ft_strncmp(data->exp_vars[i], "SHLVL=", 6) == 0)
+		if (ft_strncmp(data->envp[i], "SHLVL=", 6) == 0)
 		{
-			lvl = ft_atoi(data->exp_vars[i] + 6);
-			free(data->exp_vars[i]);
+			lvl = ft_atoi(data->envp[i] + 6);
+			free(data->envp[i]);
 			tmp = ft_itoa(++lvl);
 			if (!tmp)
 				return (ERROR);
-			data->exp_vars[i] = ft_strjoin(ft_strdup("SHLVL="), tmp);
-			if (!data->exp_vars[i])
+			data->envp[i] = ft_strjoin(ft_strdup("SHLVL="), tmp);
+			if (!data->envp[i])
 				return (free(tmp), ERROR);
 			return (free(tmp), OK);
 		}
 	}
-	if (!data->exp_vars[i])
-		if (set_new_var(data, "SHLVL=1", i, true) == ERROR)
+	if (!data->envp[i])
+		if (set_new_var(&data->envp, "SHLVL=1", i) == ERROR)
 			return (ERROR);
 	return (OK);
 }

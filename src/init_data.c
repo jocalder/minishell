@@ -6,41 +6,40 @@ static void	init_export_vars(t_mini *data, char **argv, char **envp)
 		exit (ERROR);
 	if (!envp || !*envp || !**envp)
 	{
-		data->exp_vars = mini_envp(argv);
-		set_new_var(data, "PATH=/usr/local/bin:/usr/bin:/bin",
-			count_str(data->exp_vars), true);
+		if (mini_envp(data, argv) == ERROR)
+			exit_free(data, ERROR);
+		data->exp_vars = envpdup(data->envp);
+		if (set_new_var(&data->envp, "PATH=/usr/local/bin:/usr/bin:/bin",
+			count_str(data->envp)) == ERROR)
+			exit_free(data, ERROR);
+		if (update_envp(data) != OK)
+			exit_free(data, ERROR);
 	}
 	else
-		data->exp_vars = envpdup(envp);
+	{
+		data->envp = envpdup(envp);
+		if (!data->envp)
+			exit (ERROR);
+		data->exp_vars = envpdup(data->envp);
+	}
 	if (!data->exp_vars)
-		exit(ERROR);
+		exit_free(data, ERROR);
 }
 
 static void	init_environment(t_mini *data, char **argv, char **envp)
 {
+	data->envp = NULL;
 	data->exp_vars = NULL;
 	data->vars = NULL;
 	data->pwd = NULL;
 	data->oldpwd = NULL;
 	init_export_vars(data, argv, envp);
-	if (update_envp(data) != OK)
-	{
-		free_array(data->exp_vars, -1);
-		exit(ERROR);
-	}
 	data->pwd = getcwd(NULL, 0);
 	if (!data->pwd)
-	{
-		free_array(data->exp_vars, -1);
-		exit(ERROR);
-	}
+		exit_free(data, ERROR);
 	data->oldpwd = ft_strdup("");
 	if (!data->oldpwd)
-	{
-		free_array(data->exp_vars, -1);
-		free(data->pwd);
-		exit (ERROR);
-	}
+		exit_free(data, ERROR);
 }
 
 static void	init_prompt(t_prompt *prompt)

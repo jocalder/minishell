@@ -88,6 +88,7 @@ typedef struct minishell
 {
 	t_prompt	*prompt;
 	t_input		*input;
+	char		**envp;
 	char		**exp_vars;
 	char		**vars;
 	char		*pwd;
@@ -115,7 +116,7 @@ void	interactive_mode(t_mini *data);
 void	command_mode(t_mini *data, char **argv, int argc);
 
 /*init_environment*/
-char	**mini_envp(char **argv);
+int		mini_envp(t_mini *data, char **argv);
 char	**envpdup(char **envp);
 int		update_envp(t_mini *data);
 
@@ -183,8 +184,8 @@ void	exit_free(t_mini *data, int status);
 /*vars_utils*/
 char	*mini_getenv(char *name, char **envp);
 int		count_str(char **str);
-int		set_new_var(t_mini *data, char *var, int i, bool export);
-int		set_existing_var(t_mini *data, char *var, bool export);
+int		set_new_var(char ***ptr, char *var, int i);
+int		set_existing_var(char ***ptr, char *var);
 int		unset_var(char ***ptr, char *var, int len);
 
 /*bools utils*/

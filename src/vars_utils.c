@@ -31,16 +31,10 @@ int	count_str(char **str)
 	return (i);
 }
 
-int	set_new_var(t_mini *data, char *new_var, int i, bool export)
+int	set_new_var(char ***ptr, char *new_var, int i)
 {
-	char	***ptr;
 	char	**tmp;
 
-	ptr = NULL;
-	if (export)
-		ptr = &data->exp_vars;
-	else
-		ptr = &data->vars;
 	tmp = ft_realloc(ptr[0], sizeof(char *) * (i + 2));
 	if (!tmp)
 		return (update_status(ERROR));
@@ -52,27 +46,22 @@ int	set_new_var(t_mini *data, char *new_var, int i, bool export)
 	return (OK);
 }
 
-int	set_existing_var(t_mini *data, char *var, bool export)
+int	set_existing_var(char ***ptr, char *var)
 {
 	int		i;
-	char	***ptr;
 
 	if (!ft_strchr(var, '='))
 		return (OK);
 	i = 0;
 	ptr = NULL;
-	if (export)
-		ptr = &data->exp_vars;
-	else
-		ptr = &data->vars;
-	while (ptr[0][i])
+	while ((*ptr)[i])
 	{
-		if (is_same_var(ptr[0][i], var))
+		if (is_same_var((*ptr)[i], var))
 		{
-			free(ptr[0][i]);
-			ptr[0][i] = NULL;
-			ptr[0][i] = ft_strdup(var);
-			if (!ptr[0][i])
+			free((*ptr)[i]);
+			(*ptr)[i] = NULL;
+			(*ptr)[i] = ft_strdup(var);
+			if (!(*ptr)[i])
 				return (update_status(ERROR));
 			return (OK);
 		}

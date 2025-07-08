@@ -21,9 +21,12 @@ static int	handler_switch(t_mini *data, char *arg)
 	path = NULL;
 	if ((!arg || !*arg) || (arg && *arg == '~'))
 	{
-		path = getenv("HOME");
+		path = mini_getenv("HOME", data->envp);
 		if (!path)
-			return (update_status(ERROR));
+		{
+			write(STDOUT_FILENO, "minishell: cd: HOME not set\n", 29);
+			return (update_status(ERROR_FD));
+		}
 		if ((!arg || !*arg) || (arg && (*arg == '~' && ft_strlen(arg) == 1)))
 			return (update_status(make_switch(ft_strdup(path))));
 		path = ft_strjoin(ft_strdup(path), ++arg);
@@ -31,8 +34,11 @@ static int	handler_switch(t_mini *data, char *arg)
 			return (update_status(ERROR));
 		return (update_status(make_switch(ft_strdup(path))));
 	}
-	else if (ft_strncmp(arg, "-", 2) == 0)
+	else if (ft_strncmp(arg, "-", 2) == 0 && ft_strchr(data->oldpwd, '='))
 		return (update_status(make_switch(ft_strdup(data->oldpwd))));
+	else if (ft_strncmp(arg, "-", 2) == 0 && !ft_strchr(data->oldpwd, '='))
+		return ((void)write(STDERR_FILENO,
+			"minishell: cd: OLDPWD not set\n", 31), ERROR_FD);
 	else
 		return (update_status(make_switch(ft_strdup(arg))));
 }
