@@ -31,7 +31,6 @@ static void	create_pipes(t_cmd **cmd)
 			close((*cmd)->pipe_fd[1]);
 			exit(ERROR);
 		}
-		printf("value when create pipe; pipe_fd[0] : %d\n", (*cmd)->pipe_fd[0]);
 	}
 	else
 	{
@@ -78,7 +77,7 @@ int	redir_out(t_token *token)
 	{
 		if (token->type == APPEND || token->type == REDIR_OUT)
 		{
-			if (!token->next || !token->next->value)
+			if (!token->next || !token->next->value || token->next->type != FILE_PATH)
 			{
 				write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
 				return (SYNTAX);
@@ -112,35 +111,22 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 			continue ;
 		}
 		create_pipes(&cmd);
-		printf("pipe_fd[0] before close  in father and create pipe1: %d\n", cmd->pipe_fd[0]);
-		if (!cmd->next)
-		{
-			printf("pipe_fd[0] before close  in father2: %d\n", cmd->pipe_fd[0]);
-			printf("prev_fd before close in father3: %d\n", data->prev_fd);
-		}
 		if (is_builtin(cmd->token) && !cmd->next)
 		{
-			//handler_redir(data, &cmd);
-			close_fds_builtin(data, &cmd);
+			close_all_fds(data, &cmd);
 			execute_builtin(data, cmd);
 			if (data->prev_fd != -1 && data->prev_fd > 2)
 				data->prev_fd = -1;
-			printf("prev_fd after close in builtin4: %d\n", data->prev_fd);
 			return (g_status);
 		}
 		else
 		{
 			data->pid = fork();
-			printf("pipe_fd[0] before close  in child5: %d\n", cmd->pipe_fd[0]);
-			printf("pipe_fd[1] before close  in child5: %d\n", cmd->pipe_fd[1]);
 			check_pid(data, cmd, envp);
-			printf("pipe_fd[1] after close  in child5: %d\n", cmd->pipe_fd[1]);
 			clean_and_close(data, &cmd);
-			printf("prev_fd after child in father6: %d\n", data->prev_fd);
 		}
 	}
 	if (data->prev_fd != -1)
 		close(data->prev_fd);
-	printf("prev_fd after close in father6: %d\n", data->prev_fd);
 	return (wait_all());
 }

@@ -45,24 +45,3 @@ void	close_fds_builtin(t_mini *data, t_cmd **cmd)
 		close((*cmd)->fd_out);
 }
 
-int	builtin_does_not_use_stdin(t_token *token)
-{
-	char	*builtin;
-
-	builtin = token->value;
-	return (ft_strncmp(builtin, "export", 7) == 0
-		|| ft_strncmp(builtin, "unset", 6) == 0
-		|| ft_strncmp(builtin, "cd", 3) == 0
-		|| ft_strncmp(builtin, "exit", 5) == 0);
-}
-
-int	builtin_does_not_use_stdout(t_token *token)
-{
-	char	*builtin;
-
-	builtin = token->value;
-	return (ft_strncmp(builtin, "export", 7) == 0
-		|| ft_strncmp(builtin, "unset", 6) == 0
-		|| ft_strncmp(builtin, "cd", 3) == 0
-		|| ft_strncmp(builtin, "exit", 5) == 0);
-}
