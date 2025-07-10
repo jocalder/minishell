@@ -36,7 +36,7 @@ static void	command_mode_one(t_mini *data)
 	if (ft_strncmp(data->input->value, "\n",
 			ft_strlen(data->input->value)) == 0)
 		exit_free(data, OK);
-	if (split_input(data->input) == OK)
+	if (split_input(data, data->input) == OK)
 		handler_execution(data, data->input->cmd, data->envp);
 	exit_free(data, g_status);
 }
@@ -45,7 +45,7 @@ static void	command_mode_two(t_mini *data, char *arg)
 {
 	free_prompt(&data->prompt, true);
 	data->input->value = ft_strdup(arg);
-	if (split_input(data->input) == OK)
+	if (split_input(data, data->input) == OK)
 		handler_execution(data, data->input->cmd, data->envp);
 	exit_free(data, g_status);
 }

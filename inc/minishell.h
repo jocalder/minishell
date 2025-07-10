@@ -157,23 +157,23 @@ int		ft_unset(t_mini *data, t_token *token);
 int		ft_exit(t_mini *data, t_token *token);
 
 /*split_input*/
-int		split_input(t_input *input);
+int		split_input(t_mini *data, t_input *input);
 int		validate_pipe(t_input *input, char **str);
 int		new_cmd(t_cmd **new, char *start, size_t *len);
 void	append_cmd(t_input *input, t_cmd **new, char *value);
 
 /*split_cmd*/
-int		split_cmd(t_cmd **cmd);
+int		split_cmd(t_mini *data, t_cmd **cmd);
 void	append_token(t_cmd *cmd, t_token **new, int type);
 int		get_type(t_token *token, char *value, bool check);
 t_token	*last_token(t_token *token);
 
 /*new_token*/
-int		new_token(t_cmd *cmd, t_token **new, char **start);
-char	*check_cases(t_cmd *cmd, t_token *new, char **start, size_t *len);
-char	*quote_case(t_cmd *cmd, char *start, size_t *len);
-char	*special_case(t_cmd *cmd, char *start, size_t *len);
-char	*expand_content(char *value, t_token *last);
+int		new_token(t_mini *data, t_cmd *cmd, t_token **new, char **start);
+char	*check_cases(t_mini *data, t_cmd *cmd, char **start, size_t *len);
+char	*quote_case(t_mini *data, t_cmd *cmd, char *start, size_t *len);
+char	*special_case(t_mini *data, t_cmd *cmd, char *start, size_t *len);
+char	*expand_content(t_mini *data, char *value, t_token *last);
 char	*get_redir(char **s, size_t *len);
 
 /*status_utils*/
