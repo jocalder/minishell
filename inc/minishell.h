@@ -47,6 +47,7 @@ typedef enum e_token_type
 	HEREDOC,
 	ENDOFFILE,
 	FILE_PATH,
+	VAR,
 }	t_token_type;
 
 typedef struct s_token
@@ -165,7 +166,7 @@ void	append_cmd(t_input *input, t_cmd **new, char *value);
 /*split_cmd*/
 int		split_cmd(t_mini *data, t_cmd **cmd);
 void	append_token(t_cmd *cmd, t_token **new, int type);
-int		get_type(t_token *token, char *value, bool check);
+int		get_type(t_cmd *cmd, t_token *token, char *value, bool check);
 t_token	*last_token(t_token *token);
 
 /*new_token*/
@@ -187,6 +188,7 @@ int		count_str(char **str);
 int		set_new_var(char ***ptr, char *var, int i);
 int		set_existing_var(char ***ptr, char *var);
 int		unset_var(char ***ptr, char *var, int len);
+int		set_local_var(t_mini *data, t_token *token);
 
 /*bools utils*/
 bool	is_spacetab(int c);
@@ -199,6 +201,7 @@ bool	is_option(char *value);
 bool	is_validate_id(char *id);
 bool	is_existing_var(char **ptr, char *var);
 bool	is_same_var(char *compared, char *var);
+bool	has_cmd_type(t_token *token);
 
 /*write_utils*/
 void	w_openquote(unsigned char quote);
@@ -212,5 +215,8 @@ void	free_all(t_mini *data, bool check);
 void	free_envp(t_mini *data, bool check);
 void	free_prompt(t_prompt **prompt, bool check);
 void	free_input(t_input **input, bool check);
+
+/*delete*/
+void	printf_input(t_input *input);
 
 #endif

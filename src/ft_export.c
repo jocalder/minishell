@@ -1,5 +1,30 @@
 #include "minishell.h"
 
+static int	local_case(t_mini *data, t_token *token)
+{
+	char	*name;
+	char	*var;
+	char	*tmp;
+
+	if (!data || !token)
+		return (update_status(ERROR));
+	tmp = ft_strchr(token->value, '=');
+	name = ft_substr(token->value, 0, (ft_strlen(token->value) - ft_strlen(tmp)));
+	if (!name)
+		return (update_status(ERROR));
+	if (!tmp)
+		var = ft_strdup(token->value);
+	else
+		var = ft_substr(tmp, 0, ft_strlen(tmp));
+	if (!var)
+		return (free(name), update_status(ERROR));
+	set_existing_var(&data->exp_vs, var);
+	free(name);
+	free(var);
+	unset_var(&data->vars, token->value, count_str(data->vars));
+	return (OK);
+}
+
 static void	sort_exported_vars(char ***ptr, int size)
 {
 	char	*tmp;
@@ -81,7 +106,7 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 		else
 			set_existing_var(&data->exp_vs, token->value);
 		if (is_existing_var(data->vars, token->value))
-			unset_var(&data->vars, token->value, count_str(data->vars));
+			local_case(data, token);
 		token = token->next;
 	}
 	return (g_status);

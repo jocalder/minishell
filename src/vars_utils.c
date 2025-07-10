@@ -7,6 +7,8 @@ char	*mini_getenv(char *name, char **envp)
 
 	i = 0;
 	j = 0;
+	if (!envp || !*envp)
+		return (NULL);
 	while (envp[i])
 	{
 		j = 0;

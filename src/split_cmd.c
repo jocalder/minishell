@@ -39,12 +39,15 @@ t_token	*last_token(t_token *token)
 	return (last);
 }
 
-int	get_type(t_token *token, char *value, bool check)
+int	get_type(t_cmd *cmd, t_token *token, char *value, bool check)
 {
 	t_token	*last;
 
 	last = last_token(token);
-	if (!last && !is_redir(value))
+	if (cmd && !has_cmd_type(cmd->token)
+		&& (is_validate_id(value) && ft_strchr(value, '=')))
+		return (VAR);
+	else if ((!last || (last && last->type == VAR)) && !is_redir(value))
 		return (CMD);
 	else if (last && last->type == HEREDOC)
 		return (ENDOFFILE);

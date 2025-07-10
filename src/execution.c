@@ -100,6 +100,7 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 	wait_signal(1);
 	while (cmd)
 	{
+		set_local_var(data, cmd->token);
 		handle_redirections(&cmd);
 		if (check_fd_errors(cmd))
 		{

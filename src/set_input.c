@@ -21,7 +21,7 @@ int	split_cmd(t_mini *data, t_cmd **cmd)
 		new->flag = false;
 		if (new_token(data, *cmd, &new, &start) != OK)
 			return (free(new->value), free(new), g_status);
-		type = get_type((*cmd)->token, new->value, new->flag);
+		type = get_type(*cmd, (*cmd)->token, new->value, new->flag);
 		append_token(*cmd, &new, type);
 		if ((new && new->value) && !is_supported(new->value, new->flag))
 			return (w_unsupported(new->value), update_status(SYNTAX));

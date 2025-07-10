@@ -17,7 +17,18 @@ static char	*get_env_var(t_mini *data, char *name)
 		return (ft_strdup(""));
 	var = ft_strdup(mini_getenv(name, data->exp_vs));
 	if (!var)
-		var = ft_strdup("");
+	{
+		var = ft_strdup(mini_getenv(name, data->vars));
+		if (!var)
+		{
+			var = ft_strdup("");
+			if (!var)
+			{
+				update_status(ERROR);
+				return (free(name), NULL);
+			}
+		}
+	}
 	return (free(name), var);
 }
 
