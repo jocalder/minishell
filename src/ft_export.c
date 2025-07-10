@@ -1,30 +1,5 @@
 #include "minishell.h"
 
-static int	local_case(t_mini *data, t_token *token)
-{
-	char	*name;
-	char	*var;
-	char	*tmp;
-
-	if (!data || !token)
-		return (update_status(ERROR));
-	tmp = ft_strchr(token->value, '=');
-	name = ft_substr(token->value, 0, (ft_strlen(token->value) - ft_strlen(tmp)));
-	if (!name)
-		return (update_status(ERROR));
-	if (!tmp)
-		var = ft_strdup(token->value);
-	else
-		var = ft_substr(tmp, 0, ft_strlen(tmp));
-	if (!var)
-		return (free(name), update_status(ERROR));
-	set_existing_var(&data->exp_vs, var);
-	free(name);
-	free(var);
-	unset_var(&data->vars, token->value, count_str(data->vars));
-	return (OK);
-}
-
 static void	sort_exported_vars(char ***ptr, int size)
 {
 	char	*tmp;
@@ -83,6 +58,34 @@ static void	print_exported_vars(char **exp_vs)
 	}
 }
 
+int	local_case(t_mini *data, t_token *token, char *tmp)
+{
+	char	*var;
+
+	if (!data || !token)
+		return (update_status(ERROR));
+	if (!tmp)
+	{
+		tmp = ft_strdup(token->value);
+		if (!tmp)
+			return (update_status(ERROR));
+		tmp = ft_strjoin(tmp, "=");
+		if (!tmp)
+			return (update_status(ERROR));
+		var = ft_strjoin(tmp, mini_getenv(token->value, data->vars));
+	}
+	else
+		var = ft_strdup(token->value);
+	if (!var)
+		return (update_status(ERROR));
+	if (is_existing_var(data->exp_vs, var))
+		set_existing_var(&data->exp_vs, var);
+	else
+		set_new_var(&data->exp_vs, var, count_str(data->exp_vs));
+	unset_var(&data->vars, var, count_str(data->vars));
+	return (free(var), OK);
+}
+
 int	ft_export(t_mini *data, t_token *token, char *builtin)
 {
 	while (token && token->type != ARG)
@@ -101,12 +104,12 @@ int	ft_export(t_mini *data, t_token *token, char *builtin)
 			token = token->next;
 			continue ;
 		}
-		if (!is_existing_var(data->exp_vs, token->value))
+		if (is_existing_var(data->vars, token->value))
+			local_case(data, token, ft_strchr(token->value, '='));
+		else if (!is_existing_var(data->exp_vs, token->value))
 			set_new_var(&data->exp_vs, token->value, count_str(data->exp_vs));
 		else
 			set_existing_var(&data->exp_vs, token->value);
-		if (is_existing_var(data->vars, token->value))
-			local_case(data, token);
 		token = token->next;
 	}
 	return (g_status);

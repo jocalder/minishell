@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 00:34:15 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/07/03 15:14:25 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:07:19 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_array(char **arr, int i)
 {
-	if (!arr || !*arr)
+	if (!arr)
 		return ;
 	while (arr[++i])
 	{
@@ -22,5 +22,4 @@ void	free_array(char **arr, int i)
 		arr[i] = NULL;
 	}
 	free(arr);
-	arr = NULL;
 }

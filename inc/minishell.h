@@ -189,6 +189,7 @@ int		set_new_var(char ***ptr, char *var, int i);
 int		set_existing_var(char ***ptr, char *var);
 int		unset_var(char ***ptr, char *var, int len);
 int		set_local_var(t_mini *data, t_token *token);
+int		local_case(t_mini *data, t_token *token, char *tmp);
 
 /*bools utils*/
 bool	is_spacetab(int c);
@@ -215,8 +216,5 @@ void	free_all(t_mini *data, bool check);
 void	free_envp(t_mini *data, bool check);
 void	free_prompt(t_prompt **prompt, bool check);
 void	free_input(t_input **input, bool check);
-
-/*delete*/
-void	printf_input(t_input *input);
 
 #endif

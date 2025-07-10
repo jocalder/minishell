@@ -37,14 +37,14 @@ int	set_new_var(char ***ptr, char *new_var, int i)
 {
 	char	**tmp;
 
-	tmp = ft_realloc(ptr[0], sizeof(char *) * (i + 2));
+	tmp = ft_realloc(*ptr, sizeof(char *) * (i + 2));
 	if (!tmp)
 		return (update_status(ERROR));
-	ptr[0] = tmp;
-	ptr[0][i] = ft_strdup(new_var);
-	if (!ptr[0][i])
+	*ptr = tmp;
+	(*ptr)[i] = ft_strdup(new_var);
+	if (!(*ptr)[i])
 		return (update_status(ERROR));
-	ptr[0][i + 1] = NULL;
+	(*ptr)[i + 1] = NULL;
 	return (OK);
 }
 
@@ -86,14 +86,22 @@ int	unset_var(char ***ptr, char *var, int len)
 	j = 0;
 	while ((*ptr)[i])
 	{
-		if (is_same_var((*ptr)[i], var) == true)
-			free((*ptr)[i]);
-		else
-			tmp[j++] = (*ptr)[i];
+		if (!is_same_var((*ptr)[i], var))
+		{
+			tmp[j] = ft_strdup((*ptr)[i]);
+			if (!tmp[j++])
+			{
+				free_array(tmp, -1);
+				while ((*ptr)[i])
+					free((*ptr)[i++]);
+				return (update_status(ERROR));
+			}
+		}
+		free((*ptr)[i]);
 		i++;
 	}
 	tmp[j] = NULL;
-	free((*ptr));
-	(*ptr) = tmp;
+	free(*ptr);
+	*ptr = tmp;
 	return (OK);
 }

@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 23:51:04 by vgoyzuet          #+#    #+#             */
-/*   Updated: 2025/07/02 23:51:07 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/07/10 19:59:39 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ char	**ft_realloc(char **array, int size)
 	{
 		new[i] = ft_strdup(array[i]);
 		if (new[i] == NULL)
-			return (free_array(array, -1), ft_perror("malloc"), NULL);
+		{
+			free_array(new, -1);
+			free_array(array, -1);
+			return (ft_perror("malloc"), NULL);
+		}
 		i++;
 	}
 	new[i] = NULL;
