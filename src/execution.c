@@ -113,13 +113,10 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 		create_pipes(&cmd);
 		if (is_builtin(cmd->token) && !cmd->next)
 		{
-			printf("fd_out before redir: %d\n", cmd->fd_out);
 			if (cmd->fd_out != -1)
 			{
-				printf("fd_out after redir1: %d\n", cmd->fd_out);
 				dup2(cmd->fd_out, STDOUT_FILENO);
-				close(cmd->fd_out);
-				printf("pipe_fd[1] after redir2: %d\n", cmd->pipe_fd[1]);
+				close(cmd->fd_out);	
 			}
 			close(cmd->fd_out);
 			close_all_fds(data, &cmd);
