@@ -88,27 +88,8 @@ void	free_input(t_input **input, bool check)
 
 void	free_all(t_mini *data, bool check)
 {
-	t_cmd	*cur_cmd;
-	t_token	*last;
-	char	*tmp;
-
 	if (!data)
 		return ;
-	if (!check && data->input && data->input->cmd)
-	{
-		cur_cmd = data->input->cmd;
-		while (cur_cmd->next)
-			cur_cmd = cur_cmd->next;
-		last = cur_cmd->token;
-		while (last->next
-			&& (last->next->type == CMD || last->next->type == ARG))
-			last = last->next;
-		tmp = ft_strjoin(ft_strdup("_="), last->value);
-		if (!tmp)
-			exit_free(data, ERROR);
-		set_existing_var(&data->exp_vs, tmp);
-		free(tmp);
-	}
 	free_envp(data, check);
 	free_prompt(&data->prompt, check);
 	free_input(&data->input, check);

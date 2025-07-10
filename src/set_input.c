@@ -59,8 +59,9 @@ int	split_input(t_input *input)
 
 int	set_input(t_mini *data)
 {
-	if (!data)
+	if (!data || !data->input)
 		return (update_status(ERROR));
+	free_input(&data->input, false);
 	data->input->value = readline(data->prompt->value);
 	if (!data->input->value)
 	{

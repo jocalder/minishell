@@ -84,6 +84,7 @@ int	set_prompt(t_prompt *prompt, char **envp)
 {
 	if (!prompt)
 		return (update_status(ERROR));
+	free_prompt(&prompt, false);
 	prompt->cwd = getcwd(NULL, 0);
 	if (!prompt->cwd)
 		return (update_status(ERROR));

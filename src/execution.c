@@ -97,9 +97,9 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 {
 	if (!cmd)
 		return (g_status);
+	wait_signal(1);
 	while (cmd)
 	{
-		wait_signal(1);
 		handle_redirections(&cmd);
 		if (check_fd_errors(cmd))
 		{
