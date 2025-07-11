@@ -1,12 +1,12 @@
 #include "minishell.h"
 
-int	split_cmd(t_cmd **cmd)
+int	split_cmd(t_mini *data, t_cmd **cmd)
 {
 	t_token	*new;
 	char	*start;
 	int		type;
 
-	if (!cmd || !*cmd)
+	if (!data || !cmd || !*cmd)
 		return (update_status(ERROR));
 	start = (*cmd)->value;
 	while (*start)
@@ -19,9 +19,9 @@ int	split_cmd(t_cmd **cmd)
 			return (update_status(ERROR));
 		new->value = ft_strdup("");
 		new->flag = false;
-		if (new_token(*cmd, &new, &start) != OK)
+		if (new_token(data, *cmd, &new, &start) != OK)
 			return (free(new->value), free(new), g_status);
-		type = get_type((*cmd)->token, new->value, new->flag);
+		type = get_type(*cmd, (*cmd)->token, new->value, new->flag);
 		append_token(*cmd, &new, type);
 		if ((new && new->value) && !is_supported(new->value, new->flag))
 			return (w_unsupported(new->value), update_status(SYNTAX));
@@ -29,7 +29,7 @@ int	split_cmd(t_cmd **cmd)
 	return (OK);
 }
 
-int	split_input(t_input *input)
+int	split_input(t_mini *data, t_input *input)
 {
 	char			*start;
 	t_cmd			*new;
@@ -50,8 +50,9 @@ int	split_input(t_input *input)
 				return (g_status);
 		}
 		append_cmd(input, &new, ft_substr(start, 0, len));
-		if (split_cmd(&new) != OK)
-			return (g_status);
+		if (new)
+			if (split_cmd(data, &new) != OK)
+				return (g_status);
 		start += len;
 	}
 	return (OK);
@@ -59,8 +60,9 @@ int	split_input(t_input *input)
 
 int	set_input(t_mini *data)
 {
-	if (!data)
+	if (!data || !data->input)
 		return (update_status(ERROR));
+	free_input(&data->input, false);
 	data->input->value = readline(data->prompt->value);
 	if (!data->input->value)
 	{
@@ -70,5 +72,5 @@ int	set_input(t_mini *data)
 	else if (!*(data->input->value))
 		return (OK);
 	add_history(data->input->value);
-	return (split_input(data->input));
+	return (split_input(data, data->input));
 }

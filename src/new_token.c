@@ -38,7 +38,7 @@ static int	close_quote(char *start, unsigned char quote, size_t *len)
 	return (OK);
 }
 
-char	*quote_case(t_cmd *cmd, char *start, size_t *len)
+char	*quote_case(t_mini *data, t_cmd *cmd, char *start, size_t *len)
 {
 	unsigned char	quote;
 	char			*tmp;
@@ -52,12 +52,12 @@ char	*quote_case(t_cmd *cmd, char *start, size_t *len)
 	if (!tmp)
 		return ((void)update_status(ERROR), NULL);
 	if (quote == '\"')
-		tmp = expand_content(tmp, last_token(cmd->token));
+		tmp = expand_content(data, tmp, last_token(cmd->token));
 	(*len)++;
 	return (tmp);
 }
 
-char	*special_case(t_cmd *cmd, char *start, size_t *len)
+char	*special_case(t_mini *data, t_cmd *cmd, char *start, size_t *len)
 {
 	char	*tmp;
 
@@ -65,24 +65,22 @@ char	*special_case(t_cmd *cmd, char *start, size_t *len)
 	while (start[*len]
 		&& (!is_spacetab(start[*len]) && !is_quote(start[*len])))
 		(*len)++;
-	tmp = expand_content(ft_substr(start, 0, *len), last_token(cmd->token));
+	tmp = expand_content(data, ft_substr(start, 0, *len),
+			last_token(cmd->token));
 	return (tmp);
 }
 
-char	*check_cases(t_cmd *cmd, t_token *new, char **start, size_t *len)
+char	*check_cases(t_mini *data, t_cmd *cmd, char **start, size_t *len)
 {
 	char	*tmp;
 
-	if (!cmd || !new || !start || !*start)
+	if (!data || !cmd || !start || !*start)
 		return ((void)update_status(ERROR), NULL);
 	tmp = NULL;
 	if (is_quote(*start[*len]))
-	{
-		new->flag = true;
-		tmp = quote_case(cmd, *start, len);
-	}
+		tmp = quote_case(data, cmd, *start, len);
 	else if (is_special(*start))
-		tmp = special_case(cmd, *start, len);
+		tmp = special_case(data, cmd, *start, len);
 	else if (is_redir(*start))
 		tmp = get_redir(start, len);
 	else

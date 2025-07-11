@@ -49,7 +49,6 @@ static void	set_exit_code(t_token *token)
 
 int	ft_exit(t_mini *data, t_token *token)
 {
-	write(STDOUT_FILENO, "exit\n", 6);
 	token = token->next;
 	if (token && token->type == ARG)
 	{
@@ -64,8 +63,11 @@ int	ft_exit(t_mini *data, t_token *token)
 		}
 		set_exit_code(token);
 	}
+	if (getpid() != data->pid)
+		return (OK);
 	free_all(data, true);
 	rl_clear_history();
 	update_status(g_status);
+	write(STDOUT_FILENO, "exit\n", 6);
 	exit(g_status);
 }

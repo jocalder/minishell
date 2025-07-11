@@ -6,7 +6,7 @@ CLEAR	=	\r\033[K
 NAME = minishell
 
 
-CC = cc
+CC = gcc -g -fsanitize=address
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -I /opt/homebrew/opt/readline/include
 CFLAGS += -I libft
@@ -41,7 +41,8 @@ SRCS = 	src/main.c						\
 		src/ft_export.c					\
 		src/ft_unset.c					\
 		src/ft_exit.c					\
-		src/vars_utils.c				\
+		src/vars_utils1.c				\
+		src/vars_utils2.c				\
 		src/bools_utils1.c				\
 		src/bools_utils2.c				\
 		src/write_utils.c				\

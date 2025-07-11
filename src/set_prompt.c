@@ -1,5 +1,23 @@
 #include "minishell.h"
 
+static void	mini_user(t_prompt **prompt)
+{
+	char	*tmp;
+	size_t	len;
+
+	if (!prompt || !*prompt)
+		return ;
+	tmp = (*prompt)->cwd;
+	tmp++;
+	while (*tmp && *tmp != '/')
+		tmp++;
+	tmp++;
+	len = 1;
+	while (tmp[len] && tmp[len] != '/')
+		len++;
+	(*prompt)->user = ft_substr(tmp, 0, len);
+}
+
 static char	*path_empty(char *path, char *home)
 {
 	char	*new_path;
@@ -62,28 +80,11 @@ static void	join_prompt(char *prompt, char *user, char *display)
 	ft_strcpy(prompt, "$ ");
 }
 
-static void	mini_user(t_prompt **prompt)
-{
-	char	*tmp;
-	size_t	len;
-
-	if (!prompt || !*prompt)
-		return ;
-	tmp = (*prompt)->cwd;
-	tmp++;
-	while (*tmp && *tmp != '/')
-		tmp++;
-	tmp++;
-	len = 1;
-	while (tmp[len] && tmp[len] != '/')
-		len++;
-	(*prompt)->user = ft_substr(tmp, 0, len);
-}
-
 int	set_prompt(t_prompt *prompt, char **envp)
 {
 	if (!prompt)
 		return (update_status(ERROR));
+	free_prompt(&prompt, false);
 	prompt->cwd = getcwd(NULL, 0);
 	if (!prompt->cwd)
 		return (update_status(ERROR));

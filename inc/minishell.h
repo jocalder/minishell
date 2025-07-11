@@ -47,6 +47,7 @@ typedef enum e_token_type
 	HEREDOC,
 	ENDOFFILE,
 	FILE_PATH,
+	VAR,
 }	t_token_type;
 
 typedef struct s_token
@@ -110,13 +111,13 @@ enum	e_status
 
 extern int	g_status;
 
-void	init_data(t_mini *data, char **argv, char **envp);
+void	init_data(t_mini *data, char **envp);
 void	wait_signal(int i);
 void	interactive_mode(t_mini *data);
 void	command_mode(t_mini *data, char **argv, int argc);
 
 /*init_environment*/
-int		mini_envp(t_mini *data, char **argv);
+int		mini_envp(t_mini *data);
 char	**envpdup(char **envp);
 int		update_envp(t_mini *data);
 
@@ -159,23 +160,23 @@ int		ft_unset(t_mini *data, t_token *token);
 int		ft_exit(t_mini *data, t_token *token);
 
 /*split_input*/
-int		split_input(t_input *input);
+int		split_input(t_mini *data, t_input *input);
 int		validate_pipe(t_input *input, char **str);
 int		new_cmd(t_cmd **new, char *start, size_t *len);
 void	append_cmd(t_input *input, t_cmd **new, char *value);
 
 /*split_cmd*/
-int		split_cmd(t_cmd **cmd);
+int		split_cmd(t_mini *data, t_cmd **cmd);
 void	append_token(t_cmd *cmd, t_token **new, int type);
-int		get_type(t_token *token, char *value, bool check);
+int		get_type(t_cmd *cmd, t_token *token, char *value, bool check);
 t_token	*last_token(t_token *token);
 
 /*new_token*/
-int		new_token(t_cmd *cmd, t_token **new, char **start);
-char	*check_cases(t_cmd *cmd, t_token *new, char **start, size_t *len);
-char	*quote_case(t_cmd *cmd, char *start, size_t *len);
-char	*special_case(t_cmd *cmd, char *start, size_t *len);
-char	*expand_content(char *value, t_token *last);
+int		new_token(t_mini *data, t_cmd *cmd, t_token **new, char **start);
+char	*check_cases(t_mini *data, t_cmd *cmd, char **start, size_t *len);
+char	*quote_case(t_mini *data, t_cmd *cmd, char *start, size_t *len);
+char	*special_case(t_mini *data, t_cmd *cmd, char *start, size_t *len);
+char	*expand_content(t_mini *data, char *value, t_token *last);
 char	*get_redir(char **s, size_t *len);
 
 /*status_utils*/
@@ -189,6 +190,8 @@ int		count_str(char **str);
 int		set_new_var(char ***ptr, char *var, int i);
 int		set_existing_var(char ***ptr, char *var);
 int		unset_var(char ***ptr, char *var, int len);
+int		set_local_var(t_mini *data, t_token *token);
+int		local_case(t_mini *data, t_token *token, char *tmp);
 
 /*bools utils*/
 bool	is_spacetab(int c);
@@ -201,6 +204,7 @@ bool	is_option(char *value);
 bool	is_validate_id(char *id);
 bool	is_existing_var(char **ptr, char *var);
 bool	is_same_var(char *compared, char *var);
+bool	has_cmd_type(t_token *token);
 
 /*write_utils*/
 void	w_openquote(unsigned char quote);

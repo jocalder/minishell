@@ -505,6 +505,8 @@ static char	*token_type_str(int type)
 		return ("ENDOFFILE");
 	else if (type == FILE_PATH)
 		return ("FILE_PATH");
+	else if (type == VAR)
+		return ("VAR");
 	else
 		return ("UNKNOWN");
 }

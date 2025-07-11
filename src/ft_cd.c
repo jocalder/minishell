@@ -34,7 +34,7 @@ static int	handler_switch(t_mini *data, char *arg)
 	path = NULL;
 	if ((!arg || !*arg) || (arg && *arg == '~'))
 	{
-		path = mini_getenv("HOME", data->envp);
+		path = mini_getenv("HOME", data->exp_vs);
 		if (!path)
 		{
 			write(STDOUT_FILENO, "minishell: cd: HOME not set\n", 29);

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	new_token(t_cmd *cmd, t_token **new, char **start)
+int	new_token(t_mini *data, t_cmd *cmd, t_token **new, char **start)
 {
 	char			*tmp;
 	size_t			len;
@@ -13,7 +13,9 @@ int	new_token(t_cmd *cmd, t_token **new, char **start)
 		tmp = NULL;
 		if (is_redir(*start) && ft_strncmp((*new)->value, "", 1) != 0)
 			break ;
-		tmp = check_cases(cmd, *new, start, &len);
+		if (is_quote(*start[len]))
+			(*new)->flag = true;
+		tmp = check_cases(data, cmd, start, &len);
 		if (!tmp)
 			return (g_status);
 		(*new)->value = ft_strjoin((*new)->value, tmp);
@@ -37,13 +39,15 @@ t_token	*last_token(t_token *token)
 	return (last);
 }
 
-/*Might need a new type for VAR*/
-int	get_type(t_token *token, char *value, bool check)
+int	get_type(t_cmd *cmd, t_token *token, char *value, bool check)
 {
 	t_token	*last;
 
 	last = last_token(token);
-	if (!last && !is_redir(value))
+	if (cmd && !has_cmd_type(cmd->token)
+		&& (is_validate_id(value) && ft_strchr(value, '=')))
+		return (VAR);
+	else if ((!last || (last && last->type == VAR)) && !is_redir(value))
 		return (CMD);
 	else if (last && last->type == HEREDOC)
 		return (ENDOFFILE);

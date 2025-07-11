@@ -6,7 +6,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_mini	data;
 
-	init_data(&data, argv, envp);
+	init_data(&data, envp);
 	if (isatty(STDIN_FILENO) && argc == 1)
 		interactive_mode(&data);
 	else
