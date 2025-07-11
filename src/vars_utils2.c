@@ -69,12 +69,15 @@ int	set_local_var(t_mini *data, t_token *token)
 		return (OK);
 	while (cur && cur->type == VAR)
 	{
-		if (is_existing_var(data->exp_vs, token->value))
-			set_existing_var(&data->exp_vs, token->value);
-		if (is_existing_var(data->vars, token->value))
-			set_existing_var(&data->vars, token->value);
-		else
+		if (!is_existing_var(data->vars, token->value))
 			set_new_var(&data->vars, token->value, count_str(data->vars));
+		else if (is_existing_var(data->exp_vs, token->value))
+		{
+			unset_var(data->vars, token->value, count_str(data->vars));
+			set_existing_var(&data->exp_vs, token->value);
+		}
+		else
+			set_existing_var(&data->vars, token->value);
 		cur = cur->next;
 	}
 	return (update_status(OK));

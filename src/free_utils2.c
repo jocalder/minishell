@@ -6,8 +6,7 @@ static void	update_underscore(t_mini *data)
 	t_token	*token;
 	char	*tmp;
 
-	if (!data || !data->input || !data->input->cmd
-		|| g_status != OK)
+	if (!data || !data->input || !data->input->cmd)
 		return ;
 	cmd = data->input->cmd;
 	while (cmd->next)

@@ -19,7 +19,7 @@ int	validate_pipe(t_input *input, char **str)
 {
 	while (**str && is_spacetab(**str))
 		(*str)++;
-	if (**str && **str != '|')
+	if ((**str && **str != '|') || !**str)
 		return (OK);
 	input->pipes++;
 	if (count_cmd(input->cmd) < input->pipes)
@@ -74,8 +74,8 @@ void	append_cmd(t_input *input, t_cmd **new, char *value)
 {
 	t_cmd	*cur;
 
-	if (!input || !*new)
-		return ;
+	if (!input || !new || !*new)
+		return (free(value));
 	(*new)->value = value;
 	(*new)->token = NULL;
 	(*new)->next = NULL;

@@ -6,7 +6,7 @@ int	split_cmd(t_mini *data, t_cmd **cmd)
 	char	*start;
 	int		type;
 
-	if (!cmd || !*cmd)
+	if (!data || !cmd || !*cmd)
 		return (update_status(ERROR));
 	start = (*cmd)->value;
 	while (*start)
@@ -50,8 +50,9 @@ int	split_input(t_mini *data, t_input *input)
 				return (g_status);
 		}
 		append_cmd(input, &new, ft_substr(start, 0, len));
-		if (split_cmd(data, &new) != OK)
-			return (g_status);
+		if (new)
+			if (split_cmd(data, &new) != OK)
+				return (g_status);
 		start += len;
 	}
 	return (OK);
