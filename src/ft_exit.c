@@ -63,7 +63,11 @@ int	ft_exit(t_mini *data, t_token *token)
 		}
 		set_exit_code(token);
 	}
-	if (getpid() != data->pid)
+	/*choose one*/
+	// if (getpid() != data->pid)
+	// 	return (OK);
+	/*choose two*/
+	if (data->input->pipes != 0)
 		return (OK);
 	free_all(data, true);
 	rl_clear_history();
