@@ -65,7 +65,8 @@ char	*special_case(t_mini *data, t_cmd *cmd, char *start, size_t *len)
 	while (start[*len]
 		&& (!is_spacetab(start[*len]) && !is_quote(start[*len])))
 		(*len)++;
-	tmp = expand_content(data, ft_substr(start, 0, *len), last_token(cmd->token));
+	tmp = expand_content(data, ft_substr(start, 0, *len),
+			last_token(cmd->token));
 	return (tmp);
 }
 

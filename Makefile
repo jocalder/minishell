@@ -41,8 +41,8 @@ SRCS = 	src/main.c						\
 		src/ft_export.c					\
 		src/ft_unset.c					\
 		src/ft_exit.c					\
-		src/vars_utils.c				\
-		src/set_local_var.c				\
+		src/vars_utils1.c				\
+		src/vars_utils2.c				\
 		src/bools_utils1.c				\
 		src/bools_utils2.c				\
 		src/write_utils.c				\

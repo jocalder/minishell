@@ -50,7 +50,7 @@ int	set_new_var(char ***ptr, char *new_var, int i)
 
 int	set_existing_var(char ***ptr, char *var)
 {
-	int		i;
+	int	i;
 
 	if (!ft_strchr(var, '='))
 		return (OK);
@@ -69,39 +69,4 @@ int	set_existing_var(char ***ptr, char *var)
 		i++;
 	}
 	return (ERROR);
-}
-
-int	unset_var(char ***ptr, char *var, int len)
-{
-	int		i;
-	int		j;
-	char	**tmp;
-
-	if (!ptr || !*ptr || !var)
-		return (update_status(ERROR));
-	tmp = ft_calloc(len, sizeof(char *));
-	if (!tmp)
-		return (update_status(ERROR));
-	i = 0;
-	j = 0;
-	while ((*ptr)[i])
-	{
-		if (!is_same_var((*ptr)[i], var))
-		{
-			tmp[j] = ft_strdup((*ptr)[i]);
-			if (!tmp[j++])
-			{
-				free_array(tmp, -1);
-				while ((*ptr)[i])
-					free((*ptr)[i++]);
-				return (update_status(ERROR));
-			}
-		}
-		free((*ptr)[i]);
-		i++;
-	}
-	tmp[j] = NULL;
-	free(*ptr);
-	*ptr = tmp;
-	return (OK);
 }
