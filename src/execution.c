@@ -17,6 +17,8 @@ static int	wait_all(void)
 		else if (WIFSIGNALED(status))
 			last_status = 128 + WTERMSIG(status);
 		pid = wait(&status);
+		if (last_status == 141)
+			last_status = 0;
 	}
 	return (update_status(last_status));
 }
@@ -117,9 +119,8 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 			if (cmd->fd_out != -1)
 			{
 				dup2(cmd->fd_out, STDOUT_FILENO);
-				close(cmd->fd_out);	
+				close(cmd->fd_out);
 			}
-			close(cmd->fd_out);
 			close_all_fds(data, &cmd);
 			execute_builtin(data, cmd);
 			if (data->prev_fd != -1 && data->prev_fd > 2)
