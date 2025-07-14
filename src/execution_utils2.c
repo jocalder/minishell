@@ -31,4 +31,29 @@ void	check_pid(t_mini *data, t_cmd *cmd, char **envp)
 		child_proccess(data, cmd, envp);
 }
 
+int	builtin_and_redir(t_mini *data, t_cmd *cmd)
+{
+	data->stdin = dup(0);
+	data->stdout = dup(1);
+	if (cmd->fd_in != -1)
+	{
+		dup2(cmd->fd_in, STDIN_FILENO);
+		close(cmd->fd_in);
+	}
+	if (cmd->fd_out != -1)
+	{
+		dup2(cmd->fd_out, STDOUT_FILENO);
+		close(cmd->fd_out);
+	}
+	close_all_fds(data, &cmd);
+	execute_builtin(data, cmd);
+	dup2(data->stdin, STDIN_FILENO);
+	close(data->stdin);
+	dup2(data->stdout, STDOUT_FILENO);
+	close(data->stdout);
+	if (data->prev_fd != -1 && data->prev_fd > 2)
+		data->prev_fd = -1;
+	return (g_status);
+}
+
 

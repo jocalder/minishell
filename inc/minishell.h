@@ -97,6 +97,7 @@ typedef struct minishell
 	pid_t		pid;
 	int			prev_fd;
 	int			stdout;
+	int			stdin;
 }	t_mini;
 
 enum	e_status
@@ -149,6 +150,7 @@ void	handler_dup(t_mini *data, t_cmd **cmd);
 int		open_heredoc(char *delimiter);
 
 int		execute_builtin(t_mini *data, t_cmd *cmd);
+int		builtin_and_redir(t_mini *data, t_cmd *cmd);
 
 /*built-ins*/
 int		ft_echo(t_token *token);
