@@ -41,11 +41,12 @@ static void	create_pipes(t_cmd **cmd)
 	}
 }
 
-int	redir_in(t_token *token)
+int	redir_in(t_cmd *cmd, t_token *token)
 {
 	int	fd;
 
 	fd = -1;
+	(void)cmd;
 	while (token)
 	{
 		if (token->type == HEREDOC || token->type == REDIR_IN)
@@ -54,7 +55,11 @@ int	redir_in(t_token *token)
 			{
 				if (fd != -1)
 					close(fd);
-				return (write(2, ERROR4, ft_strlen(ERROR4)), SYNTAX);
+				if (cmd->next)
+					write(2, ERROR1, ft_strlen(ERROR1));
+				else
+					write(2, ERROR4, ft_strlen(ERROR4));
+				return (SYNTAX);
 			}
 			if (fd != -1)
 				close(fd);
@@ -71,16 +76,15 @@ int	redir_in(t_token *token)
 		}
 		token = token->next;
 	}
-	// printf("fd: %d\n", fd);
-	// printf("g_status: %d\n", g_status);
 	return (fd);
 }
 
-int	redir_out(t_token *token)
+int	redir_out(t_cmd *cmd, t_token *token)
 {
 	int	fd;
 
 	fd = -1;
+	(void)cmd;
 	while (token)
 	{
 		if (token->type == APPEND || token->type == REDIR_OUT)
