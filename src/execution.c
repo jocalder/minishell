@@ -71,6 +71,8 @@ int	redir_in(t_token *token)
 		}
 		token = token->next;
 	}
+	// printf("fd: %d\n", fd);
+	// printf("g_status: %d\n", g_status);
 	return (fd);
 }
 

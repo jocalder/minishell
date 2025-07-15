@@ -21,7 +21,7 @@ static void	init_export_vars(t_mini *data, char **envp)
 			exit (ERROR);
 		data->exp_vs = envpdup(data->envp);
 	}
-	if (update_envp(data) != OK)
+	if (update_shlvl(data) != OK)
 		exit_free(data, ERROR);
 	if (!data->exp_vs)
 		exit_free(data, ERROR);

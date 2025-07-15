@@ -44,15 +44,14 @@ int	get_type(t_cmd *cmd, t_token *token, char *value, bool check)
 	t_token	*last;
 
 	last = last_token(token);
-	if (cmd && !has_cmd_type(cmd->token)
+	if (cmd && !has_type(cmd->token, CMD)
 		&& (is_validate_id(value) && ft_strchr(value, '=')))
 		return (VAR);
 	else if ((!last || (last && last->type == VAR)) && !is_redir(value))
 		return (CMD);
 	else if (last && last->type == HEREDOC)
 		return (ENDOFFILE);
-	else if (last && last->prev
-		&& (last->type == APPEND || last->type == REDIR_IN
+	else if (last && (last->type == APPEND || last->type == REDIR_IN
 			|| last->type == REDIR_OUT))
 		return (FILE_PATH);
 	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0 && !check)

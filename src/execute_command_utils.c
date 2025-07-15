@@ -31,6 +31,8 @@ static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 		return (absolute_path(cmd));
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
+	if (!envp[i])
+		return (w_not_such(cmd->token->value), update_status(SUCH), NULL);
 	directories = ft_split(envp[i], ':');
 	i = -1;
 	while (directories[++i])
@@ -41,8 +43,7 @@ static char	*find_command_path(char	*command, char **envp, t_cmd *cmd)
 			return (free_array(directories, i), full_path);
 		free(full_path);
 	}
-	free_array(directories, i - 1);
-	return (NULL);
+	return (free_array(directories, i - 1), NULL);
 }
 
 static int	count_args(t_token *token)
@@ -82,21 +83,17 @@ int	execute_command(t_cmd *cmd, char **envp)
 {
 	char	**command;
 	char	*path;
-	int		i;
 	int		fd;
 
-	i = 0;
 	fd = 3;
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
 	if (!path)
 	{
-		write(STDERR_FILENO, "minishell: ", 12);
-		while (command[0][i])
-			write(STDERR_FILENO, &command[0][i++], 1);
-		write(STDERR_FILENO, ": command not found\n", 21);
-		free_array(command, -1);
-		return (NOTFOUND);
+		if (g_status == SUCH)
+			return (free_array(command, -1), update_status(ERROR_FD));
+		w_command_not_found(*command);
+		return (free_array(command, -1), NOTFOUND);
 	}
 	while (fd < 1024)
 		close(fd++);

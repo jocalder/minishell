@@ -25,6 +25,14 @@ static void	update_underscore(t_mini *data)
 	free(tmp);
 }
 
+static void	update_envp(t_mini *data)
+{
+	free_array(data->envp, -1);
+	data->envp = envpdup(data->exp_vs);
+	if (!data->envp)
+		update_status(ERROR);
+}
+
 void	free_envp(t_mini *data, bool check)
 {
 	if (!data)
@@ -32,6 +40,7 @@ void	free_envp(t_mini *data, bool check)
 	if (!check)
 	{
 		update_underscore(data);
+		update_envp(data);
 		return ;
 	}
 	if (data->envp)

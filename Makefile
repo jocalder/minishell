@@ -45,7 +45,8 @@ SRCS = 	src/main.c						\
 		src/vars_utils2.c				\
 		src/bools_utils1.c				\
 		src/bools_utils2.c				\
-		src/write_utils.c				\
+		src/write_utils1.c				\
+		src/write_utils2.c				\
 		src/status_utils.c				\
 		src/free_utils1.c				\
 		src/free_utils2.c				\
