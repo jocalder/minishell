@@ -12,6 +12,7 @@ void	close_father_fds(t_mini *data, t_cmd **cmd)
 		close((*cmd)->pipe_fd[1]);
 	if (data->prev_fd != -1 && data->prev_fd > 2)
 		close(data->prev_fd);
+	printf("fd_in child after close in father: %d\n", (*cmd)->fd_in);
 }
 
 void	handle_redirections(t_cmd **cmd)
@@ -23,13 +24,16 @@ void	handle_redirections(t_cmd **cmd)
 int	check_fd_errors(t_cmd *cmd)
 {
 	return (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD
-		|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX);
+		|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX
+		|| g_status == CTRC);
 }
 
 int	handle_fd_errors(t_cmd **cmd)
 {
 	if ((*cmd)->fd_in == ERROR_FD || (*cmd)->fd_out == ERROR_FD)
 		return (update_status(ERROR_FD));
+	else if (g_status == CTRC)
+		return (g_status);
 	else
 		return (update_status(SYNTAX));
 }

@@ -59,7 +59,11 @@ int	redir_in(t_token *token)
 			if (fd != -1)
 				close(fd);
 			if (token->type == HEREDOC)
+			{
 				fd = open_heredoc(token->next->value);
+				if (g_status == CTRC)
+					break ;
+			}
 			else
 				fd = open((token->next->value), O_RDONLY);
 			if (fd < 0)
@@ -123,7 +127,5 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 			clean_and_close(data, &cmd);
 		}
 	}
-	if (data->prev_fd != -1)
-		close(data->prev_fd);
 	return (wait_all());
 }
