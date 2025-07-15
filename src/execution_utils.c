@@ -12,7 +12,6 @@ void	close_father_fds(t_mini *data, t_cmd **cmd)
 		close((*cmd)->pipe_fd[1]);
 	if (data->prev_fd != -1 && data->prev_fd > 2)
 		close(data->prev_fd);
-	printf("fd_in child after close in father: %d\n", (*cmd)->fd_in);
 }
 
 void	handle_redirections(t_cmd **cmd)
