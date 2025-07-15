@@ -23,13 +23,16 @@ void	handle_redirections(t_cmd **cmd)
 int	check_fd_errors(t_cmd *cmd)
 {
 	return (cmd->fd_in == ERROR_FD || cmd->fd_out == ERROR_FD
-		|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX);
+		|| cmd->fd_in == SYNTAX || cmd->fd_out == SYNTAX
+		|| g_status == CTRC);
 }
 
 int	handle_fd_errors(t_cmd **cmd)
 {
 	if ((*cmd)->fd_in == ERROR_FD || (*cmd)->fd_out == ERROR_FD)
 		return (update_status(ERROR_FD));
+	else if (g_status == CTRC)
+		return (g_status);
 	else
 		return (update_status(SYNTAX));
 }

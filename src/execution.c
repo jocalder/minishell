@@ -59,7 +59,11 @@ int	redir_in(t_token *token)
 			if (fd != -1)
 				close(fd);
 			if (token->type == HEREDOC)
+			{
 				fd = open_heredoc(token->next->value);
+				if (g_status == CTRC)
+					break ;
+			}
 			else
 				fd = open((token->next->value), O_RDONLY);
 			if (fd < 0)
@@ -67,6 +71,8 @@ int	redir_in(t_token *token)
 		}
 		token = token->next;
 	}
+	// printf("fd: %d\n", fd);
+	// printf("g_status: %d\n", g_status);
 	return (fd);
 }
 
