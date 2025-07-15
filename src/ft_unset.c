@@ -1,13 +1,5 @@
 #include "minishell.h"
 
-static void	update_envp(t_mini *data)
-{
-	free_array(data->envp, -1);
-	data->envp = envpdup(data->exp_vs);
-	if (!data->envp)
-		update_status(ERROR);
-}
-
 int	ft_unset(t_mini *data, t_token *token)
 {
 	char	*builtin;
@@ -31,7 +23,6 @@ int	ft_unset(t_mini *data, t_token *token)
 				count_str(data->exp_vs));
 		if (is_existing_var(data->vars, token->value))
 			unset_var(&data->vars, token->value, count_str(data->vars));
-		update_envp(data);
 		token = token->next;
 	}
 	return (g_status);
