@@ -51,7 +51,7 @@ char	**envpdup(char **envp)
 	return (cpy);
 }
 
-int	update_envp(t_mini *data)
+int	update_shlvl(t_mini *data)
 {
 	int		i;
 	int		lvl;

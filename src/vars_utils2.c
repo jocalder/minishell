@@ -41,13 +41,13 @@ int	unset_var(char ***ptr, char *var, int len)
 	return (OK);
 }
 
-bool	has_cmd_type(t_token *token)
+bool	has_type(t_token *token, t_token_type type)
 {
-	if (!token)
+	if (!token || type < 0 || type > 8)
 		return (false);
 	while (token)
 	{
-		if (token->type == CMD)
+		if (token->type == type)
 			return (true);
 		token = token->next;
 	}

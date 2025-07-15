@@ -121,7 +121,7 @@ void	command_mode(t_mini *data, char **argv, int argc);
 /*init_environment*/
 int		mini_envp(t_mini *data);
 char	**envpdup(char **envp);
-int		update_envp(t_mini *data);
+int		update_shlvl(t_mini *data);
 
 /*set_structs*/
 int		set_prompt(t_prompt *promt, char **envp);
@@ -206,8 +206,7 @@ bool	is_option(char *value);
 bool	is_validate_id(char *id);
 bool	is_existing_var(char **ptr, char *var);
 bool	is_same_var(char *compared, char *var);
-bool	has_cmd_type(t_token *token);
-
+bool	has_type(t_token *token, t_token_type type);
 /*write_utils*/
 void	w_openquote(unsigned char quote);
 void	w_unsupported(char *str);
