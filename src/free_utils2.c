@@ -12,6 +12,8 @@ static void	update_underscore(t_mini *data)
 	while (cmd->next)
 		cmd = cmd->next;
 	token = cmd->token;
+	if (!token)
+		return ;
 	while (token->next
 		&& (token->next->type == CMD || token->next->type == ARG))
 		token = token->next;

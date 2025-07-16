@@ -3,22 +3,25 @@
 static void	core_heredoc(t_mini *data, t_token *token, int pipe_fd[2])
 {
 	char	*line;
+	size_t	len;
 
+	len = ft_strlen(token->value);
 	wait_signal(2);
 	close(pipe_fd[0]);
 	while (1)
 	{
 		write(1, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
-		if (!token->flag)
-			line = expand_content(data, line, NULL);
-		if ((!line || ft_strncmp(line, token->value,
-					ft_strlen(token->value)) == 0)
-			&& line[ft_strlen(token->value)] == '\n')
+		if (((!line
+					|| (!*line || (ft_strncmp(line, token->value, len) == 0
+							&& line[len] == '\n')))))
 		{
-			free(line);
+			if (line)
+				free(line);
 			break ;
 		}
+		if (!token->flag)
+			line = expand_content(data, line, NULL);
 		write(pipe_fd[1], line, ft_strlen(line));
 		free(line);
 	}

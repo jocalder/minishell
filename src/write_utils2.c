@@ -32,6 +32,7 @@ void	w_parse_execution(t_cmd *cmd)
 				{
 					if (cur->next)
 						write(STDERR_FILENO, ERROR1, ft_strlen(ERROR1));
+					return ;
 				}
 			}
 			cur->token = cur->token->next;
