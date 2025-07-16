@@ -194,6 +194,7 @@ int		set_new_var(char ***ptr, char *var, int i);
 int		set_existing_var(char ***ptr, char *var);
 int		unset_var(char ***ptr, char *var, int len);
 bool	set_local_var(t_mini *data, t_cmd **cmd, t_token *token);
+bool	has_type(t_token *token, t_token_type type);
 int		local_case(t_mini *data, t_token *token, char *tmp);
 
 /*bools utils*/
@@ -207,7 +208,6 @@ bool	is_option(char *value);
 bool	is_validate_id(char *id);
 bool	is_existing_var(char **ptr, char *var);
 bool	is_same_var(char *compared, char *var);
-bool	has_type(t_token *token, t_token_type type);
 
 /*write_utils*/
 void	w_openquote(unsigned char quote);
