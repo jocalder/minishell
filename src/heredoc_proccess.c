@@ -1,15 +1,20 @@
 #include "minishell.h"
 
-static void	core_heredoc(char *line, char *delimiter, int large, int pipe_fd[2])
+static void	core_heredoc(t_mini *data, t_token *token, int pipe_fd[2])
 {
+	char	*line;
+
 	wait_signal(2);
 	close(pipe_fd[0]);
 	while (1)
 	{
 		write(1, "> ", 2);
-		line = get_next_line(0);
-		if ((!line || ft_strncmp(line, delimiter, large) == 0)
-			&& line[ft_strlen(delimiter)] == '\n')
+		line = get_next_line(STDIN_FILENO);
+		if (!token->flag)
+			line = expand_content(data, line, NULL);
+		if ((!line || ft_strncmp(line, token->value,
+				ft_strlen(token->value)) == 0)
+			&& line[ft_strlen(token->value)] == '\n')
 		{
 			free(line);
 			break ;
@@ -21,24 +26,20 @@ static void	core_heredoc(char *line, char *delimiter, int large, int pipe_fd[2])
 	exit (0);
 }
 
-int	open_heredoc(char *delimiter)
+int	open_heredoc(t_mini *data, t_token *token)
 {
 	int		pipe_fd[2];
-	char	*line;
-	int		large;
 	pid_t	pid;
 	int		status;
 
 	status = 0;
-	line = NULL;
-	large = ft_strlen(delimiter);
 	if (pipe(pipe_fd) < 0)
 		return (close(pipe_fd[0]), close(pipe_fd[1]), update_status(ERROR));
 	pid = fork();
 	if (pid < 0)
 		return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
 	if (pid == 0)
-		core_heredoc(line, delimiter, large, pipe_fd);
+		core_heredoc(data, token, pipe_fd);
 	if (pid > 0)
 	{
 		close(pipe_fd[1]);
@@ -47,6 +48,5 @@ int	open_heredoc(char *delimiter)
 			return (close(pipe_fd[0]), -1);
 		return (pipe_fd[0]);
 	}
-	//here printf
 	return (-1);
 }

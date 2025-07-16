@@ -102,8 +102,7 @@ typedef struct minishell
 
 enum	e_status
 {
-	SUCH = -4,
-	HEREDOC_CTRLC = -3,
+	SUCH = -3,
 	ERROR_FD = -2,
 	ERROR = -1,
 	SYNTAX	= 2,
@@ -130,8 +129,8 @@ int		set_input(t_mini *data);
 
 /*execution*/
 int		handler_execution(t_mini *data, t_cmd *cmd, char **envp);
-void	handle_redirections(t_cmd **cmd);
-int		redir_in(t_cmd *cmd, t_token *token);
+void	handle_redirections(t_mini *data, t_cmd **cmd);
+int		redir_in(t_mini *data, t_cmd *cmd, t_token *token);
 int		redir_out(t_cmd *cmd, t_token *token);
 int		open_fd(t_token *token);
 int		check_fd_errors(t_cmd *cmd);
@@ -148,7 +147,7 @@ void	close_father_fds(t_mini *data, t_cmd **cmd);
 void	write_error(t_token *token);
 void	handler_dup(t_mini *data, t_cmd **cmd);
 
-int		open_heredoc(char *delimiter);
+int		open_heredoc(t_mini *data, t_token *token);
 
 int		execute_builtin(t_mini *data, t_cmd *cmd);
 int		builtin_and_redir(t_mini *data, t_cmd *cmd);

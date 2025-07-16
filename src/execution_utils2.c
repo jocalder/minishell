@@ -56,5 +56,3 @@ int	builtin_and_redir(t_mini *data, t_cmd *cmd)
 		data->prev_fd = -1;
 	return (g_status);
 }
-
-

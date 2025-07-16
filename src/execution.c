@@ -41,7 +41,7 @@ static void	create_pipes(t_cmd **cmd)
 	}
 }
 
-int	redir_in(t_cmd *cmd, t_token *token)
+int	redir_in(t_mini *data, t_cmd *cmd, t_token *token)
 {
 	int	fd;
 
@@ -62,7 +62,7 @@ int	redir_in(t_cmd *cmd, t_token *token)
 				close(fd);
 			if (token->type == HEREDOC)
 			{
-				fd = open_heredoc(token->next->value);
+				fd = open_heredoc(data, token->next);
 				if (g_status == CTRC)
 					break ;
 			}
@@ -112,7 +112,7 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 	{
 		if (set_local_var(data, &cmd, cmd->token))
 			continue ;
-		handle_redirections(&cmd);
+		handle_redirections(data, &cmd);
 		if (check_fd_errors(cmd))
 		{
 			close_all_fds(data, &cmd);
