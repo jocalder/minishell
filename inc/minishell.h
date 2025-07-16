@@ -225,4 +225,7 @@ void	free_envp(t_mini *data, bool check);
 void	free_prompt(t_prompt **prompt, bool check);
 void	free_input(t_input **input, bool check);
 
+/*delete*/
+void	printf_input(t_input *input);
+
 #endif
