@@ -13,7 +13,7 @@ static void	core_heredoc(t_mini *data, t_token *token, int pipe_fd[2])
 		if (!token->flag)
 			line = expand_content(data, line, NULL);
 		if ((!line || ft_strncmp(line, token->value,
-				ft_strlen(token->value)) == 0)
+					ft_strlen(token->value)) == 0)
 			&& line[ft_strlen(token->value)] == '\n')
 		{
 			free(line);
