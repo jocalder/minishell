@@ -56,3 +56,12 @@ int	builtin_and_redir(t_mini *data, t_cmd *cmd)
 		data->prev_fd = -1;
 	return (g_status);
 }
+
+int	redir_in_case(t_cmd *cmd , int *fd)
+{
+	if (*fd != -1)
+		close(*fd);
+	if (!cmd->next)
+		write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
+	return (SYNTAX);
+}

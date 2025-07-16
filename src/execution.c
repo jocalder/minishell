@@ -51,13 +51,7 @@ int	redir_in(t_mini *data, t_cmd *cmd, t_token *token)
 		if (token->type == HEREDOC || token->type == REDIR_IN)
 		{
 			if (!token->next || !token->next->value)
-			{
-				if (fd != -1)
-					close(fd);
-				if (!cmd->next)
-					write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
-				return (SYNTAX);
-			}
+				return (redir_in_case(cmd, &fd));
 			if (fd != -1)
 				close(fd);
 			if (token->type == HEREDOC)
