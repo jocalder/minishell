@@ -16,6 +16,29 @@ void	close_father_fds(t_mini *data, t_cmd **cmd)
 
 void	handle_redirections(t_cmd **cmd)
 {
+	t_cmd 	*cur;
+	t_token	*head;
+
+	cur = *cmd;
+	while (cur)
+	{
+		head = cur->token;
+		while (cur->token)
+		{
+			if (cur->token->type == APPEND || cur->token->type == REDIR_OUT
+			|| cur->token->type == HEREDOC || cur->token->type == REDIR_IN)
+			{
+				if (!cur->token->next || !cur->token->next->value)
+				{
+					if (cur->next)
+						write(2, ERROR1, ft_strlen(ERROR1));
+				}
+			}
+			cur->token = cur->token->next;
+		}
+		cur->token = head;
+		cur = cur->next;
+	}
 	(*cmd)->fd_in = redir_in((*cmd), (*cmd)->token);
 	(*cmd)->fd_out = redir_out((*cmd), (*cmd)->token);
 }

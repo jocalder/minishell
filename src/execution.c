@@ -55,10 +55,7 @@ int	redir_in(t_cmd *cmd, t_token *token)
 			{
 				if (fd != -1)
 					close(fd);
-				if (cmd->next)
-					write(2, ERROR1, ft_strlen(ERROR1));
-				else
-					write(2, ERROR4, ft_strlen(ERROR4));
+				write(2, ERROR4, ft_strlen(ERROR4));
 				return (SYNTAX);
 			}
 			if (fd != -1)
@@ -118,10 +115,7 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 		{
 			close_all_fds(data, &cmd);
 			data->prev_fd = -1;
-			if (!cmd->next)
-				return (handle_fd_errors(&cmd));
-			cmd = cmd->next;
-			continue ;
+			return (handle_fd_errors(&cmd));
 		}
 		create_pipes(&cmd);
 		if (is_builtin(cmd->token) && !cmd->next)

@@ -47,6 +47,5 @@ int	open_heredoc(char *delimiter)
 			return (close(pipe_fd[0]), -1);
 		return (pipe_fd[0]);
 	}
-	//here printf
 	return (-1);
 }
