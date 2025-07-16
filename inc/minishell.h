@@ -217,6 +217,7 @@ void	w_builtin_usage(char *builtin, char *invalid_opt);
 void	w_invalid_identifier(char *builtin, char *invalid_id);
 void	w_not_such(char *value);
 void	w_command_not_found(char *value);
+void	w_parse_execution(t_cmd *cmd);
 
 /*free_utils*/
 void	free_all(t_mini *data, bool check);

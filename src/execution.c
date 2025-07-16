@@ -46,7 +46,6 @@ int	redir_in(t_cmd *cmd, t_token *token)
 	int	fd;
 
 	fd = -1;
-	(void)cmd;
 	while (token)
 	{
 		if (token->type == HEREDOC || token->type == REDIR_IN)
@@ -55,10 +54,8 @@ int	redir_in(t_cmd *cmd, t_token *token)
 			{
 				if (fd != -1)
 					close(fd);
-				if (cmd->next)
-					write(2, ERROR1, ft_strlen(ERROR1));
-				else
-					write(2, ERROR4, ft_strlen(ERROR4));
+				if (!cmd->next)
+					write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
 				return (SYNTAX);
 			}
 			if (fd != -1)
@@ -84,14 +81,14 @@ int	redir_out(t_cmd *cmd, t_token *token)
 	int	fd;
 
 	fd = -1;
-	(void)cmd;
 	while (token)
 	{
 		if (token->type == APPEND || token->type == REDIR_OUT)
 		{
 			if (!token->next || !token->next->value)
 			{
-				write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
+				if (!cmd->next)
+					write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
 				return (SYNTAX);
 			}
 			if (fd != -1)
@@ -110,18 +107,16 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 	if (!cmd)
 		return (g_status);
 	wait_signal(1);
+	w_parse_execution(cmd);
 	while (cmd)
 	{
-		set_local_var(data, cmd->token);
+		// set_local_var(data, cmd->token);
 		handle_redirections(&cmd);
 		if (check_fd_errors(cmd))
 		{
 			close_all_fds(data, &cmd);
 			data->prev_fd = -1;
-			if (!cmd->next)
-				return (handle_fd_errors(&cmd));
-			cmd = cmd->next;
-			continue ;
+			return (handle_fd_errors(&cmd));
 		}
 		create_pipes(&cmd);
 		if (is_builtin(cmd->token) && !cmd->next)
