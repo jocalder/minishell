@@ -46,8 +46,8 @@ int	get_type(t_cmd *cmd, t_token *token, char *value, bool check)
 	last = last_token(token);
 	if (cmd && (is_validate_id(value) && ft_strchr(value, '='))
 		&& (!has_type(token, CMD) && !has_type(token, REDIR_IN)
-			&& !has_type(token, HEREDOC) && !has_type(token, REDIR_OUT
-				&& !has_type(token, APPEND))))
+			&& !has_type(token, HEREDOC) && !has_type(token, REDIR_OUT)
+				&& !has_type(token, APPEND)))
 		return (VAR);
 	else if ((!last || (last && last->type == VAR)) && !is_redir(value))
 		return (CMD);
