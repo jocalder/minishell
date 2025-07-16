@@ -110,7 +110,8 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 	w_parse_execution(cmd);
 	while (cmd)
 	{
-		// set_local_var(data, cmd->token);
+		if (set_local_var(data, &cmd, cmd->token))
+			continue ;
 		handle_redirections(&cmd);
 		if (check_fd_errors(cmd))
 		{
@@ -123,7 +124,6 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 			return (builtin_and_redir(data, cmd));
 		else
 		{
-			data->pid = fork();
 			check_pid(data, cmd, envp);
 			clean_and_close(data, &cmd);
 		}

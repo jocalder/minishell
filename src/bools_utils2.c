@@ -5,7 +5,11 @@ bool	is_builtin(t_token *token)
 {
 	char	*value;
 
-	if (!token || !token->value || token->type != CMD)
+	if (!token || !token->value)
+		return (false);
+	while (token && token->type != CMD)
+		token = token->next;
+	if (!token)
 		return (false);
 	value = token->value;
 	if (ft_strncmp(value, "echo", 5) == 0

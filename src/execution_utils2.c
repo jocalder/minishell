@@ -25,6 +25,7 @@ int	open_fd(t_token *token)
 
 void	check_pid(t_mini *data, t_cmd *cmd, char **envp)
 {
+	data->pid = fork();
 	if (data->pid == -1)
 		update_status(ERROR);
 	if (data->pid == 0)

@@ -193,7 +193,7 @@ int		count_str(char **str);
 int		set_new_var(char ***ptr, char *var, int i);
 int		set_existing_var(char ***ptr, char *var);
 int		unset_var(char ***ptr, char *var, int len);
-int		set_local_var(t_mini *data, t_token *token);
+bool	set_local_var(t_mini *data, t_cmd **cmd, t_token *token);
 int		local_case(t_mini *data, t_token *token, char *tmp);
 
 /*bools utils*/
