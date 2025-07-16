@@ -6,7 +6,7 @@ CLEAR	=	\r\033[K
 NAME = minishell
 
 
-CC = gcc #-g -fsanitize=address
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -I /opt/homebrew/opt/readline/include
 CFLAGS += -I libft
