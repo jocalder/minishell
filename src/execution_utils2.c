@@ -61,8 +61,13 @@ int	redir_case(t_cmd *cmd, t_token *next, int *fd)
 {
 	if (*fd != -1)
 		close(*fd);
-	if (next)
+	if (next && (*next->value != '\0' && *next->value != ' '))
 		w_unexpected_redir(next->value);
+	else if (!*next->value || *next->value == ' ')
+	{
+		w_not_such(next->value);
+		return (ERROR_FD);
+	}
 	else if (!cmd->next)
 		write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
 	return (SYNTAX);

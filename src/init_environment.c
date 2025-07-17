@@ -87,7 +87,6 @@ int	update_shlvl(t_mini *data)
 	tmp = NULL;
 	while (data->exp_vs[++i])
 	{
-		printf("hi\n");
 		if (ft_strncmp(data->exp_vs[i], "SHLVL=", 6) == 0)
 		{
 			lvl = ft_atoi(data->exp_vs[i] + 6);
@@ -100,9 +99,7 @@ int	update_shlvl(t_mini *data)
 				return (free(tmp), ERROR);
 			return (free(tmp), OK);
 		}
-		printf("bye\n");
 	}
-	// printf("SHLVL=%d\n", lvl);
 	if (!data->exp_vs[i])
 		if (set_new_var(&data->exp_vs, "SHLVL=1", i) == ERROR)
 			return (ERROR);

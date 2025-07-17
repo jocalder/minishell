@@ -49,13 +49,15 @@ static void	set_exit_code(t_token *token)
 
 int	ft_exit(t_mini *data, t_token *token)
 {
+	if (data->input->pipes == 0)
+		write(STDERR_FILENO, "exit\n", 6);
 	token = token->next;
 	if (token && token->type == ARG)
 	{
 		if (validate_numeric_argument(token) != OK)
-			return (g_status);
+			exit(g_status);
 		if (check_numeric_limits(token->value) != OK)
-			return (g_status);
+			exit(g_status);
 		if (token->next && token->next->type == ARG)
 		{
 			write(STDERR_FILENO, "minishell: exit: too many arguments\n", 37);
@@ -68,6 +70,5 @@ int	ft_exit(t_mini *data, t_token *token)
 	free_all(data, true);
 	rl_clear_history();
 	update_status(g_status);
-	write(STDOUT_FILENO, "exit\n", 6);
 	exit(g_status);
 }

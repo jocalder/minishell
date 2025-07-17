@@ -1,5 +1,32 @@
 #include "minishell.h"
 
+int	new_token(t_mini *data, t_cmd *cmd, t_token **new, char **start)
+{
+	char			*tmp;
+	size_t			len;
+
+	if (!new || !start || !*start)
+		return (update_status(ERROR));
+	while (**start && !is_spacetab(**start))
+	{
+		len = 0;
+		tmp = NULL;
+		if (is_redir(*start) && ft_strncmp((*new)->value, "", 1) != 0)
+			break ;
+		if (is_quote(*start[len]))
+			(*new)->flag = true;
+		tmp = check_cases(data, cmd, start, &len);
+		if (!tmp)
+			return (g_status);
+		(*new)->value = ft_strjoin((*new)->value, tmp);
+		if (!(*new)->value)
+			return (free(tmp), update_status(ERROR));
+		*start += len;
+		free(tmp);
+	}
+	return (OK);
+}
+
 int	split_cmd(t_mini *data, t_cmd **cmd)
 {
 	t_token	*new;
