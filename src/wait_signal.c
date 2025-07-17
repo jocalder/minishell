@@ -46,7 +46,7 @@ static void	disable_echoctl(void)
 	}
 }
 
-void	wait_signal(int i)
+void	wait_signal(int i, int *fd)
 {
 	struct sigaction	sa;
 
@@ -58,7 +58,13 @@ void	wait_signal(int i)
 	else if (i == 1)
 		sa.sa_handler = &child_handler;
 	else if (i == 2)
+	{
+		if (fd[1] != -1)
+			close(fd[1]);
+		if (fd[0] != -1)
+			close(fd[0]);
 		sa.sa_handler = &here_doc_handler;
+	}
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 }

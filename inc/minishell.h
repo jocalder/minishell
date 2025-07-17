@@ -114,7 +114,7 @@ enum	e_status
 extern int	g_status;
 
 void	init_data(t_mini *data, char **envp);
-void	wait_signal(int i);
+void	wait_signal(int i, int *fd);
 void	interactive_mode(t_mini *data);
 void	command_mode(t_mini *data, char **argv, int argc);
 

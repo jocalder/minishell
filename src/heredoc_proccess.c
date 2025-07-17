@@ -6,7 +6,7 @@ static void	core_heredoc(t_mini *data, t_token *token, int pipe_fd[2])
 	size_t	len;
 
 	len = ft_strlen(token->value);
-	wait_signal(2);
+	wait_signal(2, pipe_fd);
 	close(pipe_fd[0]);
 	while (isatty(STDIN_FILENO))
 	{

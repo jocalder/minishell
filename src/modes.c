@@ -4,7 +4,7 @@ void	interactive_mode(t_mini *data)
 {
 	while (1)
 	{
-		wait_signal(0);
+		wait_signal(0, NULL);
 		if (set_prompt(data->prompt, data->exp_vs) != OK)
 			check_exit_status(g_status, data);
 		if (set_input(data) == OK)

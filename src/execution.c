@@ -96,7 +96,7 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 {
 	if (!cmd)
 		return (g_status);
-	wait_signal(1);
+	wait_signal(1, NULL);
 	w_parse_execution(cmd);
 	while (cmd)
 	{
