@@ -39,16 +39,17 @@ t_token	*last_token(t_token *token)
 	return (last);
 }
 
-int	get_redir_type(char *value, bool check)
+static int	get_redir_type(char *value)
 {
-	if (ft_strncmp(value, "<", ft_strlen(value)) == 0 && !check)
+	if (ft_strncmp(value, "<", ft_strlen(value)) == 0)
 		return (REDIR_IN);
-	else if (ft_strncmp(value, ">", ft_strlen(value)) == 0 && !check)
+	else if (ft_strncmp(value, ">", ft_strlen(value)) == 0)
 		return (REDIR_OUT);
-	else if (ft_strncmp(value, "<<", ft_strlen(value)) == 0 && !check)
+	else if (ft_strncmp(value, "<<", ft_strlen(value)) == 0)
 		return (HEREDOC);
-	else if (ft_strncmp(value, ">>", ft_strlen(value)) == 0 && !check)
+	else if (ft_strncmp(value, ">>", ft_strlen(value)) == 0)
 		return (APPEND);
+	return (ARG);
 }
 
 int	get_type(t_cmd *cmd, t_token *token, char *value, bool check)
@@ -70,11 +71,11 @@ int	get_type(t_cmd *cmd, t_token *token, char *value, bool check)
 		return (FILE_PATH);
 	else if (last && is_redir(last->value))
 		return (ARG);
-	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0 && !check
-		|| ft_strncmp(value, ">", ft_strlen(value)) == 0 && !check
-		|| ft_strncmp(value, "<<", ft_strlen(value)) == 0 && !check
-		|| ft_strncmp(value, ">>", ft_strlen(value)) == 0 && !check)
-		return (get_redir_type(value, check));
+	else if ((ft_strncmp(value, "<", ft_strlen(value)) == 0 && !check)
+		|| (ft_strncmp(value, ">", ft_strlen(value)) == 0 && !check)
+		|| (ft_strncmp(value, "<<", ft_strlen(value)) == 0 && !check)
+		|| (ft_strncmp(value, ">>", ft_strlen(value)) == 0 && !check))
+		return (get_redir_type(value));
 	else
 		return (ARG);
 }

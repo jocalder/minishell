@@ -10,10 +10,10 @@ Este documento contiene una lista de comandos para probar el comportamiento espe
 echo hola mundo
 pwd
 cd ..
-cd /
+cd /                               ??
 cd ./src
 ls -l | grep .c
-cat < Makefile
+cat < Makefile                     ??
 echo hola > file.txt
 echo otra línea >> file.txt
 cat file.txt | sort | uniq
@@ -30,7 +30,7 @@ echo $VAR
 
 ```bash
 ls > salida.txt
-cat < salida.txt | wc -l
+cat < salida.txt | wc -l                        ??
 grep "main" < salida.txt > result.txt
 ```
 

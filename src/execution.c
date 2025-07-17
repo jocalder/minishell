@@ -50,7 +50,7 @@ int	redir_in(t_mini *data, t_cmd *cmd, t_token *tok)
 	{
 		if (tok->type == HEREDOC || tok->type == REDIR_IN)
 		{
-			if (!tok->next || tok->next->type != 6 || tok->next->type != 7)
+			if (!tok->next || (tok->next->type != 6 && tok->next->type != 7))
 				return (redir_case(cmd, tok->next, &fd));
 			if (fd != -1)
 				close(fd);
