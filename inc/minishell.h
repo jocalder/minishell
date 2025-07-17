@@ -102,8 +102,7 @@ typedef struct minishell
 
 enum	e_status
 {
-	SUCH = -4,
-	HEREDOC_CTRLC = -3,
+	SUCH = -3,
 	ERROR_FD = -2,
 	ERROR = -1,
 	SYNTAX	= 2,
@@ -130,9 +129,10 @@ int		set_input(t_mini *data);
 
 /*execution*/
 int		handler_execution(t_mini *data, t_cmd *cmd, char **envp);
-void	handle_redirections(t_cmd **cmd);
-int		redir_in(t_cmd *cmd, t_token *token);
+void	handle_redirections(t_mini *data, t_cmd **cmd);
+int		redir_in(t_mini *data, t_cmd *cmd, t_token *token);
 int		redir_out(t_cmd *cmd, t_token *token);
+int		redir_in_case(t_cmd *cmd, int *fd);
 int		open_fd(t_token *token);
 int		check_fd_errors(t_cmd *cmd);
 void	close_all_fds(t_mini *data, t_cmd **cmd);
@@ -148,7 +148,7 @@ void	close_father_fds(t_mini *data, t_cmd **cmd);
 void	write_error(t_token *token);
 void	handler_dup(t_mini *data, t_cmd **cmd);
 
-int		open_heredoc(char *delimiter);
+int		open_heredoc(t_mini *data, t_token *token);
 
 int		execute_builtin(t_mini *data, t_cmd *cmd);
 int		builtin_and_redir(t_mini *data, t_cmd *cmd);
@@ -193,7 +193,8 @@ int		count_str(char **str);
 int		set_new_var(char ***ptr, char *var, int i);
 int		set_existing_var(char ***ptr, char *var);
 int		unset_var(char ***ptr, char *var, int len);
-int		set_local_var(t_mini *data, t_token *token);
+bool	set_local_var(t_mini *data, t_cmd **cmd, t_token *token);
+bool	has_type(t_token *token, t_token_type type);
 int		local_case(t_mini *data, t_token *token, char *tmp);
 
 /*bools utils*/
@@ -207,7 +208,6 @@ bool	is_option(char *value);
 bool	is_validate_id(char *id);
 bool	is_existing_var(char **ptr, char *var);
 bool	is_same_var(char *compared, char *var);
-bool	has_type(t_token *token, t_token_type type);
 
 /*write_utils*/
 void	w_openquote(unsigned char quote);

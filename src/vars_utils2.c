@@ -54,20 +54,14 @@ bool	has_type(t_token *token, t_token_type type)
 	return (false);
 }
 
-int	set_local_var(t_mini *data, t_token *token)
+bool	set_local_var(t_mini *data, t_cmd **cmd, t_token *token)
 {
 	t_token	*cur;
 
-	if (!data || !token)
-		return (update_status(ERROR));
 	cur = token;
-	while (cur && (cur->type == REDIR_IN || cur->type == REDIR_OUT
-			|| cur->type == APPEND || cur->type == HEREDOC
-			|| cur->type == ENDOFFILE))
-		cur = cur->next;
 	if (cur && cur->type != VAR)
-		return (OK);
-	while (cur && cur->type == VAR)
+		return (false);
+	while (cur && cur->type == VAR && !has_type(cur, CMD))
 	{
 		if (!is_existing_var(data->vars, token->value))
 			set_new_var(&data->vars, token->value, count_str(data->vars));
@@ -80,5 +74,9 @@ int	set_local_var(t_mini *data, t_token *token)
 			set_existing_var(&data->vars, token->value);
 		cur = cur->next;
 	}
-	return (update_status(OK));
+	update_status(OK);
+	if (cur)
+		return (false);
+	*cmd = (*cmd)->next;
+	return (true);
 }

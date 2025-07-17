@@ -6,6 +6,8 @@ int	execute_builtin(t_mini *data, t_cmd *cmd)
 
 	if (!data || !cmd)
 		return (update_status(ERROR));
+	while (cmd->token && cmd->token->type != CMD)
+		cmd->token = cmd->token->next;
 	builtin = cmd->token->value;
 	if (ft_strncmp(builtin, "echo", 5) == 0)
 		return (update_status(ft_echo(cmd->token)));

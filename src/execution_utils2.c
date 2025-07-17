@@ -25,6 +25,7 @@ int	open_fd(t_token *token)
 
 void	check_pid(t_mini *data, t_cmd *cmd, char **envp)
 {
+	data->pid = fork();
 	if (data->pid == -1)
 		update_status(ERROR);
 	if (data->pid == 0)
@@ -56,4 +57,11 @@ int	builtin_and_redir(t_mini *data, t_cmd *cmd)
 	return (g_status);
 }
 
-
+int	redir_in_case(t_cmd *cmd, int *fd)
+{
+	if (*fd != -1)
+		close(*fd);
+	if (!cmd->next)
+		write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
+	return (SYNTAX);
+}

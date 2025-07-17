@@ -41,7 +41,7 @@ static void	create_pipes(t_cmd **cmd)
 	}
 }
 
-int	redir_in(t_cmd *cmd, t_token *token)
+int	redir_in(t_mini *data, t_cmd *cmd, t_token *token)
 {
 	int	fd;
 
@@ -51,18 +51,12 @@ int	redir_in(t_cmd *cmd, t_token *token)
 		if (token->type == HEREDOC || token->type == REDIR_IN)
 		{
 			if (!token->next || !token->next->value)
-			{
-				if (fd != -1)
-					close(fd);
-				if (!cmd->next)
-					write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
-				return (SYNTAX);
-			}
+				return (redir_in_case(cmd, &fd));
 			if (fd != -1)
 				close(fd);
 			if (token->type == HEREDOC)
 			{
-				fd = open_heredoc(token->next->value);
+				fd = open_heredoc(data, token->next);
 				if (g_status == CTRC)
 					break ;
 			}
@@ -110,8 +104,9 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 	w_parse_execution(cmd);
 	while (cmd)
 	{
-		// set_local_var(data, cmd->token);
-		handle_redirections(&cmd);
+		if (set_local_var(data, &cmd, cmd->token))
+			continue ;
+		handle_redirections(data, &cmd);
 		if (check_fd_errors(cmd))
 		{
 			close_all_fds(data, &cmd);
@@ -123,7 +118,6 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 			return (builtin_and_redir(data, cmd));
 		else
 		{
-			data->pid = fork();
 			check_pid(data, cmd, envp);
 			clean_and_close(data, &cmd);
 		}

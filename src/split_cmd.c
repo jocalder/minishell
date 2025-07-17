@@ -44,8 +44,10 @@ int	get_type(t_cmd *cmd, t_token *token, char *value, bool check)
 	t_token	*last;
 
 	last = last_token(token);
-	if (cmd && !has_type(cmd->token, CMD)
-		&& (is_validate_id(value) && ft_strchr(value, '=')))
+	if (cmd && (is_validate_id(value) && ft_strchr(value, '='))
+		&& (!has_type(token, CMD) && !has_type(token, REDIR_IN)
+			&& !has_type(token, HEREDOC) && !has_type(token, REDIR_OUT)
+			&& !has_type(token, APPEND)))
 		return (VAR);
 	else if ((!last || (last && last->type == VAR)) && !is_redir(value))
 		return (CMD);
@@ -72,10 +74,10 @@ void	append_token(t_cmd *cmd, t_token **new, int type)
 
 	if (!cmd || !new || !*new || !(*new)->value)
 		return ;
-	if (ft_strncmp((*new)->value, "", ft_strlen((*new)->value)) == 0)
+	if (ft_strncmp((*new)->value, "", ft_strlen((*new)->value)) == 0
+		&& (type != ENDOFFILE && type != CMD))
 	{
 		free((*new)->value);
-		(*new)->value = NULL;
 		free(*new);
 		*new = NULL;
 		return ;

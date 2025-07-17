@@ -86,9 +86,11 @@ int	execute_command(t_cmd *cmd, char **envp)
 	int		fd;
 
 	fd = 3;
+	while (cmd->token && cmd->token->type != CMD)
+		cmd->token = cmd->token->next;
 	command = build_full_command(cmd->token);
 	path = find_command_path(command[0], envp, cmd);
-	if (!path)
+	if (!path || !*cmd->token->value)
 	{
 		if (g_status == SUCH)
 			return (free_array(command, -1), update_status(ERROR_FD));

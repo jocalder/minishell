@@ -43,7 +43,7 @@ bool	is_supported(char *start, bool flag)
 	size_t	end;
 	char	c;
 
-	if (!start || flag)
+	if (!start || !*start || flag)
 		return (true);
 	c = start[0];
 	end = ft_strlen(start) - 1;
