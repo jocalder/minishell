@@ -30,7 +30,7 @@ static void	update_underscore(t_mini *data)
 static void	update_envp(t_mini *data)
 {
 	char	*path;
-	
+
 	free_array(data->envp, -1);
 	data->envp = envpdup(data->exp_vs);
 	if (!data->envp)

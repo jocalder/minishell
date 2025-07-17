@@ -72,7 +72,7 @@ void	get_path(char **path)
 	*path = ft_strjoin(*path, "/bin:/home/");
 	*path = ft_strjoin(*path, user);
 	*path = ft_strjoin(*path, "/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:");
-	*path = ft_strjoin(*path,"/usr/bin:/sbin:/bin:/usr/games:");
+	*path = ft_strjoin(*path, "/usr/bin:/sbin:/bin:/usr/games:");
 	*path = ft_strjoin(*path, "/usr/local/games:/snap/bin");
 	return (free(cwd), free(user));
 }
