@@ -57,7 +57,7 @@ int	builtin_and_redir(t_mini *data, t_cmd *cmd)
 	return (g_status);
 }
 
-int	redir_in_case(t_cmd *cmd , int *fd)
+int	redir_in_case(t_cmd *cmd, int *fd)
 {
 	if (*fd != -1)
 		close(*fd);
