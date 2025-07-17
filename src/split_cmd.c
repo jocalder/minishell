@@ -75,7 +75,7 @@ void	append_token(t_cmd *cmd, t_token **new, int type)
 	if (!cmd || !new || !*new || !(*new)->value)
 		return ;
 	if (ft_strncmp((*new)->value, "", ft_strlen((*new)->value)) == 0
-		&& type != ENDOFFILE)
+		&& (type != ENDOFFILE && type != CMD))
 	{
 		free((*new)->value);
 		free(*new);
