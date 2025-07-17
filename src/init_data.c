@@ -2,17 +2,19 @@
 
 static void	init_export_vars(t_mini *data, char **envp)
 {
-	if (!data)
-		exit (ERROR);
+	char	*path;
+
 	if (!envp || !*envp || !**envp)
 	{
 		if (mini_envp(data) == ERROR)
 			exit_free(data, ERROR);
 		data->exp_vs = envpdup(data->envp);
-		if (!is_existing_var(data->envp, "PATH=/usr/local/bin:/usr/bin:/bin"))
-			if (set_new_var(&data->envp, "PATH=/usr/local/bin:/usr/bin:/bin",
-					count_str(data->envp)) == ERROR)
-				exit_free(data, ERROR);
+		get_path(&path);
+		if (!path)
+			exit_free(data, ERROR);
+		if (!is_existing_var(data->envp, path))
+			set_new_var(&data->envp, path, count_str(data->envp));
+		free(path);
 	}
 	else
 	{

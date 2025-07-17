@@ -51,6 +51,32 @@ char	**envpdup(char **envp)
 	return (cpy);
 }
 
+void	get_path(char **path)
+{
+	char	*cwd;
+	char	*user;
+	char	*tmp;
+	size_t	len;
+
+	*path = ft_strdup("PATH=/home/");
+	cwd = getcwd(NULL, 0);
+	tmp = cwd + 1;
+	while (*tmp && *tmp != '/')
+		tmp++;
+	tmp++;
+	len = 1;
+	while (tmp[len] && tmp[len] != '/')
+		len++;
+	user = ft_substr(tmp, 0, len);
+	*path = ft_strjoin(*path, user);
+	*path = ft_strjoin(*path, "/bin:/home/");
+	*path = ft_strjoin(*path, user);
+	*path = ft_strjoin(*path, "/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:");
+	*path = ft_strjoin(*path,"/usr/bin:/sbin:/bin:/usr/games:");
+	*path = ft_strjoin(*path, "/usr/local/games:/snap/bin");
+	return (free(cwd), free(user));
+}
+
 int	update_shlvl(t_mini *data)
 {
 	int		i;
@@ -59,23 +85,26 @@ int	update_shlvl(t_mini *data)
 
 	i = -1;
 	tmp = NULL;
-	while (data->envp[++i])
+	while (data->exp_vs[++i])
 	{
-		if (ft_strncmp(data->envp[i], "SHLVL=", 6) == 0)
+		printf("hi\n");
+		if (ft_strncmp(data->exp_vs[i], "SHLVL=", 6) == 0)
 		{
-			lvl = ft_atoi(data->envp[i] + 6);
-			free(data->envp[i]);
+			lvl = ft_atoi(data->exp_vs[i] + 6);
+			free(data->exp_vs[i]);
 			tmp = ft_itoa(++lvl);
 			if (!tmp)
 				return (ERROR);
-			data->envp[i] = ft_strjoin(ft_strdup("SHLVL="), tmp);
-			if (!data->envp[i])
+			data->exp_vs[i] = ft_strjoin(ft_strdup("SHLVL="), tmp);
+			if (!data->exp_vs[i])
 				return (free(tmp), ERROR);
 			return (free(tmp), OK);
 		}
+		printf("bye\n");
 	}
-	if (!data->envp[i])
-		if (set_new_var(&data->envp, "SHLVL=1", i) == ERROR)
+	// printf("SHLVL=%d\n", lvl);
+	if (!data->exp_vs[i])
+		if (set_new_var(&data->exp_vs, "SHLVL=1", i) == ERROR)
 			return (ERROR);
 	return (OK);
 }
