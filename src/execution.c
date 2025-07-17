@@ -41,31 +41,31 @@ static void	create_pipes(t_cmd **cmd)
 	}
 }
 
-int	redir_in(t_mini *data, t_cmd *cmd, t_token *token)
+int	redir_in(t_mini *data, t_cmd *cmd, t_token *tok)
 {
 	int	fd;
 
 	fd = -1;
-	while (token)
+	while (tok)
 	{
-		if (token->type == HEREDOC || token->type == REDIR_IN)
+		if (tok->type == HEREDOC || tok->type == REDIR_IN)
 		{
-			if (!token->next || !token->next->value)
-				return (redir_in_case(cmd, &fd));
+			if (!tok->next || tok->next->type != 6 || tok->next->type != 7)
+				return (redir_case(cmd, tok->next, &fd));
 			if (fd != -1)
 				close(fd);
-			if (token->type == HEREDOC)
+			if (tok->type == HEREDOC)
 			{
-				fd = open_heredoc(data, token->next);
+				fd = open_heredoc(data, tok->next);
 				if (g_status == CTRC)
 					break ;
 			}
 			else
-				fd = open((token->next->value), O_RDONLY);
+				fd = open((tok->next->value), O_RDONLY);
 			if (fd < 0)
-				return (write_error(token), ERROR_FD);
+				return (write_error(tok), ERROR_FD);
 		}
-		token = token->next;
+		tok = tok->next;
 	}
 	return (fd);
 }
@@ -79,12 +79,8 @@ int	redir_out(t_cmd *cmd, t_token *token)
 	{
 		if (token->type == APPEND || token->type == REDIR_OUT)
 		{
-			if (!token->next || !token->next->value)
-			{
-				if (!cmd->next)
-					write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
-				return (SYNTAX);
-			}
+			if (!token->next || token->next->type != FILE_PATH)
+				return (redir_case(cmd, token->next, &fd));
 			if (fd != -1)
 				close(fd);
 			fd = open_fd(token);

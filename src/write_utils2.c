@@ -14,6 +14,13 @@ void	w_command_not_found(char *value)
 	write(STDERR_FILENO, ": command not found\n", 21);
 }
 
+void	w_unexpected_redir(char *str)
+{
+	write(STDERR_FILENO, "minishell: syntax error near unexpected token `", 48);
+	write(STDERR_FILENO, str, ft_strlen(str));
+	write(STDERR_FILENO, "'\n", 3);
+}
+
 void	w_parse_execution(t_cmd *cmd)
 {
 	t_cmd	*cur;

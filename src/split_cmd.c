@@ -51,11 +51,13 @@ int	get_type(t_cmd *cmd, t_token *token, char *value, bool check)
 		return (VAR);
 	else if ((!last || (last && last->type == VAR)) && !is_redir(value))
 		return (CMD);
-	else if (last && last->type == HEREDOC)
+	else if (last && last->type == HEREDOC && !is_redir(value))
 		return (ENDOFFILE);
 	else if (last && (last->type == APPEND || last->type == REDIR_IN
-			|| last->type == REDIR_OUT))
+			|| last->type == REDIR_OUT) && !is_redir(value))
 		return (FILE_PATH);
+	else if (last && is_redir(last->value))
+		return (ARG);
 	else if (ft_strncmp(value, "<", ft_strlen(value)) == 0 && !check)
 		return (REDIR_IN);
 	else if (ft_strncmp(value, ">", ft_strlen(value)) == 0 && !check)

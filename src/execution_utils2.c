@@ -57,11 +57,13 @@ int	builtin_and_redir(t_mini *data, t_cmd *cmd)
 	return (g_status);
 }
 
-int	redir_in_case(t_cmd *cmd, int *fd)
+int	redir_case(t_cmd *cmd, t_token *next, int *fd)
 {
 	if (*fd != -1)
 		close(*fd);
-	if (!cmd->next)
+	if (next)
+		w_unexpected_redir(next->value);
+	else if (!cmd->next)
 		write(STDERR_FILENO, ERROR4, ft_strlen(ERROR4));
 	return (SYNTAX);
 }

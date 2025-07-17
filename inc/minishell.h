@@ -132,7 +132,7 @@ int		handler_execution(t_mini *data, t_cmd *cmd, char **envp);
 void	handle_redirections(t_mini *data, t_cmd **cmd);
 int		redir_in(t_mini *data, t_cmd *cmd, t_token *token);
 int		redir_out(t_cmd *cmd, t_token *token);
-int		redir_in_case(t_cmd *cmd, int *fd);
+int		redir_case(t_cmd *cmd, t_token *next, int *fd);
 int		open_fd(t_token *token);
 int		check_fd_errors(t_cmd *cmd);
 void	close_all_fds(t_mini *data, t_cmd **cmd);
@@ -217,6 +217,7 @@ void	w_builtin_usage(char *builtin, char *invalid_opt);
 void	w_invalid_identifier(char *builtin, char *invalid_id);
 void	w_not_such(char *value);
 void	w_command_not_found(char *value);
+void	w_unexpected_redir(char *str);
 void	w_parse_execution(t_cmd *cmd);
 
 /*free_utils*/

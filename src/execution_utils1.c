@@ -16,8 +16,8 @@ void	close_father_fds(t_mini *data, t_cmd **cmd)
 
 void	handle_redirections(t_mini *data, t_cmd **cmd)
 {
-	(*cmd)->fd_in = redir_in(data, (*cmd), (*cmd)->token);
-	(*cmd)->fd_out = redir_out((*cmd), (*cmd)->token);
+	(*cmd)->fd_in = redir_in(data, (*cmd), (*cmd)->token, (*cmd)->token->next);
+	(*cmd)->fd_out = redir_out((*cmd), (*cmd)->token, (*cmd)->token->next);
 }
 
 int	check_fd_errors(t_cmd *cmd)

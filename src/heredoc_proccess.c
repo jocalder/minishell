@@ -8,7 +8,7 @@ static void	core_heredoc(t_mini *data, t_token *token, int pipe_fd[2])
 	len = ft_strlen(token->value);
 	wait_signal(2);
 	close(pipe_fd[0]);
-	while (1)
+	while (isatty(STDIN_FILENO))
 	{
 		write(1, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
