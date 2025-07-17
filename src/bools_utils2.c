@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-/*Might need to mark like true if ft_strchr(token->value, '=') != NULL*/
 bool	is_builtin(t_token *token)
 {
 	char	*value;
