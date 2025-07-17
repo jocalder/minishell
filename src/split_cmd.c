@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_cmd.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/17 20:15:58 by jocalder          #+#    #+#             */
+/*   Updated: 2025/07/17 20:46:10 by jocalder         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_token	*last_token(t_token *token)
@@ -61,31 +73,10 @@ int	get_type(t_cmd *cmd, t_token *token, char *value, bool check)
 		return (ARG);
 }
 
-void	append_token(t_cmd *cmd, t_token **new, int type)
+void	set_new_token(t_token **new)
 {
-	t_token	*cur;
-
-	if (!cmd || !new || !*new || !(*new)->value)
-		return ;
-	if (ft_strncmp((*new)->value, "", ft_strlen((*new)->value)) == 0
-		&& (type != ENDOFFILE && type != CMD && type != FILE_PATH))
-	{
-		free((*new)->value);
-		free(*new);
-		*new = NULL;
-		return ;
-	}
-	(*new)->type = type;
-	(*new)->next = NULL;
-	(*new)->prev = NULL;
-	if (!cmd->token)
-		cmd->token = *new;
-	else
-	{
-		cur = cmd->token;
-		while (cur->next)
-			cur = cur->next;
-		cur->next = *new;
-		(*new)->prev = cur;
-	}
+	free((*new)->value);
+	(*new)->value = NULL;
+	free(*new);
+	*new = NULL;
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution_utils2.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/17 20:15:27 by jocalder          #+#    #+#             */
+/*   Updated: 2025/07/17 20:22:27 by jocalder         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	write_error(t_token *token)
@@ -63,7 +75,7 @@ int	redir_case(t_cmd *cmd, t_token *next, int *fd)
 		close(*fd);
 	if (next && (*next->value != '\0' && *next->value != ' '))
 		w_unexpected_redir(next->value);
-	else if (!*next->value || *next->value == ' ')
+	else if (next && (!*next->value || *next->value == ' '))
 	{
 		w_not_such(next->value);
 		return (ERROR_FD);

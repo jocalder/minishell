@@ -1,4 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   set_input.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/17 20:15:56 by jocalder          #+#    #+#             */
+/*   Updated: 2025/07/17 20:31:57 by jocalder         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+void	append_token(t_cmd *cmd, t_token **new, int type)
+{
+	t_token	*cur;
+
+	if (!cmd || !new || !*new || !(*new)->value)
+		return ;
+	if (ft_strncmp((*new)->value, "", ft_strlen((*new)->value)) == 0
+		&& (type != ENDOFFILE && type != CMD && type != FILE_PATH))
+	{
+		set_new_token(new);
+		return ;
+	}
+	(*new)->type = type;
+	(*new)->next = NULL;
+	(*new)->prev = NULL;
+	if (!cmd->token)
+		cmd->token = *new;
+	else
+	{
+		cur = cmd->token;
+		while (cur->next)
+			cur = cur->next;
+		cur->next = *new;
+		(*new)->prev = cur;
+	}
+}
 
 int	new_token(t_mini *data, t_cmd *cmd, t_token **new, char **start)
 {
