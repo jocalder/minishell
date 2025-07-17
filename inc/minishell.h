@@ -121,6 +121,7 @@ void	command_mode(t_mini *data, char **argv, int argc);
 /*init_environment*/
 int		mini_envp(t_mini *data);
 char	**envpdup(char **envp);
+void	get_path(char **path);
 int		update_shlvl(t_mini *data);
 
 /*set_structs*/

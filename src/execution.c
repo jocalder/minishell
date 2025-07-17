@@ -79,7 +79,8 @@ int	redir_out(t_cmd *cmd, t_token *token)
 	{
 		if (token->type == APPEND || token->type == REDIR_OUT)
 		{
-			if (!token->next || token->next->type != FILE_PATH)
+			if (!token->next || !*token->next->value
+				|| token->next->type != FILE_PATH)
 				return (redir_case(cmd, token->next, &fd));
 			if (fd != -1)
 				close(fd);
