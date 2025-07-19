@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wait_signal.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:16:05 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/17 20:16:08 by jocalder         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:30:24 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	here_doc_handler(int signum)
 	if (signum == SIGINT)
 	{
 		g_status = CTRC;
-		write(STDOUT_FILENO, "\n", 1);
+		write(STDOUT_FILENO, "", 1);
 		if (kill(getpid(), SIGKILL) == -1)
 			write(STDERR_FILENO, "Error: kill\n", 13);
 	}
@@ -58,7 +58,7 @@ static void	disable_echoctl(void)
 	}
 }
 
-void	wait_signal(int i, int *fd)
+void	wait_signal(int i)
 {
 	struct sigaction	sa;
 
@@ -70,13 +70,7 @@ void	wait_signal(int i, int *fd)
 	else if (i == 1)
 		sa.sa_handler = &child_handler;
 	else if (i == 2)
-	{
-		if (fd[1] != -1)
-			close(fd[1]);
-		if (fd[0] != -1)
-			close(fd[0]);
 		sa.sa_handler = &here_doc_handler;
-	}
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 }

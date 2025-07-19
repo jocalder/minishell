@@ -12,56 +12,65 @@
 
 #include "minishell.h"
 
-static void	core_heredoc(t_mini *data, t_token *token, int pipe_fd[2])
+static void	core_heredoc(t_mini *data, t_token **token)
 {
-	char	*line;
 	size_t	len;
 
-	len = ft_strlen(token->value);
-	wait_signal(2, pipe_fd);
-	close(pipe_fd[0]);
+	len = ft_strlen((*token)->value);
+	close((*token)->pipe_hd[0]);
+	wait_signal(2);
 	while (isatty(STDIN_FILENO))
 	{
-		write(1, "> ", 2);
-		line = get_next_line(STDIN_FILENO);
-		if (((!line
-					|| (!*line || (ft_strncmp(line, token->value, len) == 0
-							&& line[len] == '\n')))))
+		write(STDOUT_FILENO, "> ", 2);
+		(*token)->line = get_next_line(STDIN_FILENO);
+		if (!(*token)->line || !*(*token)->line
+			|| (ft_strncmp((*token)->line, (*token)->value, len) == 0
+				&& (*token)->line[len] == '\n'))
 		{
-			if (line)
-				free(line);
+			if ((*token)->line)
+				free((*token)->line);
 			break ;
 		}
-		if (!token->flag)
-			line = expand_content(data, line, NULL);
-		write(pipe_fd[1], line, ft_strlen(line));
-		free(line);
+		if (!(*token)->flag)
+			(*token)->line = expand_content(data, (*token)->line, NULL);
+		write((*token)->pipe_hd[1], (*token)->line, ft_strlen((*token)->line));
+		free((*token)->line);
 	}
-	close(pipe_fd[1]);
+	close((*token)->pipe_hd[1]);
 	exit (0);
 }
 
-int	open_heredoc(t_mini *data, t_token *token)
+static int	close_pipe(t_token **token)
 {
-	int		pipe_fd[2];
+	if ((*token)->pipe_hd[0] != -1)
+		close((*token)->pipe_hd[0]);
+	if ((*token)->pipe_hd[1] != -1)
+		close((*token)->pipe_hd[1]);
+	(*token)->pipe_hd[0] = -1;
+	(*token)->pipe_hd[1] = -1;
+	return (update_status(ERROR));
+}
+
+int	open_heredoc(t_mini *data, t_token **token)
+{
 	pid_t	pid;
 	int		status;
 
 	status = 0;
-	if (pipe(pipe_fd) < 0)
-		return (close(pipe_fd[0]), close(pipe_fd[1]), update_status(ERROR));
+	if (pipe((*token)->pipe_hd) < 0)
+		return (close_pipe(token));
 	pid = fork();
 	if (pid < 0)
-		return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
+		return (close_pipe(token));
 	if (pid == 0)
-		core_heredoc(data, token, pipe_fd);
+		core_heredoc(data, token);
 	if (pid > 0)
 	{
-		close(pipe_fd[1]);
+		close((*token)->pipe_hd[1]);
 		waitpid(-1, &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-			return (close(pipe_fd[0]), -1);
-		return (pipe_fd[0]);
+			return (close((*token)->pipe_hd[0]), ERROR);
+		return ((*token)->pipe_hd[0]);
 	}
 	return (-1);
 }

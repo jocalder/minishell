@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_input.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:56 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/17 20:31:57 by jocalder         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:06:11 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	append_token(t_cmd *cmd, t_token **new, int type)
 		return ;
 	if (ft_strncmp((*new)->value, "", ft_strlen((*new)->value)) == 0
 		&& (type != ENDOFFILE && type != CMD && type != FILE_PATH))
-	{
-		set_new_token(new);
-		return ;
-	}
+		return (set_new_token(new));
 	(*new)->type = type;
+	(*new)->line = NULL;
+	(*new)->pipe_hd[0] = -1;
+	(*new)->pipe_hd[1] = -1;
 	(*new)->next = NULL;
 	(*new)->prev = NULL;
 	if (!cmd->token)

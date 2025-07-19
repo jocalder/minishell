@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:29 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/17 20:15:30 by jocalder         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:19:47 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	redir_in(t_mini *data, t_cmd *cmd, t_token *tok)
 				close(fd);
 			if (tok->type == HEREDOC)
 			{
-				fd = open_heredoc(data, tok->next);
+				fd = open_heredoc(data, &tok->next);
 				if (g_status == CTRC)
 					break ;
 			}
@@ -109,7 +109,7 @@ int	handler_execution(t_mini *data, t_cmd *cmd, char **envp)
 {
 	if (!cmd)
 		return (g_status);
-	wait_signal(1, NULL);
+	wait_signal(1);
 	w_parse_execution(cmd);
 	while (cmd)
 	{

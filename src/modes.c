@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   modes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:53 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/17 20:15:54 by jocalder         ###   ########.fr       */
+/*   Updated: 2025/07/19 11:54:18 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	interactive_mode(t_mini *data)
 {
 	while (1)
 	{
-		wait_signal(0, NULL);
+		wait_signal(0);
 		if (set_prompt(data->prompt, data->exp_vs) != OK)
 			check_exit_status(g_status, data);
 		if (set_input(data) == OK)

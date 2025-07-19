@@ -55,6 +55,8 @@ typedef struct s_token
 	char			*value;
 	t_token_type	type;
 	bool			flag;
+	char			*line;
+	int				pipe_hd[2];
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
@@ -114,7 +116,7 @@ enum	e_status
 extern int	g_status;
 
 void	init_data(t_mini *data, char **envp);
-void	wait_signal(int i, int *fd);
+void	wait_signal(int i);
 void	interactive_mode(t_mini *data);
 void	command_mode(t_mini *data, char **argv, int argc);
 
@@ -149,7 +151,7 @@ void	close_father_fds(t_mini *data, t_cmd **cmd);
 void	write_error(t_token *token);
 void	handler_dup(t_mini *data, t_cmd **cmd);
 
-int		open_heredoc(t_mini *data, t_token *token);
+int		open_heredoc(t_mini *data, t_token **token);
 
 int		execute_builtin(t_mini *data, t_cmd *cmd);
 int		builtin_and_redir(t_mini *data, t_cmd *cmd);
@@ -174,6 +176,7 @@ int		split_cmd(t_mini *data, t_cmd **cmd);
 void	append_token(t_cmd *cmd, t_token **new, int type);
 int		get_type(t_cmd *cmd, t_token *token, char *value, bool check);
 t_token	*last_token(t_token *token);
+void	set_new_token(t_token **new);
 
 /*new_token*/
 int		new_token(t_mini *data, t_cmd *cmd, t_token **new, char **start);

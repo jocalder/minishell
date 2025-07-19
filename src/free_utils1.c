@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:33 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/17 20:15:34 by jocalder         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:05:28 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,15 @@ static void	free_token(t_token *token)
 		if (cur->value)
 			free(cur->value);
 		cur->value = NULL;
+		if (cur->line)
+			free(cur->line);
+		cur->line = NULL;
+		if (cur->pipe_hd[0] != -1)
+			close(cur->pipe_hd[0]);
+		cur->pipe_hd[0] = -1;
+		if (cur->pipe_hd[1] != -1)
+			close(cur->pipe_hd[1]);
+		cur->pipe_hd[1] = -1;
 		free(cur);
 		cur = next;
 	}
