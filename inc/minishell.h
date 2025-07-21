@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:13:14 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/21 12:50:29 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/07/21 22:21:27 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,9 @@ int		set_input(t_mini *data);
 int		handler_execution(t_mini *data, t_cmd *cmd, char **envp);
 void	handle_redirections(t_mini *data, t_cmd **cmd);
 int		redir_in(t_mini *data, t_cmd *cmd, t_token *token);
-int		redir_out(t_cmd *cmd, t_token *token);
+int		redir_out(t_mini *data, t_cmd *cmd, t_token *token);
 int		redir_case(t_cmd *cmd, t_token *next, int *fd);
+void	close_prev_fds(t_token **token);
 int		open_fd(t_token *token);
 int		check_fd_errors(t_cmd *cmd);
 void	close_all_fds(t_mini *data, t_cmd **cmd);

@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:31 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/21 12:34:07 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:56:26 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ static char	*handler_expand(t_mini *data, char *value, size_t *len)
 	else if (ft_isalpha(value[*len]) || (value[*len] == '_'))
 	{
 		while (value[*len]
-			&& (value[*len] != '$' && value[*len] != '=' && !is_quote(value[*len])
-				&& !is_spacetab(value[*len])))
+			&& (value[*len] != '$' && value[*len] != '='
+				&& !is_quote(value[*len]) && !is_spacetab(value[*len])))
 			(*len)++;
 		new_value = get_env_var(data, ft_substr(value, 0, *len));
 	}

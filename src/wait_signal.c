@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:16:05 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/21 12:27:49 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:59:27 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	here_doc_handler(int signum)
 	if (signum == SIGINT)
 	{
 		g_status = CTRC;
-		write(STDOUT_FILENO, "\n", 1);
+		write(STDOUT_FILENO, "", 1);
 		if (kill(getpid(), SIGKILL) == -1)
 			write(STDERR_FILENO, "Error: kill\n", 13);
 	}
