@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:25 by jocalder          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/07/22 14:27:59 by vgoyzuet         ###   ########.fr       */
-=======
-/*   Updated: 2025/07/21 18:18:16 by jocalder         ###   ########.fr       */
->>>>>>> 8297b3d (finished)
+/*   Updated: 2025/07/22 15:49:09 by jocalder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
