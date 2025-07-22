@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:56 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/22 14:18:13 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/07/22 20:58:05 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	split_input(t_mini *data, t_input *input)
 				return (g_status);
 		start += len;
 	}
-	return (OK);
+	return (update_status(OK));
 }
 
 int	set_input(t_mini *data)
