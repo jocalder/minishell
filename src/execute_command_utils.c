@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:25 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/18 16:59:44 by jocalder         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:27:59 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	execute_command(t_cmd *cmd, char **envp)
 	if (!path || !*cmd->token->value)
 	{
 		if (g_status == SUCH)
-			return (free_array(command, -1), update_status(ERROR_FD));
+			return (free_array(command, -1), update_status(NOTFOUND));
 		w_command_not_found(*command);
 		return (free_array(command, -1), NOTFOUND);
 	}

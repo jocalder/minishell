@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:35 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/18 16:36:31 by jocalder         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:23:40 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	update_underscore(t_mini *data)
+void	update_underscore(t_mini *data)
 {
 	t_cmd	*cmd;
 	t_token	*token;

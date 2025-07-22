@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:49 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/18 17:28:05 by jocalder         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:32:56 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static void	init_input(t_input *input)
 void	init_data(t_mini *data, char **envp)
 {
 	g_status = 0;
+	data->interactive = false;
 	data->prev_fd = -1;
 	data->pid = getpid();
 	data->prompt = NULL;

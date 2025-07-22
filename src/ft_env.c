@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:38 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/17 20:15:39 by jocalder         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:24:47 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_env(t_token *token, char **exp_vs)
+int	ft_env(t_mini *data, t_token *token, char **exp_vs)
 {
 	char	*builtin;
 
@@ -28,6 +28,7 @@ int	ft_env(t_token *token, char **exp_vs)
 			write(STDERR_FILENO, "minishell: env: too many arguments\n", 36);
 		return (update_status(SYNTAX));
 	}
+	update_underscore(data);
 	while (*exp_vs)
 	{
 		if (ft_strchr(*exp_vs, '='))

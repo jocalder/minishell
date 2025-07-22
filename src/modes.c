@@ -6,7 +6,7 @@
 /*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:53 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/21 12:20:39 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:33:12 by vgoyzuet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	interactive_mode(t_mini *data)
 {
+	data->interactive = true;
 	while (1)
 	{
 		wait_signal(0);
