@@ -19,7 +19,7 @@ static void	core_heredoc(t_mini *data, t_token **token)
 	len = ft_strlen((*token)->value);
 	close((*token)->pipe_hd[0]);
 	wait_signal(2);
-	while (data->interactivecl)
+	while (data->interactive)
 	{
 		write(STDOUT_FILENO, "> ", 2);
 		(*token)->line = get_next_line(STDIN_FILENO);
