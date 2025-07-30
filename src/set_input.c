@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_input.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgoyzuet <vgoyzuet@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jocalder <jocalder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 20:15:56 by jocalder          #+#    #+#             */
-/*   Updated: 2025/07/22 20:58:05 by vgoyzuet         ###   ########.fr       */
+/*   Updated: 2025/07/30 18:24:36 by jocalder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
